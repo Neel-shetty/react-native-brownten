@@ -1,3 +1,4 @@
+/*eslint eqeqeq:0*/
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Home from './tabs/Home/Home';
@@ -6,7 +7,6 @@ import Cart from './tabs/Cart';
 import Explore from './tabs/Explore/Explore';
 import Favourite from './tabs/Favourite';
 import {tabIcons} from '../helpers/Icons';
-import EStyleSheet from 'react-native-extended-stylesheet';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 
@@ -14,6 +14,7 @@ const Tabs = () => {
   return (
     <Navigator
       screenOptions={({route}) => ({
+/*eslint-disable*/ 
         tabBarIcon: ({color}) => {
           switch (route.name) {
             case Home.name:
@@ -43,12 +44,7 @@ const Tabs = () => {
           },
           null,
         ],
-      })}
-      // tabBarOptions={{
-      //   activeTintColor: '#53B175',
-      //   inactiveTintColor: '#181725',
-      //   labelStyle: style.tabBarLabelStyle,}}
-    >
+      })}>
       <Screen name={Home.name} component={Home.component} />
       <Screen name={Explore.name} component={Explore.component} />
       <Screen name={Cart.name} component={Cart.component} />
@@ -57,13 +53,5 @@ const Tabs = () => {
     </Navigator>
   );
 };
-
-const style = EStyleSheet.create({
-  tabBarLabelStyle: {
-    fontFamily: '$gilroyNormal600',
-    fontWeight: '600',
-    fontSize: '0.75rem',
-  },
-});
 
 export default {component: Tabs, name: 'Tabs'};

@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Image, Dimensions, Button as Btn} from 'react-native';
+import {View, Text, Image, Dimensions} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Button from '../components/Button';
 import SignIn from './SignIn';

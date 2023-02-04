@@ -8,11 +8,8 @@ import CategoryCard from './CategoryCard';
 import ImageTest from '../../../../assets/images/product_categories/bakery.png';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
-interface ExploreTabProps {
-  navigation: any;
-}
 
-const ExploreTab = ({navigation}: ExploreTabProps) => {
+const ExploreTab = ({navigation}) => {
   const ui_array = [
     {id: 0},
     {id: 1},
