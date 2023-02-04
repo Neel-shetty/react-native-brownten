@@ -1,11 +1,13 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet} from 'react-native';
 import React from 'react';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
+import Navigator from './src/Navigator/Navigator';
 
 const App = () => {
   return (
-    <View style={styles.root}>
-      <Text style={styles.title}>App</Text>
-    </View>
+    <GestureHandlerRootView style={styles.root}>
+      <Navigator />
+    </GestureHandlerRootView>
   );
 };
 
@@ -13,11 +15,6 @@ export default App;
 
 const styles = StyleSheet.create({
   root: {
-    alignItems: 'center',
-    justifyContent: 'center',
     flex: 1,
-  },
-  title: {
-    color: 'black',
   },
 });
