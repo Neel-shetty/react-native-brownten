@@ -44,11 +44,11 @@ const Tabs = () => {
           null,
         ],
       })}
-      tabBarOptions={{
-        activeTintColor: '#53B175',
-        inactiveTintColor: '#181725',
-        labelStyle: style.tabBarLabelStyle,
-      }}>
+      // tabBarOptions={{
+      //   activeTintColor: '#53B175',
+      //   inactiveTintColor: '#181725',
+      //   labelStyle: style.tabBarLabelStyle,}}
+    >
       <Screen name={Home.name} component={Home.component} />
       <Screen name={Explore.name} component={Explore.component} />
       <Screen name={Cart.name} component={Cart.component} />

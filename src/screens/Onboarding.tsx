@@ -34,12 +34,12 @@ const Onboarding = ({navigation}: OnboardingProps) => {
           txtColour="#FFF"
           text="Get Started"
         />
-        <Btn
+        {/* <Btn
           title="test"
           onPress={() => {
             console.log('pressed');
           }}
-        />
+        /> */}
       </View>
     </>
   );

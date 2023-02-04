@@ -1,7 +1,9 @@
 import React from 'react';
 import {Dimensions, Image, Text, View} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
+//@ts-ignore
 import Success from '../../../assets/images/order_accepted/success.png';
+//@ts-ignore
 import Background from '../../../assets/images/order_accepted/background-accepted.png';
 import Button from '../../components/Button';
 

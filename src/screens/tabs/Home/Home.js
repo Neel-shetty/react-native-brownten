@@ -10,11 +10,7 @@ import FoodCard from '../../../components/FoodCard';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
 
-interface HomeProps {
-  navigation: any;
-}
-
-const Home = ({navigation}: HomeProps) => {
+const Home = ({navigation}) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.header}>

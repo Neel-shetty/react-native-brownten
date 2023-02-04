@@ -33,7 +33,7 @@ const ExploreTab = ({navigation}: ExploreTabProps) => {
       <View style={styles.body}>
         <FlatList
           data={ui_array}
-          keyExtractor={(item) => item.id}
+          keyExtractor={item => item.id}
           scrollEnabled={true}
           numColumns={2}
           renderItem={({item}) => {
