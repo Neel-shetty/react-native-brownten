@@ -1,7 +1,7 @@
 /*eslint eqeqeq:0*/
 import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import Home from './tabs/Home/Home';
+import Home from './tabs/Home';
 import Account from './tabs/Account';
 import Cart from './tabs/Cart';
 import Explore from './tabs/Explore/Explore';
@@ -14,7 +14,7 @@ const Tabs = () => {
   return (
     <Navigator
       screenOptions={({route}) => ({
-/*eslint-disable*/ 
+        /*eslint-disable*/
         tabBarIcon: ({color}) => {
           switch (route.name) {
             case Home.name:
@@ -44,6 +44,7 @@ const Tabs = () => {
           },
           null,
         ],
+        headerShown: false,
       })}>
       <Screen name={Home.name} component={Home.component} />
       <Screen name={Explore.name} component={Explore.component} />

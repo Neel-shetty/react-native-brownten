@@ -4,7 +4,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import Header from '../../../components/Header';
 import SearchBar from '../../../components/SearchBar';
-import CategoryCard from './CategoryCard';
+import CategoryCard from '../../../components/ExploreComponents/CategoryCard';
 import ImageTest from '../../../../assets/images/product_categories/bakery.png';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
@@ -31,7 +31,7 @@ const ExploreTab = ({navigation}) => {
         <FlatList
           data={ui_array}
           keyExtractor={item => item.id}
-          scrollEnabled={true}
+          scrollEnabled={false}
           numColumns={2}
           renderItem={({item}) => {
             return (

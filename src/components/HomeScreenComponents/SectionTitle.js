@@ -1,14 +1,10 @@
 import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import {useNavigation} from '@react-navigation/native';
 
-interface SectionTitleProps {
-  navigation: any;
-  title: String;
-  linkPage: String;
-}
-
-const SectionTitle = ({navigation, title, linkPage}: SectionTitleProps) => {
+const SectionTitle = ({title, linkPage}) => {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>

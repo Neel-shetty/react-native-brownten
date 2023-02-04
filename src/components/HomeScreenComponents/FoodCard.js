@@ -1,8 +1,8 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import DefaultImage from '../../assets/images/products/fruits/apple.png';
-import PlusIcon from '../../assets/icons/commons/plus.svg';
+import DefaultImage from '../../../assets/images/products/fruits/apple.png';
+import PlusIcon from '../../../assets/icons/commons/plus.svg';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
