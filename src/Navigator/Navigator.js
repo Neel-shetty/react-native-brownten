@@ -4,13 +4,12 @@ import {StatusBar} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import theme from '../theme';
 import Onboarding from '../screens/Onboarding';
-// import SignIn from '../screens/SignIn';
-// import SignUp from '../screens/SignUp';
-// import Tabs from '../screens/Tabs';
+import SignIn from '../screens/SignIn';
+import SignUp from '../screens/SignUp';
+import Tabs from '../screens/Tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import HomeScreen from '../screens/HomeScreen';
-// import OrderAccepted from '../screens/status/OrderAccepted';
+import OrderAccepted from '../screens/status/OrderAccepted';
 
 const Stack = createStackNavigator();
 
@@ -24,19 +23,18 @@ const Navigator = () => {
           screenOptions={{
             headerShown: false,
           }}>
-          {/* <Stack.Screen component={HomeScreen} name="HomeScreen" /> */}
           <Stack.Screen
             name={Onboarding.name}
             component={Onboarding.component}
           />
-          {/* <Stack.Screen name={SignIn.name} component={SignIn.component} />
+          <Stack.Screen name={SignIn.name} component={SignIn.component} />
           <Stack.Screen name={SignUp.name} component={SignUp.component} />
           <Stack.Screen name={Tabs.name} component={Tabs.component} />
 
           <Stack.Screen
             name={OrderAccepted.name}
             component={OrderAccepted.component}
-          /> */}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </>

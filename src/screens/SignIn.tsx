@@ -40,7 +40,7 @@ const Signin = ({navigation}: SignInProps) => {
         <View>
           <Text style={styles.headerTitle}>Sign in</Text>
           <Text style={styles.headerSubtitle}>
-            Enter your emails and password
+            Enter your email and password
           </Text>
         </View>
         <KeyboardAvoidingView behavior={behavior}>

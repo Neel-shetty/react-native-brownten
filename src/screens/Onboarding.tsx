@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, Image, Dimensions} from 'react-native';
+import {View, Text, Image, Dimensions, Button as Btn} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Button from '../components/Button';
 import SignIn from './SignIn';
@@ -13,8 +13,8 @@ interface OnboardingProps {
 }
 
 const Onboarding = ({navigation}: OnboardingProps) => {
-  console.log('onboarding component running');
   const nextScreen = () => {
+    console.log('pressed');
     navigation.navigate(SignIn.name);
   };
 
@@ -33,6 +33,12 @@ const Onboarding = ({navigation}: OnboardingProps) => {
           bgColour="#53B175"
           txtColour="#FFF"
           text="Get Started"
+        />
+        <Btn
+          title="test"
+          onPress={() => {
+            console.log('pressed');
+          }}
         />
       </View>
     </>

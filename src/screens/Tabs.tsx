@@ -30,6 +30,19 @@ const Tabs = () => {
               return <tabIcons.ShopIcon color={color} />;
           }
         },
+        tabBarActiveTintColor: '#53B175',
+        tabBarInactiveTintColor: '#181725',
+        tabBarLabelStyle: {
+          fontFamily: 'Mulish-SemiBold',
+          fontWeight: '600',
+          fontSize: 12,
+        },
+        tabBarStyle: [
+          {
+            display: 'flex',
+          },
+          null,
+        ],
       })}
       tabBarOptions={{
         activeTintColor: '#53B175',
