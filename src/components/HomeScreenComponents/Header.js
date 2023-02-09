@@ -3,7 +3,6 @@ import React from 'react';
 import LocationPin from '../../../assets/icons/home_screen/location-pin.svg';
 
 const Header = () => {
-  
   return (
     <View style={styles.header}>
       <Image
