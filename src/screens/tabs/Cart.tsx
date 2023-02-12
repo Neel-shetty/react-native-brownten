@@ -7,7 +7,7 @@ const CartTab = () => {
   return (
     <View style={styles.root}>
       <Header title={'My Cart'} />
-      <CartList name={'test'} />
+      <CartList />
     </View>
   );
 };

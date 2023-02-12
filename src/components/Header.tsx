@@ -23,8 +23,8 @@ const styles = EStyleSheet.create({
   },
   text: {
     alignSelf: 'center',
-    color: '$blackColour',
-    fontFamily: '$gilroyNormal600',
+    color: 'black',
+    fontFamily: 'Poppins-SemiBold',
     fontSize: '1.125rem',
   },
 });
