@@ -24,7 +24,6 @@ const FoodCard = () => {
           <PlusIcon />
         </TouchableOpacity>
       </View>
-
     </TouchableOpacity>
   );
 };

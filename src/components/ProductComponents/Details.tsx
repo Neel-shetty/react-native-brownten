@@ -38,8 +38,8 @@ const Details = () => {
           </View>
         </View>
       </View>
-      <ScrollView style={{flex: 2}} showsVerticalScrollIndicator={false}>
-        {[1, 2, 3].map(item => {
+      <ScrollView style={styles.flex} showsVerticalScrollIndicator={false}>
+        {[1, 2, 3].map(() => {
           return <Info />;
         })}
       </ScrollView>
@@ -74,6 +74,9 @@ const styles = StyleSheet.create({
   },
   detailContainer: {
     // flex: 1,
+  },
+  flex: {
+    flex: 2,
   },
   titleContainer: {
     height: 100,
