@@ -10,6 +10,7 @@ import Tabs from '../screens/Tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import OrderAccepted from '../screens/status/OrderAccepted';
+import ProductScreen from '../screens/ProductScreen';
 
 const Stack = createStackNavigator();
 
@@ -30,7 +31,10 @@ const Navigator = () => {
           <Stack.Screen name={SignIn.name} component={SignIn.component} />
           <Stack.Screen name={SignUp.name} component={SignUp.component} />
           <Stack.Screen name={Tabs.name} component={Tabs.component} />
-
+          <Stack.Screen
+            name={ProductScreen.name}
+            component={ProductScreen.component}
+          />
           <Stack.Screen
             name={OrderAccepted.name}
             component={OrderAccepted.component}

@@ -17,7 +17,7 @@ const CartTab = () => {
       </View>
       <View style={styles.buttonContainer}>
         <Button
-          text="Order"
+          text="Go To Checkout"
           bgColour={colors.green}
           onPress={() => {}}
           txtColour="white"
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     maxHeight: 70,
-    marginVertical: 10,
+    marginBottom: 10,
     backgroundColor: 'transparent',
   },
 });

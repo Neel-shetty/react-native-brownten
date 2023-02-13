@@ -3,12 +3,16 @@ import {View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import DefaultImage from '../../../assets/images/products/fruits/apple.png';
 import PlusIcon from '../../../assets/icons/commons/plus.svg';
+import {useNavigation} from '@react-navigation/native';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
 const FoodCard = () => {
+  const navigation = useNavigation();
   return (
-    <TouchableOpacity onPress={() => null} style={styles.card}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('ProductScreen')}
+      style={styles.card}>
       <View style={styles.imageBox}>
         <Image source={DefaultImage} />
       </View>
@@ -20,6 +24,7 @@ const FoodCard = () => {
           <PlusIcon />
         </TouchableOpacity>
       </View>
+
     </TouchableOpacity>
   );
 };
