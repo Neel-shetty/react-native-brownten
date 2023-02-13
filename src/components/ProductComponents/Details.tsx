@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {layout} from '../../constants/Layout';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -9,32 +9,53 @@ import {colors} from '../../constants/colors';
 const Details = () => {
   return (
     <View style={styles.root}>
-      <View style={styles.titleContainer}>
-        <View style={styles.titleSubContainer}>
-          <Text style={styles.title}>Red apple</Text>
-          <AntDesign name="hearto" size={24} color={'#7C7C7C'} />
-        </View>
-        <Text style={styles.info}>1kg, Price</Text>
-      </View>
-      <View style={styles.secondContainer}>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            onPress={() => null}
-            style={styles.quantityContainer}>
-            <Icon name="minus" size={24} color={'#B3B3B3'} />
-          </TouchableOpacity>
-          <View style={styles.button}>
-            <Text style={styles.quantity}>1</Text>
+      <View style={styles.topContainer}>
+        <View style={styles.titleContainer}>
+          <View style={styles.titleSubContainer}>
+            <Text style={styles.title}>Red apple</Text>
+            <AntDesign name="hearto" size={24} color={'#7C7C7C'} />
           </View>
-          <TouchableOpacity
-            onPress={() => null}
-            style={styles.quantityContainer}>
-            <Icon name="plus" size={24} color={colors.green} />
-          </TouchableOpacity>
+          <Text style={styles.info}>1kg, Price</Text>
         </View>
-        <View style={styles.priceContainer}>
-          <Text>$4.99</Text>
+        <View style={styles.secondContainer}>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              onPress={() => null}
+              style={styles.quantityContainer}>
+              <Icon name="minus" size={24} color={'#B3B3B3'} />
+            </TouchableOpacity>
+            <View style={styles.button}>
+              <Text style={styles.quantity}>1</Text>
+            </View>
+            <TouchableOpacity
+              onPress={() => null}
+              style={styles.quantityContainer}>
+              <Icon name="plus" size={24} color={colors.green} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.priceContainer}>
+            <Text style={styles.price}>$4.99</Text>
+          </View>
         </View>
+      </View>
+      <ScrollView style={{flex: 2}} showsVerticalScrollIndicator={false}>
+        {[1, 2, 3].map(item => {
+          return <Info />;
+        })}
+      </ScrollView>
+    </View>
+  );
+};
+
+const Info = () => {
+  return (
+    <View style={styles.detailContainer}>
+      <View style={styles.detailTitleContainer}>
+        <Text style={styles.detailTitle}>Product Detail</Text>
+        <Text style={styles.detail}>
+          Product Detail Product Detail Product Detail Product Detail Product
+          Detail Product Detail Product Detail
+        </Text>
       </View>
     </View>
   );
@@ -46,6 +67,13 @@ const styles = StyleSheet.create({
   root: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  topContainer: {
+    flex: 1,
+    // backgroundColor: 'pink',
+  },
+  detailContainer: {
+    // flex: 1,
   },
   titleContainer: {
     height: 100,
@@ -63,7 +91,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   info: {
-    fontFamily: 'poppins-SemiBold',
+    fontFamily: 'Poppins-SemiBold',
     fontSize: 16,
   },
   button: {
@@ -103,5 +131,18 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     fontSize: 24,
     color: 'black',
+  },
+  detailTitleContainer: {
+    paddingVertical: 5,
+  },
+  detailTitle: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 16,
+    color: 'black',
+  },
+  detail: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: 13,
+    color: '#7C7C7C',
   },
 });

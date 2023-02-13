@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     // justifyContent: 'center',
     flex: 1,
-    backgroundColor: 'pink',
+    // backgroundColor: 'pink',
   },
   detailContainer: {
     alignItems: 'center',

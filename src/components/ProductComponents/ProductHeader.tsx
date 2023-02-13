@@ -3,14 +3,22 @@ import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {layout} from '../../constants/Layout';
 import {ImageSlider} from 'react-native-image-slider-banner';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useNavigation} from '@react-navigation/native';
 
 const apple = require('../../../assets/images/products/fruits/applebig.png');
 
 const ProductHeader = () => {
+  const navigation = useNavigation();
   return (
     <View style={styles.root}>
       <View style={styles.backContainer}>
-        <Ionicons name="chevron-back" size={24} color={'#181725'} />
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          <Ionicons name="chevron-back" size={24} color={'#181725'} />
+        </TouchableOpacity>
       </View>
       <View style={styles.imageContainer}>
         <ImageSlider
@@ -52,6 +60,7 @@ const styles = StyleSheet.create({
     // alignItems: 'center',
     // justifyContent: 'center',
     width: layout.widthp,
+    marginTop: 20,
     // backgroundColor: 'pink',
   },
   imageContainer: {
