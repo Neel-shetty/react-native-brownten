@@ -17,9 +17,9 @@ const Header = ({title}: HeaderProps) => {
 const styles = EStyleSheet.create({
   container: {
     width: '100%',
-    paddingTop: 8.1,
-    paddingBottom: 30.0,
-    paddingHorizontal: 25.0,
+    // paddingTop: 8.1,
+    // paddingBottom: 30.0,
+    // paddingHorizontal: 25.0,
   },
   text: {
     alignSelf: 'center',

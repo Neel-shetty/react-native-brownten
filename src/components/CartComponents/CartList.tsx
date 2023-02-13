@@ -17,15 +17,16 @@ const CartList = () => {
             image="https://media.istockphoto.com/id/1130564105/photo/sweet-pepper-paprika-isolated-on-white-background-clipping-path-full-depth-of-field.jpg?s=612x612&w=0&k=20&c=m_01GdGMntpr6B3tiplqxbtPN8zTKN1xfucAaBu3Mkw="
           />
         )}
-        invertStickyHeaders
-        StickyHeaderComponent={() => {
-          return (
-            <View>
-              <Text>test</Text>
-            </View>
-          );
-        }}
-        stickyHeaderIndices={[0]}
+        // invertStickyHeaders
+        // StickyHeaderComponent={() => {
+        //   return (
+        //     <View>
+        //       <Text>test</Text>
+        //     </View>
+        //   );
+        // }}
+        // stickyHeaderIndices={[0]}
+        showsVerticalScrollIndicator={false}
       />
     </View>
   );
