@@ -11,6 +11,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import OrderAccepted from '../screens/status/OrderAccepted';
 import ProductScreen from '../screens/ProductScreen';
+import SearchScreen from '../screens/SearchScreen';
 
 const Stack = createStackNavigator();
 
@@ -38,6 +39,10 @@ const Navigator = () => {
           <Stack.Screen
             name={OrderAccepted.name}
             component={OrderAccepted.component}
+          />
+          <Stack.Screen
+            name={SearchScreen.name}
+            component={SearchScreen.component}
           />
         </Stack.Navigator>
       </NavigationContainer>

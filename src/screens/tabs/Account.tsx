@@ -8,6 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
+//@ts-ignore
 import ProfileImage from '../../../assets/images/profile.png';
 import {AccountIcons} from '../../helpers/Icons';
 import AccountListItem from '../../components/AccountListItem';
