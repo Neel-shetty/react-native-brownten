@@ -6,13 +6,39 @@ const {height: heightScreen} = Dimensions.get('screen');
 
 interface InputProps {
   label: string;
+  onChangeText: {
+    (e: React.ChangeEvent<any>): void;
+    <T = string | React.ChangeEvent<any>>(
+      field: T,
+    ): T extends React.ChangeEvent<any>
+      ? void
+      : (e: string | React.ChangeEvent<any>) => void;
+  };
+  onBlur: {
+    (e: React.FocusEvent<any, Element>): void;
+    <T = any>(fieldOrEvent: T): T extends string ? (e: any) => void : void;
+  };
+  value: string;
+  secure?: boolean;
 }
 
-const Input = ({label}: InputProps) => {
+const Input = ({
+  label,
+  onBlur,
+  onChangeText,
+  value,
+  secure = false,
+}: InputProps) => {
   return (
     <>
       <Text style={styles.inputLabel}>{label}</Text>
-      <TextInput style={styles.input} />
+      <TextInput
+        style={styles.input}
+        onBlur={onBlur}
+        onChangeText={onChangeText}
+        value={value}
+        secureTextEntry={secure}
+      />
     </>
   );
 };

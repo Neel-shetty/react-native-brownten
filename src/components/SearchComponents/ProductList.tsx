@@ -1,6 +1,5 @@
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, FlatList} from 'react-native';
 import React, {useState} from 'react';
-import {FlatList} from 'react-native-gesture-handler';
 import FoodCard from '../HomeScreenComponents/FoodCard';
 
 const ProductList = () => {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,8 @@ import Input from '../components/Input';
 import SignScaffold from '../components/SignScaffold';
 import SignUp from './SignUp';
 import Tabs from './Tabs';
+import {Formik, FormikErrors} from 'formik';
+import * as yup from 'yup';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
 const logo = require('../../assets/images/logo-colour.png');
@@ -23,7 +25,18 @@ interface SignInProps {
 }
 
 const Signin = ({navigation}: SignInProps) => {
+  const [error, setError] =
+    useState<FormikErrors<{email: string; password: string}>>();
   const behavior = Platform.OS === 'ios' ? 'padding' : undefined;
+
+  const formScheme = yup.object({
+    // phoneNumber: yup.string().phoneNumber("error").required("error"),
+    email: yup
+      .string()
+      .email('Email format is invalid')
+      .required('Email is required!'),
+    password: yup.string().required('error'),
+  });
 
   const goToSignUp = () => {
     navigation.navigate(SignUp.name);
@@ -43,21 +56,54 @@ const Signin = ({navigation}: SignInProps) => {
             Enter your email and password
           </Text>
         </View>
-        <KeyboardAvoidingView behavior={behavior}>
-          <Input label="Email" />
-          <View style={{marginTop: heightScreen * 0.011}} />
-          <Input label="Password" />
-        </KeyboardAvoidingView>
+        <Formik
+          initialValues={{email: '', password: ''}}
+          onSubmit={values => {
+            console.log(values);
+          }}
+          validationSchema={formScheme}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            touched,
+          }) => (
+            <>
+              {/* {useEffect(() => {
+                setError(errors);
+              }, [errors])} */}
+              <KeyboardAvoidingView behavior={behavior}>
+                <Input
+                  label="Email"
+                  onChangeText={handleChange('email')}
+                  onBlur={handleBlur('email')}
+                  value={values.email}
+                />
+                {<Text>{errors.email}</Text>}
+                <View style={{marginTop: heightScreen * 0.011}} />
+                <Input
+                  onChangeText={handleChange('password')}
+                  label="Password"
+                  onBlur={handleBlur('password')}
+                  value={values.password}
+                  secure={true}
+                />
+              </KeyboardAvoidingView>
 
-        <TouchableOpacity style={styles.forgotButtonBox}>
-          <Text style={styles.infoText}>Forgot your password?</Text>
-        </TouchableOpacity>
-        <Button
-          onPress={goToHome}
-          bgColour="#53B175"
-          txtColour="#FFF"
-          text="Sign in"
-        />
+              <TouchableOpacity style={styles.forgotButtonBox}>
+                <Text style={styles.infoText}>Forgot your password?</Text>
+              </TouchableOpacity>
+              <Button
+                onPress={handleSubmit}
+                bgColour="#53B175"
+                txtColour="#FFF"
+                text="Sign in"
+              />
+            </>
+          )}
+        </Formik>
         <View style={styles.footer}>
           <Text style={styles.infoText}>Don’t have an account?</Text>
           <TouchableOpacity onPress={goToSignUp}>
