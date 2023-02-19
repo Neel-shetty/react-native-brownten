@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useEffect, useLayoutEffect} from 'react';
 import {StatusBar} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import theme from '../theme';
@@ -14,20 +14,38 @@ import ProductScreen from '../screens/ProductScreen';
 import SearchScreen from '../screens/SearchScreen';
 import MapScreen from '../screens/MapScreen';
 import OtpScreen from '../screens/OtpScreen';
+import {useSelector, useDispatch} from 'react-redux';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {setLoggedIn} from '../store/user';
 
 const Stack = createStackNavigator();
 
 const Navigator = () => {
+  const dispatch = useDispatch();
+  const loggedIn = useSelector(state => state.user.loggedIn);
+  console.log('🚀 ~ file: Navigator.js:23 ~ Navigator ~ loggedIn', loggedIn);
+
+  useLayoutEffect(() => {
+    async function checkLogin() {
+      const result = await EncryptedStorage.getItem('isLoggedIn');
+      console.log('🚀 ~ file: Navigator.js:28 ~ checkLogin ~ result', result);
+      if (result === 'true') {
+        dispatch(setLoggedIn(true));
+      }
+    }
+    checkLogin();
+  }, [loggedIn, dispatch]);
+
   return (
     <>
       <StatusBar barStyle="dark-content" />
       <NavigationContainer>
         <Stack.Navigator
-          // initialRouteName={OrderAccepted.name}
+          // initialRouteName={Tabs.name}
           screenOptions={{
             headerShown: false,
           }}>
-          {
+          {!loggedIn ? (
             <>
               <Stack.Screen
                 name={Onboarding.name}
@@ -35,6 +53,9 @@ const Navigator = () => {
               />
               <Stack.Screen name={SignIn.name} component={SignIn.component} />
               <Stack.Screen name={SignUp.name} component={SignUp.component} />
+            </>
+          ) : (
+            <>
               <Stack.Screen name={Tabs.name} component={Tabs.component} />
               <Stack.Screen
                 name={ProductScreen.name}
@@ -57,7 +78,7 @@ const Navigator = () => {
                 component={OtpScreen.component}
               />
             </>
-          }
+          )}
         </Stack.Navigator>
       </NavigationContainer>
     </>

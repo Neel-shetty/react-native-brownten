@@ -24,7 +24,7 @@ const ProductList = () => {
               handleSubmit={handleSubmit}
               onChangeText={handleChange('query')}
               placeholder="Search Store"
-              onBlur={handleBlur}
+              onBlur={handleBlur('query')}
               value={values.query}
             />
           )}

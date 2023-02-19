@@ -77,11 +77,11 @@ const OtpScreen = ({navigation}: otpProps) => {
             setLoading(true);
             const result = await verifyOtp({
               otp: values.otp,
-              phone: route.params.phone,
-              email: route.params.email,
-              password: route.params.password,
-              name: route.params.name,
-              image: route.params.image,
+              phone: route?.params?.phone,
+              email: route?.params?.email,
+              password: route?.params?.password,
+              name: route?.params?.name,
+              image: route?.params?.image,
             });
             if (result?.status === 1) {
               Alert.alert('Success', result.message);

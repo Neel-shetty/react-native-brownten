@@ -19,6 +19,8 @@ import * as yup from 'yup';
 import {SignIn} from '../api/SignIn';
 import {Alert} from 'react-native';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import {useDispatch} from 'react-redux';
+import {setLoggedIn} from '../store/user';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
 const logo = require('../../assets/images/logo-colour.png');
@@ -30,6 +32,8 @@ interface SignInProps {
 const Signin = ({navigation}: SignInProps) => {
   const [loading, setLoading] = useState(false);
   const behavior = Platform.OS === 'ios' ? 'padding' : undefined;
+
+  const dispatch = useDispatch();
 
   const formScheme = yup.object({
     phone: yup
@@ -44,10 +48,6 @@ const Signin = ({navigation}: SignInProps) => {
 
   const goToSignUp = () => {
     navigation.navigate(SignUp.name);
-  };
-
-  const goToHome = () => {
-    navigation.navigate(Tabs.name);
   };
 
   return (
@@ -72,6 +72,7 @@ const Signin = ({navigation}: SignInProps) => {
                 'id',
                 JSON.stringify(result.data.id),
               );
+              dispatch(setLoggedIn(true));
             }
             if (result?.response?.data?.status === 0) {
               Alert.alert('Failed', result.response.data.message);
