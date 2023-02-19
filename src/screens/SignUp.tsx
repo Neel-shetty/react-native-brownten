@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -15,6 +15,11 @@ import SignScaffold from '../components/SignScaffold';
 import Tabs from './Tabs';
 import * as yup from 'yup';
 import {Formik} from 'formik';
+import OtpScreen from './OtpScreen';
+import ImageInput from '../components/SignUpComponents/ImageInput';
+import {Alert} from 'react-native';
+import {SignUpApi} from '../api/SignUpApi';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
 const logo = require('../../assets/images/logo-colour.png');
@@ -24,9 +29,15 @@ interface SignUpProps {
 }
 
 const SignUp = ({navigation}: SignUpProps) => {
+  const [image, setImage] = useState();
+  const [loading, setLoading] = useState(false);
+
   const behavior = Platform.OS === 'ios' ? 'padding' : undefined;
   const formScheme = yup.object({
-    // phoneNumber: yup.string().phoneNumber("error").required("error"),
+    phone: yup
+      .string()
+      .required('Phone Number is Required!')
+      .length(10, 'Invalid Phone Number'),
     email: yup
       .string()
       .email('Email format is invalid')
@@ -46,6 +57,16 @@ const SignUp = ({navigation}: SignUpProps) => {
     navigation.navigate(Tabs.name);
   };
 
+  const goToOtp = ({phone, name, email, password}) => {
+    navigation.navigate(OtpScreen.name, {
+      phone: phone,
+      name: name,
+      email: email,
+      password: password,
+      image: image,
+    });
+  };
+
   return (
     <SignScaffold>
       <Image style={styles.logo} source={logo} />
@@ -57,11 +78,39 @@ const SignUp = ({navigation}: SignUpProps) => {
           </Text>
         </View>
         <Formik
-          initialValues={{email: '', password: '', username: ''}}
-          onSubmit={values => {
+          initialValues={{email: '', password: '', username: '', phone: ''}}
+          onSubmit={async values => {
+            setLoading(true);
             console.log('onsubmit');
             console.log(values);
-            goToHome();
+            if (!image) {
+              Alert.alert('Please select an Image');
+              return;
+            }
+            const result = await SignUpApi({
+              password: values.password,
+              email: values.email,
+              name: values.username,
+              phone: values.phone,
+              image: image,
+            });
+            if (result?.status === 1) {
+              Alert.alert('Success', result.message);
+              await EncryptedStorage.setItem(
+                'id',
+                JSON.stringify(result.data.id),
+              );
+              goToOtp({
+                name: values.username,
+                email: values.email,
+                password: values.password,
+                phone: values.phone,
+              });
+            }
+            if (result?.response?.data?.status === 0) {
+              Alert.alert('Failed', result.response.data.message);
+            }
+            setLoading(false);
           }}
           validationSchema={formScheme}>
           {({
@@ -93,6 +142,20 @@ const SignUp = ({navigation}: SignUpProps) => {
                 )}
                 <View style={{marginTop: heightScreen * 0.011}} />
                 <Input
+                  label="Phone Number"
+                  onChangeText={handleChange('phone')}
+                  onBlur={handleBlur('phone')}
+                  value={values.phone}
+                  numeric
+                />
+                {errors.phone && touched.phone && (
+                  <>
+                    <Text style={styles.errorText}>{errors.phone}</Text>
+                    <View style={{marginTop: heightScreen * 0.011}} />
+                  </>
+                )}
+                <View style={{marginTop: heightScreen * 0.011}} />
+                <Input
                   label="Email"
                   onChangeText={handleChange('email')}
                   onBlur={handleBlur('email')}
@@ -110,6 +173,7 @@ const SignUp = ({navigation}: SignUpProps) => {
                   onChangeText={handleChange('password')}
                   onBlur={handleBlur('password')}
                   value={values.password}
+                  secure
                 />
                 {errors.password && touched.password && (
                   <>
@@ -117,6 +181,11 @@ const SignUp = ({navigation}: SignUpProps) => {
                     <View style={{marginTop: heightScreen * 0.011}} />
                   </>
                 )}
+                <ImageInput
+                  label="Profile Picture"
+                  image={image}
+                  setImage={setImage}
+                />
               </KeyboardAvoidingView>
 
               <View style={styles.termsBox}>
@@ -138,6 +207,7 @@ const SignUp = ({navigation}: SignUpProps) => {
                 bgColour="#53B175"
                 txtColour="#FFF"
                 text="Sign up"
+                loading={loading}
               />
             </>
           )}

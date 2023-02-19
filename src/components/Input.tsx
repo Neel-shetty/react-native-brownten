@@ -20,6 +20,7 @@ interface InputProps {
   };
   value: string;
   secure?: boolean;
+  numeric?: boolean;
 }
 
 const Input = ({
@@ -28,6 +29,7 @@ const Input = ({
   onChangeText,
   value,
   secure = false,
+  numeric = false,
 }: InputProps) => {
   return (
     <>
@@ -38,6 +40,7 @@ const Input = ({
         onChangeText={onChangeText}
         value={value}
         secureTextEntry={secure}
+        keyboardType={numeric ? 'numeric' : 'ascii-capable'}
       />
     </>
   );

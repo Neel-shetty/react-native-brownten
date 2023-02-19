@@ -7,72 +7,89 @@ import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
+  Alert,
 } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import SignScaffold from '../components/SignScaffold';
-import SignUp from './SignUp';
 import Tabs from './Tabs';
 import {Formik} from 'formik';
 import * as yup from 'yup';
+import {useQuery} from 'react-query';
 import {SignIn} from '../api/SignIn';
-import {Alert} from 'react-native';
-import EncryptedStorage from 'react-native-encrypted-storage';
+import {OtpApi, verifyOtp} from '../api/OtpApi';
+import {useRoute} from '@react-navigation/native';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
 const logo = require('../../assets/images/logo-colour.png');
 
-interface SignInProps {
+interface otpProps {
   navigation: any;
 }
 
-const Signin = ({navigation}: SignInProps) => {
+const OtpScreen = ({navigation}: otpProps) => {
   const [loading, setLoading] = useState(false);
   const behavior = Platform.OS === 'ios' ? 'padding' : undefined;
 
-  const formScheme = yup.object({
-    phone: yup
-      .string()
-      .length(10, 'Invalid Phone Number')
-      .required('Phone Number is Required!'),
-    password: yup
-      .string()
-      .required('Password is required!')
-      .min(8, 'Password has to be atleast 8 characters'),
-  });
+  const route = useRoute();
+  console.log('🚀 ~ file: OtpScreen.tsx:36 ~ route', route.params);
 
-  const goToSignUp = () => {
-    navigation.navigate(SignUp.name);
-  };
+  const formScheme = yup.object({
+    otp: yup.string().required('OTP is required!'),
+  });
 
   const goToHome = () => {
     navigation.navigate(Tabs.name);
   };
+
+  useEffect(() => {
+    const sendOtpToUser = async () => {
+      const result = await OtpApi({
+        phone: route?.params?.phone,
+        email: route?.params?.email,
+        password: route?.params?.password,
+        name: route?.params?.name,
+        image: route?.params?.image,
+      });
+      console.log(
+        '🚀 ~ file: OtpScreen.tsx:48 ~ sendOtpToUser ~ result',
+        result,
+      );
+    };
+    sendOtpToUser();
+  }, [route]);
 
   return (
     <SignScaffold>
       <Image style={styles.logo} source={logo} />
       <View style={styles.form}>
         <View>
-          <Text style={styles.headerTitle}>Sign in</Text>
+          <Text style={styles.headerTitle}>Verify OTP</Text>
           <Text style={styles.headerSubtitle}>
-            Enter your email and password
+            Enter the OTP to verify your account
           </Text>
         </View>
         <Formik
-          initialValues={{phone: '', password: ''}}
+          initialValues={{otp: ''}}
           onSubmit={async values => {
+            console.log(values);
             setLoading(true);
-            const result = await SignIn(values.phone, values.password);
+            const result = await verifyOtp({
+              otp: values.otp,
+              phone: route.params.phone,
+              email: route.params.email,
+              password: route.params.password,
+              name: route.params.name,
+              image: route.params.image,
+            });
             if (result?.status === 1) {
               Alert.alert('Success', result.message);
-              await EncryptedStorage.setItem('isLoggedIn', 'true');
-              await EncryptedStorage.setItem(
-                'id',
-                JSON.stringify(result.data.id),
-              );
             }
+            console.log(
+              '🚀 ~ file: SignIn.tsx:66 ~ Signin ~ result',
+              result?.response.data.status,
+            );
             if (result?.response?.data?.status === 0) {
               Alert.alert('Failed', result.response.data.message);
             }
@@ -88,59 +105,70 @@ const Signin = ({navigation}: SignInProps) => {
             touched,
           }) => (
             <>
+              {console.log(
+                '🚀 ~ file: SignIn.tsx:75 ~ Signin ~ errors',
+                errors,
+              )}
               <KeyboardAvoidingView behavior={behavior}>
                 <Input
-                  label="Phone Number"
-                  onChangeText={handleChange('phone')}
-                  onBlur={handleBlur('phone')}
-                  value={values.phone}
-                  numeric
+                  label="OTP"
+                  onChangeText={handleChange('otp')}
+                  onBlur={handleBlur('otp')}
+                  value={values.otp}
                 />
-                {errors.phone && touched.phone && (
+                {errors.otp && touched.otp && (
                   <>
-                    <Text style={styles.errorText}>{errors.phone}</Text>
+                    <Text style={styles.errorText}>{errors.otp}</Text>
                     <View style={{marginTop: heightScreen * 0.011}} />
                   </>
                 )}
                 <View style={{marginTop: heightScreen * 0.011}} />
-                <Input
-                  onChangeText={handleChange('password')}
-                  label="Password"
-                  onBlur={handleBlur('password')}
-                  value={values.password}
-                  secure={true}
-                />
-                {errors.password && touched.password && (
-                  <>
-                    <Text style={styles.errorText}>{errors.password}</Text>
-                    <View style={{marginTop: heightScreen * 0.011}} />
-                  </>
-                )}
               </KeyboardAvoidingView>
+              <View style={styles.termsBox}>
+                <TouchableOpacity
+                  onPress={async () => {
+                    setLoading(true);
+                    const result = await OtpApi({
+                      phone: route?.params?.phone,
+                      email: route?.params?.email,
+                      password: route?.params?.password,
+                      name: route?.params?.name,
+                      image: route?.params?.image,
+                    });
+                    console.log(
+                      '🚀 ~ file: OtpScreen.tsx:118 ~ onPress={ ~ result',
+                      result,
+                    );
 
-              <TouchableOpacity style={styles.forgotButtonBox}>
-                <Text style={styles.infoText}>Forgot your password?</Text>
-              </TouchableOpacity>
+                    setLoading(false);
+                  }}>
+                  <Text style={styles.infoText}>
+                    Didn't Receive OTP?
+                    <Text style={[styles.infoText, styles.greenInfoText]}>
+                      {' '}
+                      Resend OTP
+                    </Text>
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View style={{marginTop: heightScreen * 0.022}} />
+              {/* <View style={{marginTop: heightScreen * 0.011}} /> */}
               <Button
                 onPress={handleSubmit}
                 bgColour="#53B175"
                 txtColour="#FFF"
-                text="Sign in"
+                text="Verify OTP"
                 loading={loading}
               />
             </>
           )}
         </Formik>
-        <View style={styles.footer}>
-          <Text style={styles.infoText}>Don't have an account?</Text>
-          <TouchableOpacity onPress={goToSignUp}>
-            <Text style={[styles.infoText, styles.greenInfoText]}>Sign up</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </SignScaffold>
   );
 };
+
+export default {component: OtpScreen, name: 'OtpScreen'};
 
 const styles = EStyleSheet.create({
   logo: {
@@ -192,6 +220,8 @@ const styles = EStyleSheet.create({
     color: 'red',
     fontFamily: '$gilroyNormal600',
   },
+  alignCenter: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
-
-export default {component: Signin, name: 'Signin'};
