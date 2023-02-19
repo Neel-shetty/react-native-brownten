@@ -14,7 +14,7 @@ import Input from '../components/Input';
 import SignScaffold from '../components/SignScaffold';
 import SignUp from './SignUp';
 import Tabs from './Tabs';
-import {Formik, FormikErrors} from 'formik';
+import {Formik} from 'formik';
 import * as yup from 'yup';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
@@ -25,8 +25,6 @@ interface SignInProps {
 }
 
 const Signin = ({navigation}: SignInProps) => {
-  const [error, setError] =
-    useState<FormikErrors<{email: string; password: string}>>();
   const behavior = Platform.OS === 'ios' ? 'padding' : undefined;
 
   const formScheme = yup.object({
@@ -35,7 +33,10 @@ const Signin = ({navigation}: SignInProps) => {
       .string()
       .email('Email format is invalid')
       .required('Email is required!'),
-    password: yup.string().required('error'),
+    password: yup
+      .string()
+      .required('Password is required')
+      .min(8, 'Password has to be atleast 8 characters'),
   });
 
   const goToSignUp = () => {
@@ -60,8 +61,10 @@ const Signin = ({navigation}: SignInProps) => {
           initialValues={{email: '', password: ''}}
           onSubmit={values => {
             console.log(values);
+            goToHome();
           }}
-          validationSchema={formScheme}>
+          // validationSchema={formScheme}
+        >
           {({
             handleChange,
             handleBlur,
@@ -71,9 +74,10 @@ const Signin = ({navigation}: SignInProps) => {
             touched,
           }) => (
             <>
-              {/* {useEffect(() => {
-                setError(errors);
-              }, [errors])} */}
+              {console.log(
+                '🚀 ~ file: SignIn.tsx:75 ~ Signin ~ errors',
+                errors,
+              )}
               <KeyboardAvoidingView behavior={behavior}>
                 <Input
                   label="Email"
@@ -81,7 +85,12 @@ const Signin = ({navigation}: SignInProps) => {
                   onBlur={handleBlur('email')}
                   value={values.email}
                 />
-                {<Text>{errors.email}</Text>}
+                {errors.email && touched.email && (
+                  <>
+                    <Text style={styles.errorText}>{errors.email}</Text>
+                    <View style={{marginTop: heightScreen * 0.011}} />
+                  </>
+                )}
                 <View style={{marginTop: heightScreen * 0.011}} />
                 <Input
                   onChangeText={handleChange('password')}
@@ -90,6 +99,12 @@ const Signin = ({navigation}: SignInProps) => {
                   value={values.password}
                   secure={true}
                 />
+                {errors.password && touched.password && (
+                  <>
+                    <Text style={styles.errorText}>{errors.password}</Text>
+                    <View style={{marginTop: heightScreen * 0.011}} />
+                  </>
+                )}
               </KeyboardAvoidingView>
 
               <TouchableOpacity style={styles.forgotButtonBox}>
@@ -160,6 +175,10 @@ const styles = EStyleSheet.create({
   greenInfoText: {
     color: '$greenColour',
     marginLeft: 5.0,
+  },
+  errorText: {
+    color: 'red',
+    fontFamily: '$gilroyNormal600',
   },
 });
 

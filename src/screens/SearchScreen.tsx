@@ -5,7 +5,6 @@ import ProductList from '../components/SearchComponents/ProductList';
 const SearchScreen = () => {
   return (
     <View style={styles.root}>
-      <Text>SearchScreen</Text>
       <ProductList />
     </View>
   );
@@ -18,5 +17,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: 'white',
   },
 });

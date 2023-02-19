@@ -7,6 +7,7 @@ import Cart from './tabs/Cart';
 import Explore from './tabs/Explore/Explore';
 import Favourite from './tabs/Favourite';
 import {tabIcons} from '../helpers/Icons';
+import SearchScreen from './SearchScreen';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 
@@ -27,10 +28,13 @@ const Tabs = () => {
               return <tabIcons.ExploreSearchIcon color={color} />;
             case Favourite.name:
               return <tabIcons.HeartIcon color={color} />;
+            case SearchScreen.name:
+              return ;
             default:
               return <tabIcons.ShopIcon color={color} />;
           }
         },
+        tabBarLabel: route.name === SearchScreen.name ? null : route.name,
         tabBarActiveTintColor: '#53B175',
         tabBarInactiveTintColor: '#181725',
         tabBarLabelStyle: {
@@ -49,6 +53,7 @@ const Tabs = () => {
       <Screen name={Home.name} component={Home.component} />
       <Screen name={Explore.name} component={Explore.component} />
       <Screen name={Cart.name} component={Cart.component} />
+      <Screen name={SearchScreen.name} component={SearchScreen.component} />
       {/* <Screen name={Favourite.name} component={Favourite.component} /> */}
       <Screen name={Account.name} component={Account.component} />
     </Navigator>

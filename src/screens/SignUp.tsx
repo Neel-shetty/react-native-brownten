@@ -61,6 +61,7 @@ const SignUp = ({navigation}: SignUpProps) => {
           onSubmit={values => {
             console.log('onsubmit');
             console.log(values);
+            goToHome();
           }}
           validationSchema={formScheme}>
           {({
@@ -98,7 +99,10 @@ const SignUp = ({navigation}: SignUpProps) => {
                   value={values.email}
                 />
                 {errors.email && touched.email && (
-                  <Text style={styles.errorText}>{errors.email}</Text>
+                  <>
+                    <Text style={styles.errorText}>{errors.email}</Text>
+                    <View style={{marginTop: heightScreen * 0.011}} />
+                  </>
                 )}
                 <View style={{marginTop: heightScreen * 0.011}} />
                 <Input
@@ -108,7 +112,10 @@ const SignUp = ({navigation}: SignUpProps) => {
                   value={values.password}
                 />
                 {errors.password && touched.password && (
-                  <Text style={styles.errorText}>{errors.password}</Text>
+                  <>
+                    <Text style={styles.errorText}>{errors.password}</Text>
+                    <View style={{marginTop: heightScreen * 0.011}} />
+                  </>
                 )}
               </KeyboardAvoidingView>
 

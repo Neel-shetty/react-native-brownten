@@ -2,6 +2,8 @@ import React from 'react';
 import {TouchableOpacity, View, Text, Dimensions} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {AccountIcons} from '../helpers/Icons';
+import {useNavigation} from '@react-navigation/native';
+import MapScreen from '../screens/MapScreen';
 
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 interface AccountListItemProps {
@@ -10,8 +12,14 @@ interface AccountListItemProps {
 }
 
 const AccountListItem = ({label, children}: AccountListItemProps) => {
+  const navigation = useNavigation();
   return (
-    <TouchableOpacity onPress={() => {}} style={styles.container}>
+    <TouchableOpacity
+      onPress={() => {
+        //@ts-expect-error
+        navigation.navigate(MapScreen.name);
+      }}
+      style={styles.container}>
       <View style={styles.content}>
         {children}
         <Text style={styles.text}>{label}</Text>
