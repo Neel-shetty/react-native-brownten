@@ -21,11 +21,13 @@ const CategoryCard = ({
   return (
     <TouchableOpacity
       onPress={() => onPress()}
-      style={[
-        styles.card,
-        {backgroundColor: bgColour, borderColor: borderColour},
-      ]}>
-      <Image style={styles.image} source={image} />
+      style={[styles.card, {backgroundColor: 'white', borderColor: '#181725'}]}>
+      <Image
+        style={styles.image}
+        source={{
+          uri: image,
+        }}
+      />
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
   );
@@ -43,10 +45,13 @@ const styles = EStyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     borderRadius: 18.0,
-    borderColor: '#000',
+    borderColor: 'red',
     padding: 15.0,
   },
-  image: {},
+  image: {
+    height: heightScreen * 0.1,
+    width: widthScreen * 0.3,
+  },
   text: {
     color: '$blackColour',
     fontFamily: '$gilroyNormal600',

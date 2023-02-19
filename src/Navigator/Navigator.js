@@ -23,12 +23,12 @@ const Stack = createStackNavigator();
 const Navigator = () => {
   const dispatch = useDispatch();
   const loggedIn = useSelector(state => state.user.loggedIn);
-  console.log('🚀 ~ file: Navigator.js:23 ~ Navigator ~ loggedIn', loggedIn);
+  // console.log('🚀 ~ file: Navigator.js:23 ~ Navigator ~ loggedIn', loggedIn);
 
   useLayoutEffect(() => {
     async function checkLogin() {
       const result = await EncryptedStorage.getItem('isLoggedIn');
-      console.log('🚀 ~ file: Navigator.js:28 ~ checkLogin ~ result', result);
+      // console.log('🚀 ~ file: Navigator.js:28 ~ checkLogin ~ result', result);
       if (result === 'true') {
         dispatch(setLoggedIn(true));
       }

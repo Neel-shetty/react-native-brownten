@@ -1,15 +1,23 @@
-import React from 'react';
-import {View, Dimensions} from 'react-native';
+import React, {useEffect} from 'react';
+import {View, Dimensions, ActivityIndicator} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import Header from '../../../components/Header';
 import SearchBar from '../../../components/SearchBar';
 import CategoryCard from '../../../components/ExploreComponents/CategoryCard';
 import ImageTest from '../../../../assets/images/product_categories/bakery.png';
+import {useQuery} from 'react-query';
+import {fetchCategories} from '../../../api/fetchCategories';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
 const ExploreTab = ({navigation}) => {
+  const {
+    isLoading,
+    error,
+    data: categoriesFetched,
+  } = useQuery('categories', fetchCategories);
+
   const ui_array = [
     {id: 0},
     {id: 1},
@@ -28,24 +36,28 @@ const ExploreTab = ({navigation}) => {
         <SearchBar navigation={navigation} navigateTo="" />
       </View>
       <View style={styles.body}>
-        <FlatList
-          data={ui_array}
-          keyExtractor={item => item.id}
-          scrollEnabled={false}
-          numColumns={2}
-          renderItem={({item}) => {
-            return (
-              <CategoryCard
-                key={item.id}
-                bgColour="#F00"
-                borderColour="#0F0"
-                title="Teste"
-                image={ImageTest}
-                onPress={() => null}
-              />
-            );
-          }}
-        />
+        {isLoading ? (
+          <ActivityIndicator size={'large'} color={'green'} />
+        ) : (
+          <FlatList
+            data={categoriesFetched?.data?.data}
+            keyExtractor={item => item.id}
+            scrollEnabled={false}
+            numColumns={2}
+            renderItem={({item}) => {
+              return (
+                <CategoryCard
+                  key={item.id}
+                  bgColour="pink"
+                  borderColour="gray"
+                  title={item.name}
+                  image={item.image}
+                  onPress={() => null}
+                />
+              );
+            }}
+          />
+        )}
       </View>
       <View style={styles.scrollFooter} />
     </ScrollView>
