@@ -16,8 +16,6 @@ import SignScaffold from '../components/SignScaffold';
 import Tabs from './Tabs';
 import {Formik} from 'formik';
 import * as yup from 'yup';
-import {useQuery} from 'react-query';
-import {SignIn} from '../api/SignIn';
 import {OtpApi, verifyOtp} from '../api/OtpApi';
 import {useRoute} from '@react-navigation/native';
 

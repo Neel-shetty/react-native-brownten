@@ -12,7 +12,6 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import SignScaffold from '../components/SignScaffold';
-import Tabs from './Tabs';
 import * as yup from 'yup';
 import {Formik} from 'formik';
 import OtpScreen from './OtpScreen';
@@ -53,11 +52,7 @@ const SignUp = ({navigation}: SignUpProps) => {
     navigation.pop();
   };
 
-  const goToHome = () => {
-    navigation.navigate(Tabs.name);
-  };
-
-  const goToOtp = ({phone, name, email, password}) => {
+  const goToOtp = ({phone, name, email, password}: any) => {
     navigation.navigate(OtpScreen.name, {
       phone: phone,
       name: name,

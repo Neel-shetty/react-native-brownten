@@ -1,6 +1,24 @@
 import {api} from '.';
 
-export async function OtpApi({password, phone, email, name, image}) {
+interface imageProps {
+  fileName: string;
+  fileSize: number;
+  height: number;
+  type: string;
+  uri: string;
+  width: number;
+}
+
+interface otpParams {
+  password: string;
+  phone: string;
+  email: string;
+  name: string;
+  image: imageProps;
+  otp?: string;
+}
+
+export async function OtpApi({password, phone, email, name, image}: otpParams) {
   console.log('sending otp...');
   const formdata = new FormData();
   formdata.append('password', password);
@@ -30,7 +48,14 @@ export async function OtpApi({password, phone, email, name, image}) {
     });
 }
 
-export async function verifyOtp({password, phone, email, name, image, otp}) {
+export async function verifyOtp({
+  password,
+  phone,
+  email,
+  name,
+  image,
+  otp,
+}: otpParams) {
   console.log('verify otp');
   const formdata = new FormData();
   formdata.append('password', password);

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
@@ -13,7 +13,6 @@ import Button from '../components/Button';
 import Input from '../components/Input';
 import SignScaffold from '../components/SignScaffold';
 import SignUp from './SignUp';
-import Tabs from './Tabs';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import {SignIn} from '../api/SignIn';
