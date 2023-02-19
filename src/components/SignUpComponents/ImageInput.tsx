@@ -43,7 +43,7 @@ const ImageInput = ({image, setImage, label}: InputProps) => {
                 ? image.uri
                 : 'https://www.slntechnologies.com/wp-content/uploads/2017/08/ef3-placeholder-image.jpg',
             }}
-            style={{height: 40, width: 40, borderRadius: 30}}
+            style={styles.image}
           />
         </View>
       </TouchableOpacity>
@@ -75,6 +75,11 @@ const styles = EStyleSheet.create({
     // borderBottomWidth: 1.0,
     // borderBottomColor: '$lightGreyColour',
     // marginBottom: heightScreen * 0.022,
+  },
+  image: {
+    height: 40,
+    width: 40,
+    borderRadius: 30,
   },
 });
 
