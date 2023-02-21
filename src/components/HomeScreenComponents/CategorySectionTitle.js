@@ -3,15 +3,14 @@ import {View, Text, TouchableOpacity} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {useNavigation} from '@react-navigation/native';
 
-const SectionTitle = ({title, linkPage, itemData}) => {
+const CategorySectionTitle = ({title, linkPage}) => {
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
-      <TouchableOpacity
-        onPress={() => navigation.navigate(linkPage, {itemData: itemData})}>
+      {/* <TouchableOpacity onPress={() => navigation.navigate(linkPage)}>
         <Text style={styles.link}>See all</Text>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -38,4 +37,4 @@ const styles = EStyleSheet.create({
   },
 });
 
-export default SectionTitle;
+export default CategorySectionTitle;

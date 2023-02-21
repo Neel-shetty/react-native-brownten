@@ -2,20 +2,33 @@ import {FlatList, StyleSheet, View, ActivityIndicator} from 'react-native';
 import React from 'react';
 import FoodCard from './FoodCard';
 import SectionTitle from './SectionTitle';
+import {useQuery} from 'react-query';
+import {fetchCategories} from '../../api/fetchCategories';
+import CategoryCard from '../ExploreComponents/CategoryCard';
+import CategorySectionTitle from './CategorySectionTitle';
 import {FlashList} from '@shopify/flash-list';
 
-const Section = ({goToPage, title, items, loading}) => {
-  if (loading) return <ActivityIndicator />;
+const CategorySection = ({goToPage, title}) => {
+  const {
+    isLoading,
+    error,
+    data: categoriesFetched,
+  } = useQuery('categories', fetchCategories);
+
+  if (isLoading) {
+    return <ActivityIndicator />;
+  }
+
   return (
     <View>
       <View style={styles.localBox}>
-        <SectionTitle title={title} linkPage={goToPage} itemData={items} />
+        <CategorySectionTitle title={title} linkPage={goToPage} />
       </View>
       <View style={styles.list}>
         <FlashList
-          data={items}
+          data={categoriesFetched.data.data}
           renderItem={({item}) => {
-            return <FoodCard image={item.cover_photo} name={item.name} />;
+            return <CategoryCard title={item.name} image={item.image} />;
           }}
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -26,7 +39,7 @@ const Section = ({goToPage, title, items, loading}) => {
   );
 };
 
-export default Section;
+export default CategorySection;
 
 const styles = StyleSheet.create({
   localBox: {

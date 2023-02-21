@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flex: 1,
     backgroundColor: 'white',
+    width: layout.width,
   },
   headerContainer: {
     flex: 1,
@@ -50,6 +51,7 @@ const styles = StyleSheet.create({
     flex: 9,
     alignItems: 'center',
     justifyContent: 'center',
+    width: layout.width,
   },
   buttonContainer: {
     flex: 2,

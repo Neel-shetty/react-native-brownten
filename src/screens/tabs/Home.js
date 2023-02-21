@@ -4,20 +4,35 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Section from '../../components/HomeScreenComponents/Section';
 import Banner from '../../components/HomeScreenComponents/Banner';
 import SearchBarHeader from '../../components/HomeScreenComponents/SearchBarHeader';
+import CategorySection from '../../components/HomeScreenComponents/CategorySection';
+import {useQuery} from 'react-query';
+import {api} from '../../api';
 // import Header from '../../components/HomeScreenComponents/Header';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
 
 const Home = ({navigation}) => {
+  const {
+    error: allProductsError,
+    isLoading: allProductsisLoading,
+    data: allProducts,
+  } = useQuery('AllProducts', () => {
+    return api.post('all/products');
+  });
   return (
     <ScrollView style={styles.container}>
       {/* <Header /> */}
       <SearchBarHeader />
       <Banner />
-      <Section title={'Test section'} />
-      <Section title={'Test section'} />
-      <Section title={'Test section'} />
-      <Section title={'Test section'} />
+      <CategorySection title={'Categories'} />
+      <Section
+        title={'All Products'}
+        items={allProducts?.data?.data ? allProducts.data.data : []}
+        loading={allProductsisLoading}
+        goToPage={'SearchScreen'}
+      />
+      {/* <Section title={'Test section'} />
+      <Section title={'Test section'} /> */}
       <View style={styles.scrollFooter} />
     </ScrollView>
   );

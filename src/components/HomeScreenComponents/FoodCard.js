@@ -7,16 +7,23 @@ import {useNavigation} from '@react-navigation/native';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
-const FoodCard = () => {
+const FoodCard = ({name, image}) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('ProductScreen')}
       style={styles.card}>
       <View style={styles.imageBox}>
-        <Image source={DefaultImage} />
+        <Image
+          source={{
+            uri: image,
+          }}
+          style={styles.image}
+        />
       </View>
-      <Text style={styles.title}>Red Apple</Text>
+      <Text style={styles.title} numberOfLines={1}>
+        {name}
+      </Text>
       <Text style={styles.subtitle}>1kg, Price</Text>
       <View style={styles.footer}>
         <Text style={styles.price}>$4.99</Text>
@@ -70,6 +77,11 @@ const styles = EStyleSheet.create({
     backgroundColor: '$greenColour',
     borderRadius: 15.0,
     padding: 12.0,
+  },
+  image: {
+    height: heightScreen * 0.1,
+    width: widthScreen * 0.3,
+    borderRadius: 10,
   },
 });
 

@@ -4,24 +4,16 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 interface CategoryCardProps {
-  bgColour: String;
-  borderColour: String;
   image: any;
   title: String;
   onPress: Function;
 }
 
-const CategoryCard = ({
-  bgColour,
-  borderColour,
-  image,
-  title,
-  onPress,
-}: CategoryCardProps) => {
+const CategoryCard = ({image, title, onPress}: CategoryCardProps) => {
   return (
     <TouchableOpacity
       onPress={() => onPress()}
-      style={[styles.card, {backgroundColor: 'white', borderColor: '#181725'}]}>
+      style={[styles.card, {backgroundColor: 'white', borderColor: '#E2E2E2'}]}>
       <Image
         style={styles.image}
         source={{
@@ -51,6 +43,7 @@ const styles = EStyleSheet.create({
   image: {
     height: heightScreen * 0.1,
     width: widthScreen * 0.3,
+    borderRadius: 10,
   },
   text: {
     color: '$blackColour',

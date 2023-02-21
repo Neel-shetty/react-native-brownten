@@ -1,7 +1,6 @@
 import {StyleSheet, View, TextInput, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {layout} from '../../constants/Layout';
-import EStyleSheet from 'react-native-extended-stylesheet';
 //@ts-expect-error
 import SearchIcon from '../../../assets/icons/commons/search.svg';
 
@@ -38,6 +37,7 @@ const SearchInput = ({
         value={value}
         placeholder={placeholder}
         style={styles.input}
+        autoFocus
       />
       <View style={{marginHorizontal: 5}} />
       <TouchableOpacity onPress={handleSubmit}>
@@ -64,25 +64,5 @@ const styles = StyleSheet.create({
     width: layout.width * 0.8 - 20,
     fontFamily: 'Poppins-SemiBold',
     // backgroundColor: 'pink',
-  },
-});
-
-const eStyles = EStyleSheet.create({
-  searchBar: {
-    width: '100%',
-    paddingVertical: 16.0,
-    paddingHorizontal: 15.0,
-    borderRadius: 15.0,
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    backgroundColor: '#F2F3F2',
-  },
-  searchBarText: {
-    marginLeft: 7.0,
-    fontFamily: '$gilroyNormal600',
-    fontSize: '0.875rem',
-    color: '$darkGreyColour',
   },
 });
