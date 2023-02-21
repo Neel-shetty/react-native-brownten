@@ -43,6 +43,7 @@ const OtpScreen = ({navigation}: otpProps) => {
 
   useEffect(() => {
     const sendOtpToUser = async () => {
+      //@ts-ignore
       const result = await OtpApi({
         phone: route?.params?.phone,
         email: route?.params?.email,
