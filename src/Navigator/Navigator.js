@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useEffect, useLayoutEffect} from 'react';
+import React, {useLayoutEffect} from 'react';
 import {StatusBar} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import theme from '../theme';
@@ -17,6 +17,7 @@ import OtpScreen from '../screens/OtpScreen';
 import {useSelector, useDispatch} from 'react-redux';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {setLoggedIn} from '../store/user';
+import CategoryScreen from '../screens/CategoryScreen';
 
 const Stack = createStackNavigator();
 
@@ -76,6 +77,10 @@ const Navigator = () => {
               <Stack.Screen
                 name={OtpScreen.name}
                 component={OtpScreen.component}
+              />
+              <Stack.Screen
+                name={CategoryScreen.name}
+                component={CategoryScreen.component}
               />
             </>
           )}

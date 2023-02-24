@@ -4,7 +4,6 @@ import ProductHeader from '../components/ProductComponents/ProductHeader';
 import Details from '../components/ProductComponents/Details';
 import {useRoute} from '@react-navigation/native';
 import {fetchProductDetails} from '../api/fetchProductDetails';
-import {HTMLSource} from 'react-native-render-html';
 
 export interface ProductProps {
   id: number;

@@ -41,10 +41,6 @@ const Home = () => {
   const bottomSheetOpen = useSelector(
     (state: any) => state.uiTrigger.bottomSheetShown,
   );
-  console.log(
-    '🚀 ~ file: Home.tsx:41 ~ Home ~ bottomSheetOpen:',
-    bottomSheetOpen,
-  );
 
   const dispatch = useDispatch();
 
@@ -94,6 +90,25 @@ const Home = () => {
       {/* <Section title={'Test section'} />
       <Section title={'Test section'} /> */}
       <View style={styles.scrollFooter} />
+      <BottomVariantMenu
+        bottomSheetOpen={bottomSheetOpen}
+        bottomSheetRef={bottomSheetRef}
+        snapPoints={snapPoints}
+        handleSheetChanges={handleSheetChanges}
+      />
+    </ScrollView>
+  );
+};
+
+const BottomVariantMenu = ({
+  bottomSheetOpen,
+  bottomSheetRef,
+  snapPoints,
+  handleSheetChanges,
+}: any) => {
+  console.log('🚀 ~ file: Home.tsx:113 ~ bottomSheetOpen:', bottomSheetOpen);
+  return (
+    <View>
       {bottomSheetOpen.shown ? (
         <BottomSheet
           ref={bottomSheetRef}
@@ -108,6 +123,7 @@ const Home = () => {
                     {item.price}
                     {item.weight}🎉
                     {item.qty}
+                    {item.selling_price}
                   </Text>
                 );
               },
@@ -115,7 +131,7 @@ const Home = () => {
           </View>
         </BottomSheet>
       ) : null}
-    </ScrollView>
+    </View>
   );
 };
 

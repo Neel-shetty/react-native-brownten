@@ -35,12 +35,15 @@ const FoodCard = ({item}: {item: ProductPreviewType}) => {
         {item.name}
       </Text>
       <TouchableOpacity
+        disabled={item.variants.length > 1 ? false : true}
         onPress={() => {
+          // if (item.variants.length > 1) {
           dispatch(setBottomSheetShown({shown: true, variants: item.variants}));
+          // }
         }}>
         <View style={styles.menuContainer}>
           <Text style={styles.subtitle}>{item.variants[0].weight} g</Text>
-          {item.variants.length > 0 ? (
+          {item.variants.length > 1 ? (
             <Icon name="chevron-down" size={24} />
           ) : null}
         </View>
