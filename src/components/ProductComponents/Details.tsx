@@ -6,14 +6,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {colors} from '../../constants/colors';
 import RenderHtml, {defaultSystemFonts} from 'react-native-render-html';
+import {ProductProps} from '../../screens/ProductScreen';
 
-const source = {
-  html: `
-<p><strong>Overview</strong><br />\r\nDove Care &amp; Protect Beauty Bar removes 99% germs and moisturizes skin with its gentle plant based cleansers. Removing germs can be tough on your skin, but Dove Care &amp; Protect is different from ordinary soaps. With plant-based cleansers and Dove&rsquo;s &frac14; moisturising cream, Dove Care &amp; Protect beauty bar effectively washes away germs while also protecting skin from dryness. Dove Care &amp; Protect beauty bar helps to replenish moisture that is lost during the cleansing process &ndash; where a regular soap bar might leave your skin feeling dry and tight, Dove Care &amp; Protect effectively washes away germs and the classic moisturizing, pH-balanced formula of Dove bars will leave skin softer, smoother and more glowing. It remove germs &amp; moisturise your skin with the 100% caring formula of Dove Care &amp; Protect beauty bar. Dove Care &amp; Protect gives you a gentle yet&nbsp;effective cleanse&nbsp;as it is mild on the skin. It is suitable for sensitive skin too. For best results, lather up your Dove Care &amp; Protect Beauty bathing bar and massage the smooth, creamy lather over your face and body before rinsing thoroughly. Regular soap may dry out your skin, but the moisturizing formula of Dove bars will leave skin softer, smoother and more glowing. So washing away germs doesn&#39;t mean you need to compromise on your skin&#39;s nourishment.</p>\r\n\r\n<p><strong>Key Features</strong><br />\r\n- Perfect Dual Cleanse :&nbsp;&nbsp;Dove Care &amp; Protect washes away germs while not&nbsp;compromising&nbsp;on the nourishment of your skin, making it an ideal cleanser.<br />\r\n- 100% Caring Formula : With plant-based cleansers, Dove Care &amp; Protect gently removes 99% germs&nbsp;and moisturises skin for hours.<br />\r\n- Soft, Glowing Skin : With 1/4 moisturising cream, Dove Care &amp; Protect effectively protects your skin from dryness.<br />\r\n- ph Balanced : Dove Care &amp; Protect gives you a gentle yet&nbsp;effective cleanse&nbsp;as it is mild on the skin but tough on the germs and will not strip the skin its moisture.<br />\r\n- Dove Care &amp; Protect beauty bar helps to replenish moisture that is lost during the cleansing process<br />\r\n- For All Skin Types, Including Sensitive Skin : Frequent washing with ordinary soap may be harsh for sensitive skin. Dove is different.</p>\r\n\r\n<p><strong>Ingredients</strong><br />\r\nSodium Cocoyl Isethionate, Stearic Acid, Sodium Palmate, Sodium Stearate, Water, Sodium Isethionate, Lauric Acid, Sodium C14-16 Olefin Sulfonate, Sodium Palm Kernelate, Perfume, Sodium Chloride, Dipropylene Glycol, Glycerin, Zinc Oxide, Titanium Dioxide, Tetrasodium EDTA, Tetrasodium Etidronate, Propylene Glycol, Camellia Sinensis Leaf Powder, Xanthan Gum, Lactic Acid, Sodium Benzoate, Potassium Sorbate, Alpha-lsomethyl lonone, Benzyl Alcohol, Cinnamyl Alcohol, Citral, Citronellol, Coumarin, Geraniol, Hexyl Cinnamal, Limonene, Linalool, CI 42090, CI 19140.</p>\r\n\r\n<p><strong>How to Use</strong><br />\r\n- Take Dove bar onto your wet hands and rub hands to lather up. Work into a rich, creamy lather and then gently massage the smooth, creamy lather over your face and body before rinsing thoroughly</p>\r\n\r\n<p><strong>Care Instructions</strong><br />\r\n- Store in a cool &amp; dry place<br />\r\n- Use before 24 months from manufacturing date. Keep out of reach of children unless under adult supervision. Avoid contact with eyes.</p>
-`,
-};
+interface Details {
+  product: ProductProps;
+}
 
-const Details = () => {
+const Details = ({product}: Details) => {
   return (
     <ScrollView
       contentContainerStyle={styles.root}
@@ -21,10 +20,12 @@ const Details = () => {
       <View style={styles.topContainer}>
         <View style={styles.titleContainer}>
           <View style={styles.titleSubContainer}>
-            <Text style={styles.title}>Red apple</Text>
+            <View style={styles.flex}>
+              <Text style={styles.title}>{product.name}</Text>
+            </View>
             <AntDesign name="hearto" size={24} color={'#7C7C7C'} />
           </View>
-          <Text style={styles.info}>1kg, Price</Text>
+          <Text style={styles.info}>1kg</Text>
         </View>
         <View style={styles.secondContainer}>
           <View style={styles.buttonContainer}>
@@ -48,18 +49,19 @@ const Details = () => {
         </View>
       </View>
       <View style={styles.flex}>
-        <Info />
+        <Info product={product} />
       </View>
     </ScrollView>
   );
 };
 
-const Info = () => {
+const Info = ({product}: Details) => {
   const systemFonts = [
     ...defaultSystemFonts,
     'Poppins-SemiBold',
     'Poppins-Regular',
   ];
+  const source = {html: product.description};
   return (
     <View style={{width: layout.widthp}}>
       <RenderHtml
@@ -98,7 +100,7 @@ const styles = StyleSheet.create({
     // flex: 1,
   },
   flex: {
-    // flex: 2,
+    flex: 1,
   },
   titleContainer: {
     height: 100,

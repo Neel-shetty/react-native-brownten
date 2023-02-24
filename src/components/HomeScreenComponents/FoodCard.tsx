@@ -1,32 +1,52 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import DefaultImage from '../../../assets/images/products/fruits/apple.png';
+//@ts-ignore
 import PlusIcon from '../../../assets/icons/commons/plus.svg';
 import {useNavigation} from '@react-navigation/native';
+import {ProductPreviewType} from '../../screens/tabs/Home';
+import Icon from 'react-native-vector-icons/EvilIcons';
+import {useDispatch} from 'react-redux';
+import {setBottomSheetShown} from '../../store/uiTrigger';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
-const FoodCard = ({name, image}) => {
+const FoodCard = ({item}: {item: ProductPreviewType}) => {
+  // console.log('🚀 ~ file: FoodCard.js:11 ~ FoodCard ~ slug:', slug);
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('ProductScreen')}
+      onPress={() => {
+        //@ts-ignore
+        navigation.navigate('ProductScreen', {slug: item.slug});
+      }}
       style={styles.card}>
       <View style={styles.imageBox}>
         <Image
           source={{
-            uri: image,
+            uri: item.images[0],
           }}
           style={styles.image}
         />
       </View>
       <Text style={styles.title} numberOfLines={1}>
-        {name}
+        {item.name}
       </Text>
-      <Text style={styles.subtitle}>1kg, Price</Text>
+      <TouchableOpacity
+        onPress={() => {
+          dispatch(setBottomSheetShown({shown: true, variants: item.variants}));
+        }}>
+        <View style={styles.menuContainer}>
+          <Text style={styles.subtitle}>{item.variants[0].weight} g</Text>
+          {item.variants.length > 0 ? (
+            <Icon name="chevron-down" size={24} />
+          ) : null}
+        </View>
+      </TouchableOpacity>
       <View style={styles.footer}>
-        <Text style={styles.price}>$4.99</Text>
+        <Text style={styles.price}>₹{item.variants[0].price}</Text>
         <TouchableOpacity onPress={() => null} style={styles.button}>
           <PlusIcon />
         </TouchableOpacity>
@@ -82,6 +102,15 @@ const styles = EStyleSheet.create({
     height: heightScreen * 0.1,
     width: widthScreen * 0.3,
     borderRadius: 10,
+  },
+  menuContainer: {
+    borderWidth: 1,
+    borderRadius: 5,
+    borderColor: '$lightGreyColour',
+    padding: 5,
+    marginTop: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 });
 

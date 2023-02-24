@@ -8,7 +8,7 @@ import CategoryCard from '../ExploreComponents/CategoryCard';
 import CategorySectionTitle from './CategorySectionTitle';
 import {FlashList} from '@shopify/flash-list';
 
-const CategorySection = ({goToPage, title}) => {
+const CategorySection = ({title}) => {
   const {
     isLoading,
     error,
@@ -22,7 +22,7 @@ const CategorySection = ({goToPage, title}) => {
   return (
     <View>
       <View style={styles.localBox}>
-        <CategorySectionTitle title={title} linkPage={goToPage} />
+        <CategorySectionTitle title={title} />
       </View>
       <View style={styles.list}>
         <FlashList

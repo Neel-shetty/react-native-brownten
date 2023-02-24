@@ -1,10 +1,18 @@
-import {FlatList, StyleSheet, View, ActivityIndicator} from 'react-native';
+import {StyleSheet, View, ActivityIndicator} from 'react-native';
 import React from 'react';
 import FoodCard from './FoodCard';
 import SectionTitle from './SectionTitle';
 import {FlashList} from '@shopify/flash-list';
+import {ProductPreviewType} from '../../screens/tabs/Home';
 
-const Section = ({goToPage, title, items, loading}) => {
+interface SectionProps {
+  items: ProductPreviewType[];
+  loading: boolean;
+  goToPage: string;
+  title: string;
+}
+
+const Section = ({goToPage, title, items, loading}: SectionProps) => {
   if (loading) return <ActivityIndicator />;
   return (
     <View>
@@ -14,8 +22,8 @@ const Section = ({goToPage, title, items, loading}) => {
       <View style={styles.list}>
         <FlashList
           data={items}
-          renderItem={({item}) => {
-            return <FoodCard image={item.cover_photo} name={item.name} />;
+          renderItem={({item}: {item: ProductPreviewType}) => {
+            return <FoodCard item={item} />;
           }}
           horizontal
           showsHorizontalScrollIndicator={false}

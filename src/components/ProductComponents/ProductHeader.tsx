@@ -8,7 +8,11 @@ import {useNavigation} from '@react-navigation/native';
 
 const apple = require('../../../assets/images/products/fruits/applebig.png');
 
-const ProductHeader = () => {
+interface ProductHeadeProps {
+  product: {} | undefined;
+}
+
+const ProductHeader = ({product}: ProductHeadeProps) => {
   const navigation = useNavigation();
   return (
     <View style={styles.root}>
