@@ -4,6 +4,7 @@ import ProductHeader from '../components/ProductComponents/ProductHeader';
 import Details from '../components/ProductComponents/Details';
 import {useRoute} from '@react-navigation/native';
 import {fetchProductDetails} from '../api/fetchProductDetails';
+import {variantType} from './tabs/Home';
 
 export interface ProductProps {
   id: number;
@@ -11,11 +12,6 @@ export interface ProductProps {
   name: string;
   slug: string;
   brand: string;
-  cover_photo: string;
-  image1: string;
-  image2: string;
-  image3: string;
-  image4: string;
   state: string;
   city: string;
   pincode: string;
@@ -29,6 +25,8 @@ export interface ProductProps {
   updated_at: string;
   is_trending: number;
   is_featured: number;
+  images: string[];
+  variants: variantType[];
 }
 
 const ProductScreen = () => {

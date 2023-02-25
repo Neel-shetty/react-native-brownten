@@ -5,15 +5,21 @@ import {layout} from '../../constants/Layout';
 import {ImageSlider} from 'react-native-image-slider-banner';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useNavigation} from '@react-navigation/native';
-
-const apple = require('../../../assets/images/products/fruits/applebig.png');
+import {ProductProps} from '../../screens/ProductScreen';
 
 interface ProductHeadeProps {
-  product: {} | undefined;
+  product: ProductProps;
 }
 
 const ProductHeader = ({product}: ProductHeadeProps) => {
   const navigation = useNavigation();
+  function createImagesArray() {
+    const images = [];
+    for (let i = 0; i < product.images.length; i++) {
+      images.push({img: product.images[i]});
+    }
+    return images;
+  }
   return (
     <View style={styles.root}>
       <View style={styles.backContainer}>
@@ -26,22 +32,9 @@ const ProductHeader = ({product}: ProductHeadeProps) => {
       </View>
       <View style={styles.imageContainer}>
         <ImageSlider
-          //@ts-ignore
-          data={[
-            // {
-            //   img: 'https://i.imgur.com/lJSWF1N.png',
-            // },
-            {
-              img: apple,
-            },
-            // {
-            //   img: 'https://i.imgur.com/R7YmRyV.png',
-            // },
-          ]}
-          // autoPlay={true}
+          // @ts-ignore
+          data={createImagesArray()}
           closeIconColor="#181725"
-          localImg
-          // caroselImageStyle={{resizeMode: 'center'}}
         />
       </View>
     </View>

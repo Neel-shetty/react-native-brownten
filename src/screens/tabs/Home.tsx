@@ -14,7 +14,7 @@ import {setBottomSheetShown} from '../../store/uiTrigger';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
 
-interface variantType {
+export interface variantType {
   price: string;
   selling_price: string;
   weight: string;

@@ -25,7 +25,7 @@ const Details = ({product}: Details) => {
             </View>
             <AntDesign name="hearto" size={24} color={'#7C7C7C'} />
           </View>
-          <Text style={styles.info}>1kg</Text>
+          <Text style={styles.info}>{product.variants[0].selling_price}g</Text>
         </View>
         <View style={styles.secondContainer}>
           <View style={styles.buttonContainer}>
@@ -61,26 +61,74 @@ const Info = ({product}: Details) => {
     'Poppins-SemiBold',
     'Poppins-Regular',
   ];
-  const source = {html: product.description};
+  const descriptionSource = {html: product.description};
+  const disclaimerSource = {html: product.disclaimer};
+  const manufacturerSource = {html: product.manufacturer_info};
   return (
     <View style={{width: layout.widthp}}>
-      <RenderHtml
-        contentWidth={layout.widthp}
-        source={source}
-        tagsStyles={{
-          strong: {
-            fontFamily: 'Poppins-SemiBold',
-            fontSize: 20,
-            color: 'black',
-          },
-          p: {
-            fontFamily: 'Poppins-Medium',
-            color: '#7C7C7C',
-            fontSize: 15,
-          },
-        }}
-        systemFonts={systemFonts}
-      />
+      {descriptionSource.html ? (
+        <RenderHtml
+          contentWidth={layout.widthp}
+          source={descriptionSource}
+          tagsStyles={{
+            strong: {
+              fontFamily: 'Poppins-SemiBold',
+              fontSize: 20,
+              color: 'black',
+            },
+            p: {
+              fontFamily: 'Poppins-Medium',
+              color: '#7C7C7C',
+              fontSize: 15,
+            },
+          }}
+          systemFonts={systemFonts}
+        />
+      ) : null}
+      {disclaimerSource.html ? (
+        <>
+          <Text style={styles.detailTitle}>Disclaimer</Text>
+          <RenderHtml
+            contentWidth={layout.widthp}
+            source={disclaimerSource}
+            tagsStyles={{
+              strong: {
+                fontFamily: 'Poppins-SemiBold',
+                fontSize: 20,
+                color: 'black',
+              },
+              p: {
+                fontFamily: 'Poppins-Medium',
+                color: '#7C7C7C',
+                fontSize: 15,
+              },
+            }}
+            systemFonts={systemFonts}
+          />
+        </>
+      ) : null}
+      {manufacturerSource.html ? (
+        <>
+          {/* <Text style={styles.detailTitle}>Manufacturer Details</Text> */}
+          <RenderHtml
+            contentWidth={layout.widthp}
+            source={manufacturerSource}
+            tagsStyles={{
+              strong: {
+                fontFamily: 'Poppins-SemiBold',
+                fontSize: 20,
+                color: 'black',
+              },
+              p: {
+                fontFamily: 'Poppins-Medium',
+                color: '#7C7C7C',
+                fontSize: 15,
+              },
+            }}
+            systemFonts={systemFonts}
+          />
+        </>
+      ) : null}
     </View>
   );
 };
@@ -164,7 +212,7 @@ const styles = StyleSheet.create({
   },
   detailTitle: {
     fontFamily: 'Poppins-SemiBold',
-    fontSize: 16,
+    fontSize: 20,
     color: 'black',
   },
   detail: {
