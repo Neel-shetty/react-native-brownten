@@ -7,15 +7,15 @@ import SearchBar from '../components/SearchBar';
 import CategoryCard from '../components/ExploreComponents/CategoryCard';
 import {useQuery} from 'react-query';
 import {fetchSubCategories} from '../api/fetchSubCategories';
+import SearchScreen from './SearchScreen';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
 const SubCategoryScreen = ({navigation}: any) => {
-  const {
-    isLoading,
-    error,
-    data: categoriesFetched,
-  } = useQuery('SubCategories', fetchSubCategories);
+  const {isLoading, data: categoriesFetched} = useQuery(
+    'SubCategories',
+    fetchSubCategories as any,
+  );
 
   return (
     <ScrollView style={styles.container}>
@@ -29,6 +29,7 @@ const SubCategoryScreen = ({navigation}: any) => {
           <ActivityIndicator size={'large'} color={'green'} />
         ) : (
           <FlatList
+            //@ts-ignore
             data={categoriesFetched?.data?.data}
             keyExtractor={item => item.id}
             scrollEnabled={false}
@@ -39,7 +40,10 @@ const SubCategoryScreen = ({navigation}: any) => {
                   key={item.id}
                   title={item.name}
                   image={item.image}
-                  onPress={() => null}
+                  onPress={() => {
+                    
+                    navigation.navigate(SearchScreen.name);
+                  }}
                 />
               );
             }}

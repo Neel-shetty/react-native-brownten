@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View, Dimensions, ActivityIndicator} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
@@ -11,7 +11,7 @@ import SubCategoryScreen from '../SubCategoryScreen';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
-const ExploreTab = ({navigation}) => {
+const ExploreTab = ({navigation}: any) => {
   const {
     isLoading,
     error,
