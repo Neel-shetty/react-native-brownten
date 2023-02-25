@@ -1,12 +1,19 @@
 import React from 'react';
 import {Text, TouchableOpacity} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
+//@ts-ignore
 import SearchIcon from '../../assets/icons/commons/search.svg';
 import {useNavigation} from '@react-navigation/native';
 
-const SearchBar = ({placeholder, navigateTo}) => {
+interface SearchBarType {
+  placeholder: string;
+  navigateTo: string;
+}
+
+const SearchBar = ({placeholder, navigateTo}: SearchBarType) => {
   const navigation = useNavigation();
   const goToSearchPage = () => {
+    //@ts-ignore
     navigation.navigate(navigateTo);
   };
 

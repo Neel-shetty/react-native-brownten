@@ -8,10 +8,11 @@ import {ProductPreviewType} from '../../screens/tabs/Home';
 import Icon from 'react-native-vector-icons/EvilIcons';
 import {useDispatch} from 'react-redux';
 import {setBottomSheetShown} from '../../store/uiTrigger';
+import {ProductProps} from '../../screens/ProductScreen';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
-const FoodCard = ({item}: {item: ProductPreviewType}) => {
+const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
   // console.log('🚀 ~ file: FoodCard.js:11 ~ FoodCard ~ slug:', slug);
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -35,21 +36,25 @@ const FoodCard = ({item}: {item: ProductPreviewType}) => {
         {item.name}
       </Text>
       <TouchableOpacity
-        disabled={item.variants.length > 1 ? false : true}
+        disabled={item.variants?.length > 1 ? false : true}
         onPress={() => {
           // if (item.variants.length > 1) {
           dispatch(setBottomSheetShown({shown: true, variants: item.variants}));
           // }
         }}>
         <View style={styles.menuContainer}>
-          <Text style={styles.subtitle}>{item.variants[0].weight} g</Text>
-          {item.variants.length > 1 ? (
+          <Text style={styles.subtitle}>
+            {item.variants ? item.variants[0]?.weight : null} g
+          </Text>
+          {item.variants?.length > 1 ? (
             <Icon name="chevron-down" size={24} />
           ) : null}
         </View>
       </TouchableOpacity>
       <View style={styles.footer}>
-        <Text style={styles.price}>₹{item.variants[0].price}</Text>
+        <Text style={styles.price}>
+          ₹{item.variants ? item.variants[0].price : null}
+        </Text>
         <TouchableOpacity onPress={() => null} style={styles.button}>
           <PlusIcon />
         </TouchableOpacity>
@@ -68,6 +73,7 @@ const styles = EStyleSheet.create({
     padding: 15.0,
     flexDirection: 'column',
     marginRight: 15.0,
+    marginBottom: 10,
   },
   imageBox: {
     height: heightScreen * 0.11,

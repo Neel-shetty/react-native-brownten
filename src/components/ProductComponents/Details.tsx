@@ -44,7 +44,9 @@ const Details = ({product}: Details) => {
             </TouchableOpacity>
           </View>
           <View style={styles.priceContainer}>
-            <Text style={styles.price}>$4.99</Text>
+            <Text style={styles.price}>
+              ₹{product.variants[0].selling_price}
+            </Text>
           </View>
         </View>
       </View>

@@ -18,6 +18,7 @@ import {useSelector, useDispatch} from 'react-redux';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {setLoggedIn} from '../store/user';
 import CategoryScreen from '../screens/CategoryScreen';
+import SubCategoryScreen from '../screens/SubCategoryScreen';
 
 const Stack = createStackNavigator();
 
@@ -81,6 +82,10 @@ const Navigator = () => {
               <Stack.Screen
                 name={CategoryScreen.name}
                 component={CategoryScreen.component}
+              />
+              <Stack.Screen
+                name={SubCategoryScreen.name}
+                component={SubCategoryScreen.component}
               />
             </>
           )}

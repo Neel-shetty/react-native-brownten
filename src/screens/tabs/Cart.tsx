@@ -1,16 +1,17 @@
 import React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, StyleSheet, Text} from 'react-native';
 import Header from '../../components/Header';
 import CartList from '../../components/CartComponents/CartList';
 import Button from '../../components/Button';
 import {colors} from '../../constants/colors';
 import {layout} from '../../constants/Layout';
+import EStyleSheet from 'react-native-extended-stylesheet';
 
 const CartTab = () => {
   return (
     <View style={styles.root}>
       <View style={styles.headerContainer}>
-        <Header title={'My Cart'} />
+        <Text style={eStyles.text}>My cart</Text>
       </View>
       <View style={styles.listContainer}>
         <CartList />
@@ -61,5 +62,14 @@ const styles = StyleSheet.create({
     maxHeight: 70,
     marginBottom: 10,
     backgroundColor: 'transparent',
+  },
+});
+
+const eStyles = EStyleSheet.create({
+  text: {
+    alignSelf: 'center',
+    color: 'black',
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: '1.125rem',
   },
 });

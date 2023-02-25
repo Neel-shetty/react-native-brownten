@@ -3,7 +3,7 @@ import React from 'react';
 import FoodCard from './FoodCard';
 import SectionTitle from './SectionTitle';
 import {useQuery} from 'react-query';
-import {fetchCategories} from '../../api/fetchCategories';
+import {fetchHomeSubCategories} from '../../api/fetchHomeSubCategories';
 import CategoryCard from '../ExploreComponents/CategoryCard';
 import CategorySectionTitle from './CategorySectionTitle';
 import {FlashList} from '@shopify/flash-list';
@@ -13,7 +13,7 @@ const CategorySection = ({title}) => {
     isLoading,
     error,
     data: categoriesFetched,
-  } = useQuery('categories', fetchCategories);
+  } = useQuery('homeSubCategories', fetchHomeSubCategories);
 
   if (isLoading) {
     return <ActivityIndicator />;

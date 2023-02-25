@@ -1,39 +1,28 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {View, Dimensions, ActivityIndicator} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
-import Header from '../../../components/Header';
-import SearchBar from '../../../components/SearchBar';
-import CategoryCard from '../../../components/ExploreComponents/CategoryCard';
-import ImageTest from '../../../../assets/images/product_categories/bakery.png';
+import Header from '../components/Header';
+import SearchBar from '../components/SearchBar';
+import CategoryCard from '../components/ExploreComponents/CategoryCard';
 import {useQuery} from 'react-query';
-import {fetchCategories} from '../../../api/fetchCategories';
+import {fetchSubCategories} from '../api/fetchSubCategories';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
-const ExploreTab = ({navigation}) => {
+const SubCategoryScreen = ({navigation}: any) => {
   const {
     isLoading,
     error,
     data: categoriesFetched,
-  } = useQuery('categories', fetchCategories);
-
-  const ui_array = [
-    {id: 0},
-    {id: 1},
-    {id: 2},
-    {id: 3},
-    {id: 4},
-    {id: 5},
-    {id: 6},
-    {id: 7},
-  ];
+  } = useQuery('SubCategories', fetchSubCategories);
 
   return (
     <ScrollView style={styles.container}>
-      <Header title="Find Products" />
+      <Header title="Sub Categories" />
       <View style={styles.searchBarBox}>
-        <SearchBar navigation={navigation} navigateTo="" />
+        {/* @ts-ignore */}
+        <SearchBar navigation={navigation} navigateTo="SearchScreen" />
       </View>
       <View style={styles.body}>
         {isLoading ? (
@@ -48,8 +37,6 @@ const ExploreTab = ({navigation}) => {
               return (
                 <CategoryCard
                   key={item.id}
-                  bgColour="pink"
-                  borderColour="gray"
                   title={item.name}
                   image={item.image}
                   onPress={() => null}
@@ -82,4 +69,4 @@ const styles = EStyleSheet.create({
   },
 });
 
-export default {component: ExploreTab, name: 'Explore'};
+export default {component: SubCategoryScreen, name: 'SubCategoryScreen'};

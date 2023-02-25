@@ -1,57 +1,46 @@
-import {StyleSheet, View} from 'react-native';
-import React, {useState} from 'react';
+import {StyleSheet, View, ActivityIndicator} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import FoodCard from '../HomeScreenComponents/FoodCard';
 import SearchInput from './SearchInput';
 import {Formik} from 'formik';
 import {FlashList} from '@shopify/flash-list';
 import {useRoute} from '@react-navigation/native';
-
-interface itemProp {
-  id: number;
-  category_id: string;
-  name: string;
-  slug: string;
-  brand: string;
-  cover_photo: any;
-  image1: any;
-  image2: any;
-  image3: any;
-  image4: any;
-  state: string;
-  city: string;
-  pincode: string;
-  disclaimer: string;
-  manufacturer_info: string;
-  country_origin: 'BHARAT';
-  is_veg: '2';
-  pincodes: '';
-  created_at: '2022-10-18T06:52:41.000000Z';
-  updated_at: '2022-10-18T06:52:41.000000Z';
-  is_trending: 0;
-  is_featured: 0;
-}
+import {ProductProps} from '../../screens/ProductScreen';
+import {SearchProducts} from '../../api/SearchProducts';
 
 const ProductList = ({}) => {
-  const [items, setItems] = useState<itemProp[]>([]);
+  const [items, setItems] = useState<ProductProps[]>([]);
+  const [loading, setLoading] = useState(false);
   const route = useRoute();
   //@ts-expect-error
   const itemData = route?.params?.itemData;
-  console.log(
-    '🚀 ~ file: ProductList.tsx:39 ~ ProductList ~ itemData:',
-    itemData,
-  );
-  if (itemData) {
-    // setItems(itemData);
-  } else {
-    //search query data
-  }
+  useEffect(() => {
+    if (itemData) {
+      setItems(itemData);
+    }
+  }, [itemData]);
+
+  // async function searchProducts(values: {}) {
+
+  // }
+
   return (
     <View style={styles.root}>
       <View style={styles.inputContainer}>
         <Formik
           initialValues={{query: ''}}
-          onSubmit={values => {
+          onSubmit={async values => {
+            setLoading(true);
             console.log(values);
+            const products = await SearchProducts(values.query);
+            console.log(
+              '🚀 ~ file: ProductList.tsx:38 ~ ProductList ~ products:',
+              products,
+            );
+            if (products) {
+              setItems(products);
+            }
+            setLoading(false);
           }}>
           {({handleChange, handleBlur, handleSubmit, values}) => (
             <SearchInput
@@ -64,15 +53,19 @@ const ProductList = ({}) => {
           )}
         </Formik>
       </View>
-      <FlashList
-        data={items}
-        renderItem={({item}) => (
-          <FoodCard name={item.name} image={item.cover_photo} />
-        )}
-        numColumns={2}
-        showsVerticalScrollIndicator={false}
-        estimatedItemSize={180}
-      />
+      {loading ? (
+        <View style={styles.flex}>
+          <ActivityIndicator />
+        </View>
+      ) : (
+        <FlashList
+          data={items}
+          renderItem={({item}) => <FoodCard item={item} />}
+          numColumns={2}
+          showsVerticalScrollIndicator={false}
+          estimatedItemSize={180}
+        />
+      )}
     </View>
   );
 };
@@ -84,4 +77,5 @@ const styles = StyleSheet.create({
   inputContainer: {
     marginVertical: 10,
   },
+  flex: {flex: 1},
 });
