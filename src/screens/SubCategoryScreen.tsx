@@ -41,8 +41,12 @@ const SubCategoryScreen = ({navigation}: any) => {
                   title={item.name}
                   image={item.image}
                   onPress={() => {
-                    
-                    navigation.navigate(SearchScreen.name);
+                    navigation.navigate(SearchScreen.name, {
+                      link: '/category/wise/products',
+                      fieldName: 'slug',
+                      fieldValue: item.slug,
+                      autoFocus: false,
+                    });
                   }}
                 />
               );

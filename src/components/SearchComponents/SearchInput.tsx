@@ -20,6 +20,7 @@ interface inputProps {
   };
   value: string;
   handleSubmit: any;
+  autoFocus?: boolean;
 }
 
 const SearchInput = ({
@@ -28,6 +29,7 @@ const SearchInput = ({
   onBlur,
   value,
   handleSubmit,
+  autoFocus = true,
 }: inputProps) => {
   return (
     <View style={styles.root}>
@@ -37,7 +39,7 @@ const SearchInput = ({
         value={value}
         placeholder={placeholder}
         style={styles.input}
-        autoFocus
+        autoFocus={autoFocus}
       />
       <View style={{marginHorizontal: 5}} />
       <TouchableOpacity onPress={handleSubmit}>

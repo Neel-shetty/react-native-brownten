@@ -1,4 +1,4 @@
-import {StyleSheet, View, ActivityIndicator} from 'react-native';
+import {StyleSheet, View, ActivityIndicator, Alert} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import FoodCard from '../HomeScreenComponents/FoodCard';
 import SearchInput from './SearchInput';
@@ -7,6 +7,7 @@ import {FlashList} from '@shopify/flash-list';
 import {useRoute} from '@react-navigation/native';
 import {ProductProps} from '../../screens/ProductScreen';
 import {SearchProducts} from '../../api/SearchProducts';
+import {api} from '../../api';
 
 const ProductList = ({}) => {
   const [items, setItems] = useState<ProductProps[]>([]);
@@ -14,15 +15,52 @@ const ProductList = ({}) => {
   const route = useRoute();
   //@ts-expect-error
   const itemData = route?.params?.itemData;
+  //@ts-expect-error
+  const rlink = route?.params?.link;
+  //@ts-expect-error
+  const rfieldName = route?.params?.fieldName;
+  //@ts-expect-error
+  const rfieldValue = route?.params?.fieldValue;
+  //@ts-expect-error
+  const autoFocus = route?.params?.autoFocus;
+  console.log(
+    '🚀 ~ file: ProductList.tsx:26 ~ ProductList ~ autoFocus:',
+    autoFocus,
+  );
+
+  async function fetchData({
+    link,
+    fieldName,
+    fieldValue,
+  }: {
+    link: string;
+    fieldName: string;
+    fieldValue: string;
+  }) {
+    api
+      .post(`${link}`, {[fieldName]: fieldValue})
+      .then(res => {
+        setItems(res.data.data);
+      })
+      .catch(error => {
+        if (error?.response) {
+          console.log(error.response.data);
+          Alert.alert('Failed', error.response.data.message);
+        }
+      });
+  }
+
   useEffect(() => {
     if (itemData) {
       setItems(itemData);
     }
   }, [itemData]);
 
-  // async function searchProducts(values: {}) {
-
-  // }
+  useEffect(() => {
+    if (rlink) {
+      fetchData({link: rlink, fieldName: rfieldName, fieldValue: rfieldValue});
+    }
+  }, [rfieldName, rfieldValue, rlink]);
 
   return (
     <View style={styles.root}>
@@ -49,6 +87,7 @@ const ProductList = ({}) => {
               placeholder="Search Store"
               onBlur={handleBlur('query')}
               value={values.query}
+              autoFocus={autoFocus === false ? autoFocus : true}
             />
           )}
         </Formik>

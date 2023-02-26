@@ -7,6 +7,8 @@ import {fetchHomeSubCategories} from '../../api/fetchHomeSubCategories';
 import CategoryCard from '../ExploreComponents/CategoryCard';
 import CategorySectionTitle from './CategorySectionTitle';
 import {FlashList} from '@shopify/flash-list';
+import {useNavigation} from '@react-navigation/native';
+import SearchScreen from '../../screens/SearchScreen';
 
 const CategorySection = ({title}) => {
   const {
@@ -14,6 +16,8 @@ const CategorySection = ({title}) => {
     error,
     data: categoriesFetched,
   } = useQuery('homeSubCategories', fetchHomeSubCategories);
+
+  const navigation = useNavigation();
 
   if (isLoading) {
     return <ActivityIndicator />;
@@ -28,7 +32,20 @@ const CategorySection = ({title}) => {
         <FlashList
           data={categoriesFetched.data.data}
           renderItem={({item}) => {
-            return <CategoryCard title={item.name} image={item.image} />;
+            return (
+              <CategoryCard
+                title={item.name}
+                image={item.image}
+                onPress={() => {
+                  navigation.navigate(SearchScreen.name, {
+                    link: '/category/wise/products',
+                    fieldName: 'slug',
+                    fieldValue: item.slug,
+                    autoFocus: false,
+                  });
+                }}
+              />
+            );
           }}
           horizontal
           showsHorizontalScrollIndicator={false}
