@@ -1,14 +1,12 @@
-import {FlatList, StyleSheet, View, ActivityIndicator} from 'react-native';
+import {StyleSheet, View, ActivityIndicator} from 'react-native';
 import React from 'react';
-import FoodCard from './FoodCard';
-import SectionTitle from './SectionTitle';
-import {useQuery} from 'react-query';
 import {fetchHomeSubCategories} from '../../api/fetchHomeSubCategories';
 import CategoryCard from '../ExploreComponents/CategoryCard';
 import CategorySectionTitle from './CategorySectionTitle';
 import {FlashList} from '@shopify/flash-list';
 import {useNavigation} from '@react-navigation/native';
 import SearchScreen from '../../screens/SearchScreen';
+import {useQuery} from 'react-query';
 
 const CategorySection = ({title}) => {
   const {

@@ -54,13 +54,15 @@ const styles = StyleSheet.create({
     width: layout.width,
   },
   buttonContainer: {
-    flex: 2,
+    // flex: 2,
     width: layout.widthp,
     alignItems: 'center',
     justifyContent: 'center',
     maxHeight: 70,
     marginBottom: 10,
     backgroundColor: 'transparent',
+    position: 'absolute',
+    bottom: 0,
   },
 });
 

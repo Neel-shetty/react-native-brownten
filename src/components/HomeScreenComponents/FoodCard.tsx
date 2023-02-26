@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 //@ts-ignore
@@ -9,18 +9,33 @@ import Icon from 'react-native-vector-icons/EvilIcons';
 import {useDispatch} from 'react-redux';
 import {setBottomSheetShown} from '../../store/uiTrigger';
 import {ProductProps} from '../../screens/ProductScreen';
+import {Dropdown} from 'react-native-element-dropdown';
+
+const data = [
+  {label: 'Item 1', value: '1'},
+  {label: 'Item 2', value: '2'},
+  {label: 'Item 3', value: '3'},
+  {label: 'Item 4', value: '4'},
+  {label: 'Item 5', value: '5'},
+  {label: 'Item 6', value: '6'},
+  {label: 'Item 7', value: '7'},
+  {label: 'Item 8', value: '8'},
+];
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
 const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
+  const [value, setValue] = useState<string>('');
+  console.log('🚀 ~ file: FoodCard.tsx:29 ~ FoodCard ~ value:', value);
+  const [isFocus, setIsFocus] = useState(false);
+
   // console.log('🚀 ~ file: FoodCard.js:11 ~ FoodCard ~ slug:', slug);
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const dispatch = useDispatch();
 
   return (
     <TouchableOpacity
       onPress={() => {
-        //@ts-ignore
         navigation.navigate('ProductScreen', {slug: item.slug});
       }}
       style={styles.card}>
@@ -35,12 +50,31 @@ const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
       <Text style={styles.title} numberOfLines={1}>
         {item.name}
       </Text>
-      <TouchableOpacity
+      <Dropdown
+        style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+        placeholderStyle={styles.placeholderStyle}
+        selectedTextStyle={styles.selectedTextStyle}
+        inputSearchStyle={styles.inputSearchStyle}
+        iconStyle={styles.iconStyle}
+        data={data}
+        maxHeight={300}
+        labelField="label"
+        valueField="value"
+        placeholder={!isFocus ? 'Select item' : '...'}
+        searchPlaceholder="Search..."
+        value={value}
+        onFocus={() => setIsFocus(true)}
+        onBlur={() => setIsFocus(false)}
+        onChange={item => {
+          setValue(item.value);
+          setIsFocus(false);
+        }}
+        disable={item.variants.length > 1 ? true : false}
+      />
+      {/* <TouchableOpacity
         disabled={item.variants?.length > 1 ? false : true}
         onPress={() => {
-          // if (item.variants.length > 1) {
-          dispatch(setBottomSheetShown({shown: true, variants: item.variants}));
-          // }
+          console.log('pressed');
         }}>
         <View style={styles.menuContainer}>
           <Text style={styles.subtitle}>
@@ -50,7 +84,7 @@ const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
             <Icon name="chevron-down" size={24} />
           ) : null}
         </View>
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <View style={styles.footer}>
         <Text style={styles.price}>
           ₹{item.variants ? item.variants[0].price : null}
@@ -84,6 +118,7 @@ const styles = EStyleSheet.create({
     color: '$blackColour',
     fontFamily: '$gilroyNormal600',
     fontSize: '1rem',
+    marginBottom: 5,
   },
   subtitle: {
     color: '$darkGreyColour',
@@ -116,10 +151,28 @@ const styles = EStyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     borderColor: '$lightGreyColour',
-    padding: 5,
+    // padding: 5,
     marginTop: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    backgroundColor: 'white',
+  },
+  dropdown: {
+    height: 30,
+    borderColor: '$lightGreyColour',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 8,
+  },
+  icon: {
+    marginRight: 5,
+  },
+  placeholderStyle: {
+    fontSize: 12,
+  },
+  selectedTextStyle: {
+    fontSize: 12,
+    color: 'black',
   },
 });
 
