@@ -47,7 +47,13 @@ const ProductScreen = () => {
     asyncFetch();
   }, [slug]);
 
-  if (loading) return <ActivityIndicator />;
+  if (loading)
+    return (
+      <ActivityIndicator
+        size={'large'}
+        style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}
+      />
+    );
 
   if (!productDetail) return;
   return (

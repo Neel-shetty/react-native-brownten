@@ -4,7 +4,12 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import {useNavigation} from '@react-navigation/native';
 
 const SectionTitle = ({title, linkPage, itemData}) => {
+  console.log(
+    '🚀 ~ file: SectionTitle.js:7 ~ SectionTitle ~ itemData:',
+    itemData,
+  );
   const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>

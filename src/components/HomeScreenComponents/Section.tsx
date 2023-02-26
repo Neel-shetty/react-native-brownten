@@ -1,4 +1,4 @@
-import {StyleSheet, View, ActivityIndicator} from 'react-native';
+import {StyleSheet, View, ActivityIndicator, FlatList} from 'react-native';
 import React from 'react';
 import FoodCard from './FoodCard';
 import SectionTitle from './SectionTitle';
@@ -20,14 +20,14 @@ const Section = ({goToPage, title, items, loading}: SectionProps) => {
         <SectionTitle title={title} linkPage={goToPage} itemData={items} />
       </View>
       <View style={styles.list}>
-        <FlashList
+        <FlatList
           data={items}
           renderItem={({item}: {item: ProductPreviewType}) => {
             return <FoodCard item={item} />;
           }}
           horizontal
           showsHorizontalScrollIndicator={false}
-          estimatedItemSize={180}
+          // estimatedItemSize={180}
         />
       </View>
     </View>

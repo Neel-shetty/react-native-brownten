@@ -1,15 +1,12 @@
-import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {View, ScrollView, Dimensions, Alert, Text} from 'react-native';
+import React from 'react';
+import {View, ScrollView, Dimensions, Alert} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Section from '../../components/HomeScreenComponents/Section';
 import Banner from '../../components/HomeScreenComponents/Banner';
 import SearchBarHeader from '../../components/HomeScreenComponents/SearchBarHeader';
 import CategorySection from '../../components/HomeScreenComponents/CategorySection';
 import {useQuery} from 'react-query';
-import BottomSheet from '@gorhom/bottom-sheet';
 import {api} from '../../api';
-import {useDispatch, useSelector} from 'react-redux';
-import {setBottomSheetShown} from '../../store/uiTrigger';
 // import Header from '../../components/HomeScreenComponents/Header';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
@@ -20,6 +17,7 @@ export interface variantType {
   weight: string;
   qty: number;
   variant_id: number;
+  unit: string;
 }
 export interface ProductPreviewType {
   id: number;
@@ -36,18 +34,6 @@ export interface ProductPreviewType {
 // }
 
 const Home = () => {
-  // const [bottomSheetOpen, setBottomSheetOpen] = useState(true);
-  const [prevState, setPrevState] = useState<number>();
-  const bottomSheetOpen = useSelector(
-    (state: any) => state.uiTrigger.bottomSheetShown,
-  );
-  console.log(
-    '🚀 ~ file: Home.tsx:44 ~ Home ~ bottomSheetOpen:',
-    bottomSheetOpen,
-  );
-
-  const dispatch = useDispatch();
-
   const {
     error: trendingProductsError,
     isLoading: trendingProductsIsLoading,
@@ -67,24 +53,6 @@ const Home = () => {
     return response.data.data as ProductPreviewType[];
   });
 
-  // ref
-  const bottomSheetRef = useRef<BottomSheet>(null);
-
-  // variables
-  const snapPoints = useMemo(() => ['25%', '50%'], []);
-  // callbacks
-  const handleSheetChanges = useCallback(
-    (index: number) => {
-      console.log('handleSheetChanges', index);
-      if (index === 0 && prevState === 1) {
-        // setBottomSheetOpen(false);
-        dispatch(setBottomSheetShown({shown: false, variants: []}));
-      }
-      setPrevState(index);
-    },
-    [dispatch, prevState],
-  );
-
   if (allProductsErrored) {
     Alert.alert('Failed fetching products', allProductsError.message);
   }
@@ -97,7 +65,7 @@ const Home = () => {
       <Section
         title={'Trending'}
         items={trendingProducts ? trendingProducts : []}
-        loading={allProductsisLoading}
+        loading={trendingProductsIsLoading}
         goToPage={'SearchScreen'}
       />
       <Section
@@ -106,67 +74,14 @@ const Home = () => {
         loading={allProductsisLoading}
         goToPage={'SearchScreen'}
       />
-      {/* <Section title={'Test section'} />
-      <Section title={'Test section'} /> */}
+      {/* <Section
+        title={'All Products'}
+        items={allProducts ? allProducts : []}
+        loading={allProductsisLoading}
+        goToPage={'SearchScreen'}
+      /> */}
       <View style={styles.scrollFooter} />
-      {/* {bottomSheetOpen.shown ? (
-        <BottomSheet
-          ref={bottomSheetRef}
-          index={1}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}>
-          <View style={styles.contentContainer}>
-            {bottomSheetOpen?.variants.map(
-              (item: variantType, index: number) => {
-                return (
-                  <Text key={index}>
-                    {item.price}
-                    {item.weight}🎉
-                    {item.qty}
-                    {item.selling_price}
-                  </Text>
-                );
-              },
-            )}
-          </View>
-        </BottomSheet>
-      ) : null} */}
     </ScrollView>
-  );
-};
-
-const BottomVariantMenu = ({
-  bottomSheetOpen,
-  bottomSheetRef,
-  snapPoints,
-  handleSheetChanges,
-}: any) => {
-  console.log('🚀 ~ file: Home.tsx:113 ~ bottomSheetOpen:', bottomSheetOpen);
-  return (
-    <View>
-      {bottomSheetOpen.shown ? (
-        <BottomSheet
-          ref={bottomSheetRef}
-          index={1}
-          snapPoints={snapPoints}
-          onChange={handleSheetChanges}>
-          <View style={styles.contentContainer}>
-            {bottomSheetOpen?.variants.map(
-              (item: variantType, index: number) => {
-                return (
-                  <Text key={index}>
-                    {item.price}
-                    {item.weight}🎉
-                    {item.qty}
-                    {item.selling_price}
-                  </Text>
-                );
-              },
-            )}
-          </View>
-        </BottomSheet>
-      ) : null}
-    </View>
   );
 };
 
@@ -180,7 +95,6 @@ const styles = EStyleSheet.create({
     paddingTop: 35.0,
     backgroundColor: '$whiteColour',
   },
-
   searchBox: {
     marginTop: 20.0,
   },

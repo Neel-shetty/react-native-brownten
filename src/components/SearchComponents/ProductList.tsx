@@ -12,22 +12,8 @@ import {api} from '../../api';
 const ProductList = ({}) => {
   const [items, setItems] = useState<ProductProps[]>([]);
   const [loading, setLoading] = useState(false);
+  const [autoFocus, setAutoFocus] = useState<boolean>();
   const route = useRoute();
-  //@ts-expect-error
-  const itemData = route?.params?.itemData;
-  //@ts-expect-error
-  const rlink = route?.params?.link;
-  //@ts-expect-error
-  const rfieldName = route?.params?.fieldName;
-  //@ts-expect-error
-  const rfieldValue = route?.params?.fieldValue;
-  //@ts-expect-error
-  const autoFocus = route?.params?.autoFocus;
-  console.log(
-    '🚀 ~ file: ProductList.tsx:26 ~ ProductList ~ autoFocus:',
-    autoFocus,
-  );
-
   async function fetchData({
     link,
     fieldName,
@@ -51,16 +37,43 @@ const ProductList = ({}) => {
   }
 
   useEffect(() => {
+    //@ts-expect-error
+    const itemData = route?.params?.itemData;
     if (itemData) {
       setItems(itemData);
     }
-  }, [itemData]);
+    //@ts-ignore
+  }, [route?.params?.itemData]);
 
   useEffect(() => {
+    //@ts-expect-error
+    const rlink = route?.params?.link;
+    //@ts-expect-error
+    const rfieldName = route?.params?.fieldName;
+    //@ts-expect-error
+    const rfieldValue = route?.params?.fieldValue;
     if (rlink) {
       fetchData({link: rlink, fieldName: rfieldName, fieldValue: rfieldValue});
     }
-  }, [rfieldName, rfieldValue, rlink]);
+  }, [
+    //@ts-ignore
+    route?.params?.fieldName,
+    //@ts-ignore
+    route?.params?.link,
+    //@ts-ignore
+    route?.params?.fieldValue,
+  ]);
+
+  useEffect(() => {
+    //@ts-expect-error
+    const tAutoFocus = route?.params?.autoFocus;
+    console.log(
+      '🚀 ~ file: ProductList.tsx:26 ~ ProductList ~ autoFocus:',
+      tAutoFocus,
+    );
+    setAutoFocus(tAutoFocus);
+    //@ts-ignore
+  }, [route?.params?.autoFocus]);
 
   return (
     <View style={styles.root}>

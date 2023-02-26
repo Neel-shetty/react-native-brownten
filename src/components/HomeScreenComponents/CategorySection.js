@@ -17,7 +17,7 @@ const CategorySection = ({title}) => {
 
   const navigation = useNavigation();
 
-  if (isLoading) {
+  if (isLoading || error) {
     return <ActivityIndicator />;
   }
 
@@ -28,7 +28,7 @@ const CategorySection = ({title}) => {
       </View>
       <View style={styles.list}>
         <FlashList
-          data={categoriesFetched.data.data}
+          data={categoriesFetched?.data?.data}
           renderItem={({item}) => {
             return (
               <CategoryCard

@@ -19,6 +19,9 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {setLoggedIn} from '../store/user';
 import CategoryScreen from '../screens/CategoryScreen';
 import SubCategoryScreen from '../screens/SubCategoryScreen';
+import AddressScreen from '../screens/AddressScreen';
+import AccountDetailsScreen from '../screens/AccountDetailsScreen';
+import OrdersScreen from '../screens/OrdersScreen';
 
 const Stack = createStackNavigator();
 
@@ -86,6 +89,18 @@ const Navigator = () => {
               <Stack.Screen
                 name={SubCategoryScreen.name}
                 component={SubCategoryScreen.component}
+              />
+              <Stack.Screen
+                name={AddressScreen.name}
+                component={AddressScreen.component}
+              />
+              <Stack.Screen
+                name={AccountDetailsScreen.name}
+                component={AccountDetailsScreen.component}
+              />
+              <Stack.Screen
+                name={OrdersScreen.name}
+                component={OrdersScreen.component}
               />
             </>
           )}

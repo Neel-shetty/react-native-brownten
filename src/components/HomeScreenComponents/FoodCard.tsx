@@ -1,13 +1,12 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 //@ts-ignore
 import PlusIcon from '../../../assets/icons/commons/plus.svg';
 import {useNavigation} from '@react-navigation/native';
-import {ProductPreviewType} from '../../screens/tabs/Home';
-import Icon from 'react-native-vector-icons/EvilIcons';
-import {useDispatch} from 'react-redux';
-import {setBottomSheetShown} from '../../store/uiTrigger';
+import {ProductPreviewType, variantType} from '../../screens/tabs/Home';
+// import Icon from 'react-native-vector-icons/EvilIcons';
+// import {useDispatch} from 'react-redux';
 import {ProductProps} from '../../screens/ProductScreen';
 import {Dropdown} from 'react-native-element-dropdown';
 
@@ -22,16 +21,50 @@ const data = [
   {label: 'Item 8', value: '8'},
 ];
 
+interface dropdownDataType {
+  label: string;
+  value: variantType;
+}
+
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
 const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
   const [value, setValue] = useState<string>('');
-  console.log('🚀 ~ file: FoodCard.tsx:29 ~ FoodCard ~ value:', value);
+  // console.log('🚀 ~ file: FoodCard.tsx:29 ~ FoodCard ~ value:', value);
   const [isFocus, setIsFocus] = useState(false);
+  const [variants, setVariants] = useState<dropdownDataType[]>([]);
+  const [currentVariant, setCurrentVariant] = useState<variantType>();
 
   // console.log('🚀 ~ file: FoodCard.js:11 ~ FoodCard ~ slug:', slug);
   const navigation: any = useNavigation();
-  const dispatch = useDispatch();
+
+  useEffect(() => {
+    function createVariantsData() {
+      if (!item.variants) {
+        return;
+      }
+      const dropdownData = item?.variants?.map(vari => {
+        return {
+          label: `${vari.weight}${vari.unit}`,
+          value: vari,
+        };
+      });
+      setVariants(dropdownData);
+    }
+    createVariantsData();
+  }, [item?.variants]);
+
+  useEffect(() => {
+    const idk: variantType = {
+      price: 'error',
+      selling_price: 'error',
+      weight: 'error',
+      qty: 0,
+      variant_id: 0,
+      unit: '.',
+    };
+    setCurrentVariant(item?.variants ? item?.variants[0] : idk);
+  }, [item?.variants]);
 
   return (
     <TouchableOpacity
@@ -51,16 +84,16 @@ const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
         {item.name}
       </Text>
       <Dropdown
-        style={[styles.dropdown, isFocus && {borderColor: 'blue'}]}
+        style={[styles.dropdown, isFocus && {borderColor: 'green'}]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
         iconStyle={styles.iconStyle}
-        data={data}
+        data={variants}
         maxHeight={300}
         labelField="label"
         valueField="value"
-        placeholder={!isFocus ? 'Select item' : '...'}
+        placeholder={`${currentVariant?.weight}${currentVariant?.unit}`}
         searchPlaceholder="Search..."
         value={value}
         onFocus={() => setIsFocus(true)}
@@ -68,8 +101,10 @@ const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
         onChange={item => {
           setValue(item.value);
           setIsFocus(false);
+          setCurrentVariant(item.value);
         }}
-        disable={item.variants.length > 1 ? true : false}
+        disable={item?.variants?.length > 1 ? false : true}
+        renderRightIcon={item?.variants?.length > 1 ? undefined : () => null}
       />
       {/* <TouchableOpacity
         disabled={item.variants?.length > 1 ? false : true}
@@ -87,7 +122,7 @@ const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
       </TouchableOpacity> */}
       <View style={styles.footer}>
         <Text style={styles.price}>
-          ₹{item.variants ? item.variants[0].price : null}
+          ₹{currentVariant ? currentVariant.price : null}
         </Text>
         <TouchableOpacity onPress={() => null} style={styles.button}>
           <PlusIcon />
@@ -169,6 +204,7 @@ const styles = EStyleSheet.create({
   },
   placeholderStyle: {
     fontSize: 12,
+    color: 'black',
   },
   selectedTextStyle: {
     fontSize: 12,

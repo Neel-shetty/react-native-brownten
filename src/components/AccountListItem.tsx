@@ -9,9 +9,14 @@ const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 interface AccountListItemProps {
   label: string;
   children: JSX.Element;
+  navigateTo?: string;
 }
 
-const AccountListItem = ({label, children}: AccountListItemProps) => {
+const AccountListItem = ({
+  label,
+  children,
+  navigateTo,
+}: AccountListItemProps) => {
   const navigation = useNavigation();
   return (
     <TouchableOpacity

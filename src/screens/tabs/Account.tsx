@@ -15,15 +15,15 @@ import AccountListItem from '../../components/AccountListItem';
 import Button from '../../components/Button';
 import {useNavigation} from '@react-navigation/native';
 import MapScreen from '../MapScreen';
+import AddressScreen from '../AddressScreen';
 
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 const AccountTab = () => {
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const itemList = [
     {
       label: 'Orders',
       icon: <AccountIcons.OrdersIcon style={styles.icon} color={'#181725'} />,
-      navigateToScreen: MapScreen.name,
     },
     {
       label: 'My Details',
@@ -34,18 +34,11 @@ const AccountTab = () => {
     {
       label: 'Delivery Address',
       icon: <AccountIcons.PinIcon style={styles.icon} color={'#181725'} />,
+      navigateTo: AddressScreen.name,
     },
     {
       label: 'Payment Methods',
       icon: <AccountIcons.PaymentIcon color={'#181725'} />,
-    },
-    {
-      label: 'Promo Card',
-      icon: <AccountIcons.TicketIcon color={'#181725'} />,
-    },
-    {
-      label: 'Notifications',
-      icon: <AccountIcons.BellIcon color={'#181725'} />,
     },
     {
       label: 'Help',
@@ -79,6 +72,7 @@ const AccountTab = () => {
                 key={index}
                 label={item.label}
                 children={item.icon}
+                navigateTo={item.navigateTo}
               />
             );
           })}
