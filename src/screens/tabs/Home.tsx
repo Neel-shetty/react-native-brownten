@@ -45,6 +45,15 @@ const Home = () => {
   const dispatch = useDispatch();
 
   const {
+    error: trendingProductsError,
+    isLoading: trendingProductsIsLoading,
+    data: trendingProducts,
+    isError: trendingProductsErrored,
+  } = useQuery<ProductPreviewType[], Error>('trendingProducts', async () => {
+    const response = await api.post('/trending');
+    return response.data.data as ProductPreviewType[];
+  });
+  const {
     error: allProductsError,
     isLoading: allProductsisLoading,
     data: allProducts,
@@ -81,6 +90,12 @@ const Home = () => {
       <SearchBarHeader />
       <Banner />
       <CategorySection title={'Categories'} />
+      <Section
+        title={'Trending'}
+        items={trendingProducts ? trendingProducts : []}
+        loading={allProductsisLoading}
+        goToPage={'SearchScreen'}
+      />
       <Section
         title={'All Products'}
         items={allProducts ? allProducts : []}

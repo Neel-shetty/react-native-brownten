@@ -9,7 +9,9 @@ const SectionTitle = ({title, linkPage, itemData}) => {
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <TouchableOpacity
-        onPress={() => navigation.navigate(linkPage, {itemData: itemData})}>
+        onPress={() =>
+          navigation.navigate(linkPage, {itemData: itemData, autoFocus: false})
+        }>
         <Text style={styles.link}>See all</Text>
       </TouchableOpacity>
     </View>
