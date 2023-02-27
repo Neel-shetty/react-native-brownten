@@ -16,7 +16,8 @@ import * as yup from 'yup';
 
 const Fields = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [editMode, setEditMode] = useState<boolean>(false);
+  const [editMode, setEditMode] = useState({counter: 0, editable: false});
+  console.log('🚀 ~ file: Fields.tsx:20 ~ Fields ~ editMode:', editMode);
 
   const behavior = Platform.OS === 'ios' ? 'padding' : undefined;
   const formScheme = yup.object({
@@ -36,10 +37,31 @@ const Fields = () => {
   });
 
   const onChangeEdit = (editable: boolean) => {
-    if (editable) {
-      setEditMode(true);
-    } else if (!editable) {
-      setEditMode(false);
+    console.log(
+      '🚀 ~ file: Fields.tsx:40 ~ onChangeEdit ~ editable:',
+      editable,
+    );
+    const prevCount = editMode.counter;
+    console.log(
+      '🚀 ~ file: Fields.tsx:45 ~ onChangeEdit ~ prevCount:',
+      prevCount,
+    );
+    //resetting the value when it goes more than the number of inputs
+    // if (editMode.counter > 3) {
+    //   setEditMode({counter: 0, editable: editable});
+    // }
+
+    if (!editable) {
+      const num = editMode.counter + 1;
+      console.log('🚀 ~ file: Fields.tsx:51 ~ onChangeEdit ~ num:', num);
+      setEditMode({counter: num, editable: true});
+    } else if (editable) {
+      setEditMode({counter: editMode.counter - 1, editable: true});
+      console.log(editMode.counter);
+      if (editMode.counter === 1 && prevCount === 1) {
+        console.log('last condition');
+        setEditMode({counter: 0, editable: false});
+      }
     }
   };
 
@@ -135,30 +157,24 @@ const Fields = () => {
                   value={values.password}
                   secure
                 /> */}
-                {errors.password && touched.password && (
-                  <>
-                    <Text style={estyles.errorText}>{errors.password}</Text>
-                    <View style={{marginTop: layout.height * 0.011}} />
-                  </>
-                )}
               </KeyboardAvoidingView>
 
               <View style={estyles.termsBox}>
                 <Text style={estyles.infoText}>
                   <Text style={[estyles.infoText, estyles.greenInfoText]}>
                     Change Password
-                  </Text>{' '}
+                  </Text>
                 </Text>
               </View>
-              {
+              {editMode.editable ? (
                 <Button
                   onPress={handleSubmit}
                   bgColour="#53B175"
                   txtColour="#FFF"
-                  text="Sign up"
+                  text="Update"
                   loading={loading}
                 />
-              }
+              ) : null}
             </>
           )}
         </Formik>
