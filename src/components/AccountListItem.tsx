@@ -22,7 +22,7 @@ const AccountListItem = ({
     <TouchableOpacity
       onPress={() => {
         //@ts-expect-error
-        navigation.navigate(MapScreen.name);
+        navigation.navigate(navigateTo);
       }}
       style={styles.container}>
       <View style={styles.content}>

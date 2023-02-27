@@ -16,6 +16,7 @@ import Button from '../../components/Button';
 import {useNavigation} from '@react-navigation/native';
 import MapScreen from '../MapScreen';
 import AddressScreen from '../AddressScreen';
+import AccountDetailsScreen from '../AccountDetailsScreen';
 
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 const AccountTab = () => {
@@ -30,6 +31,7 @@ const AccountTab = () => {
       icon: (
         <AccountIcons.PersonalCardIcon style={styles.icon} color={'#181725'} />
       ),
+      navigateTo: AccountDetailsScreen.name,
     },
     {
       label: 'Delivery Address',
