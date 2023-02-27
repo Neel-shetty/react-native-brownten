@@ -1,3 +1,4 @@
+//@ts-nocheck
 import ShopIcon from '../../assets/icons/tabs/shop.svg';
 import PersonIcon from '../../assets/icons/tabs/person.svg';
 import CartIcon from '../../assets/icons/tabs/cart.svg';

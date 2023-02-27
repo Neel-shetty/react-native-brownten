@@ -1,32 +1,106 @@
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
-import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
 import {layout} from '../constants/Layout';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import SecondaryButton from '../components/SecondaryButton';
+import Address from '../components/AddressComponents/Address';
+import {AddressType, fetchAddress} from '../api/fetchAddress';
+import EncryptedStorage from 'react-native-encrypted-storage';
+//@ts-ignore
+import Add from '../../assets/icons/commons/AddSquare.svg';
+import Ionicons from 'react-native-vector-icons/EvilIcons';
 import {colors} from '../constants/colors';
 
-const data = [1, 2, 3, 4, 5, 6, 7, 8];
+const AddressScreen = ({navigation}: any) => {
+  const [address, setAddress] = useState<AddressType[]>();
+  console.log(
+    '🚀 ~ file: AddressScreen.tsx:16 ~ AddressScreen ~ address:',
+    address,
+  );
 
-const AddressScreen = () => {
+  useEffect(() => {
+    async function getAddress() {
+      const user_id = await EncryptedStorage.getItem('id');
+      if (!user_id) {
+        return;
+      }
+      const result = await fetchAddress(parseInt(user_id, 10));
+      console.log(
+        '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
+        result,
+      );
+      if (result) {
+        let tempArr: AddressType[] = [];
+        result.map((item, index) => {
+          tempArr.push({...item, selected: index === 0 ? true : false});
+        });
+        setAddress(tempArr);
+      }
+    }
+    getAddress();
+  }, []);
+
+  const onPressRadio = (id: number) => {
+    console.log(id);
+    let tempArr: AddressType[] = [];
+    if (!address) {
+      return;
+    }
+    address.map(item => {
+      if (item.id === id) {
+        tempArr.push({...item, selected: true});
+      } else {
+        tempArr.push({...item, selected: false});
+      }
+    });
+    setAddress(tempArr);
+  };
+
+  if (!address) {
+    return;
+  }
+
   return (
     <View style={styles.root}>
       <View style={styles.headerContainer}>
-        <Text style={eStyles.text}>My cart</Text>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          <Ionicons name="chevron-left" size={30} color={'black'} />
+        </TouchableOpacity>
+        <Text style={eStyles.text}>My Address</Text>
+        <View style={styles.space} />
       </View>
       <View style={styles.listContainer}>
-        <ScrollView>
-          {data.map(item => {
-            return <Text key={item}>item</Text>;
+        <ScrollView showsVerticalScrollIndicator={false}>
+          {address.map((item, index) => {
+            return (
+              <>
+                <Address
+                  key={index}
+                  address={item}
+                  onPressRadio={onPressRadio}
+                />
+                {index === address.length - 1 ? (
+                  <TouchableOpacity key={index + 4}>
+                    <View key={index + 1} style={styles.addContainer}>
+                      <Add key={index + 2} />
+                      <Text key={index + 3} style={styles.addText}>
+                        Add New
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                ) : null}
+              </>
+            );
           })}
         </ScrollView>
-        <View style={styles.buttonContainer}>
-          <SecondaryButton
-            onPress={() => {}}
-            text="Add Address"
-            bgColour={colors.green}
-            txtColour={colors.green}
-          />
-        </View>
       </View>
     </View>
   );
@@ -45,12 +119,14 @@ const styles = StyleSheet.create({
   headerContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     // backgroundColor: 'pink',
     width: layout.width,
     maxHeight: 60,
     borderBottomWidth: 1,
     borderColor: '#E2E2E2',
+    flexDirection: 'row',
+    paddingHorizontal: layout.width * 0.03,
   },
   listContainer: {
     flex: 9,
@@ -68,6 +144,21 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     position: 'absolute',
     bottom: 0,
+  },
+  addContainer: {
+    width: layout.width * 0.85,
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 10,
+  },
+  addText: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: 16,
+    color: colors.green,
+  },
+  space: {
+    width: 30,
   },
 });
 

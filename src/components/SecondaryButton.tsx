@@ -17,15 +17,12 @@ interface ButtonProps {
 }
 const SecondaryButton = ({
   text,
-  bgColour,
   txtColour,
   onPress,
   loading = false,
 }: ButtonProps) => {
   return (
-    <TouchableOpacity
-      onPress={onPress}
-      style={[styles.button]}>
+    <TouchableOpacity onPress={onPress} style={[styles.button]}>
       {loading ? (
         <ActivityIndicator color={'white'} />
       ) : (

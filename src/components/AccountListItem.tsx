@@ -3,7 +3,6 @@ import {TouchableOpacity, View, Text, Dimensions} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {AccountIcons} from '../helpers/Icons';
 import {useNavigation} from '@react-navigation/native';
-import MapScreen from '../screens/MapScreen';
 
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 interface AccountListItemProps {
