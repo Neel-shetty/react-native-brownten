@@ -22,6 +22,7 @@ import SubCategoryScreen from '../screens/SubCategoryScreen';
 import AddressScreen from '../screens/AddressScreen';
 import AccountDetailsScreen from '../screens/AccountDetailsScreen';
 import OrdersScreen from '../screens/OrdersScreen';
+import AddAddressScreen from '../screens/AddAddressScreen';
 
 const Stack = createStackNavigator();
 
@@ -101,6 +102,10 @@ const Navigator = () => {
               <Stack.Screen
                 name={OrdersScreen.name}
                 component={OrdersScreen.component}
+              />
+              <Stack.Screen
+                name={AddAddressScreen.name}
+                component={AddAddressScreen.component}
               />
             </>
           )}

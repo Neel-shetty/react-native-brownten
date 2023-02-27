@@ -15,6 +15,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import Add from '../../assets/icons/commons/AddSquare.svg';
 import Ionicons from 'react-native-vector-icons/EvilIcons';
 import {colors} from '../constants/colors';
+import AddAddressScreen from './AddAddressScreen';
 
 const AddressScreen = ({navigation}: any) => {
   const [address, setAddress] = useState<AddressType[]>();
@@ -87,8 +88,12 @@ const AddressScreen = ({navigation}: any) => {
                   address={item}
                   onPressRadio={onPressRadio}
                 />
-                {index === address.length - 1 ? (
-                  <TouchableOpacity key={index + 4}>
+                {index === address.length - 1 && (
+                  <TouchableOpacity
+                    key={index + 4}
+                    onPress={() => {
+                      navigation.navigate(AddAddressScreen.name);
+                    }}>
                     <View key={index + 1} style={styles.addContainer}>
                       <Add key={index + 2} />
                       <Text key={index + 3} style={styles.addText}>
@@ -96,7 +101,7 @@ const AddressScreen = ({navigation}: any) => {
                       </Text>
                     </View>
                   </TouchableOpacity>
-                ) : null}
+                )}
               </>
             );
           })}

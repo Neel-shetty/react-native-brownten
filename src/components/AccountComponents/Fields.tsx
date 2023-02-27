@@ -2,8 +2,10 @@ import {
   Image,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   StyleSheet,
   Text,
+  TouchableOpacity,
   View,
 } from 'react-native';
 import React, {useState} from 'react';
@@ -66,7 +68,9 @@ const Fields = () => {
   };
 
   return (
-    <View style={styles.root}>
+    <ScrollView
+      contentContainerStyle={styles.root}
+      showsVerticalScrollIndicator={false}>
       <View style={styles.imageContainer}>
         <Image
           source={{
@@ -158,13 +162,14 @@ const Fields = () => {
                   secure
                 /> */}
               </KeyboardAvoidingView>
-
               <View style={estyles.termsBox}>
-                <Text style={estyles.infoText}>
-                  <Text style={[estyles.infoText, estyles.greenInfoText]}>
-                    Change Password
+                <TouchableOpacity onPress={() => {}}>
+                  <Text style={estyles.infoText}>
+                    <Text style={[estyles.infoText, estyles.greenInfoText]}>
+                      Change Password
+                    </Text>
                   </Text>
-                </Text>
+                </TouchableOpacity>
               </View>
               {editMode.editable ? (
                 <Button
@@ -179,7 +184,7 @@ const Fields = () => {
           )}
         </Formik>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
@@ -242,7 +247,7 @@ const estyles = EStyleSheet.create({
 
 const styles = StyleSheet.create({
   root: {
-    flex: 1,
+    // flex: 1,
     width: layout.width,
     alignItems: 'center',
   },

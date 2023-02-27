@@ -50,7 +50,10 @@ const Input = ({
   console.log('🚀 ~ file: Input.tsx:45 ~ editable:', editable);
   return (
     <>
-      <Text style={styles.inputLabel}>{label}</Text>
+      <Text
+        style={[styles.inputLabel, editable ? {color: colors.green} : null]}>
+        {label}
+      </Text>
       <View style={styles.inputContainer}>
         <TextInput
           style={[
