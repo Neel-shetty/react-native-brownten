@@ -13,18 +13,17 @@ import ProfileImage from '../../../assets/images/profile.png';
 import {AccountIcons} from '../../helpers/Icons';
 import AccountListItem from '../../components/AccountListItem';
 import Button from '../../components/Button';
-import {useNavigation} from '@react-navigation/native';
-import MapScreen from '../MapScreen';
 import AddressScreen from '../AddressScreen';
 import AccountDetailsScreen from '../AccountDetailsScreen';
+import OrdersScreen from '../OrdersScreen';
 
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 const AccountTab = () => {
-  const navigation: any = useNavigation();
   const itemList = [
     {
       label: 'Orders',
       icon: <AccountIcons.OrdersIcon style={styles.icon} color={'#181725'} />,
+      navigateTo: OrdersScreen.name,
     },
     {
       label: 'My Details',

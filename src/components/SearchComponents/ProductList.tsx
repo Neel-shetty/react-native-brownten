@@ -13,7 +13,7 @@ const ProductList = ({}) => {
   const [items, setItems] = useState<ProductProps[]>([]);
   const [loading, setLoading] = useState(false);
   const [autoFocus, setAutoFocus] = useState<boolean>();
-  const route = useRoute();
+  const route: any = useRoute();
   async function fetchData({
     link,
     fieldName,
@@ -37,7 +37,6 @@ const ProductList = ({}) => {
   }
 
   useEffect(() => {
-    //@ts-expect-error
     const itemData = route?.params?.itemData;
     if (itemData) {
       setItems(itemData);
@@ -46,33 +45,25 @@ const ProductList = ({}) => {
   }, [route?.params?.itemData]);
 
   useEffect(() => {
-    //@ts-expect-error
     const rlink = route?.params?.link;
-    //@ts-expect-error
     const rfieldName = route?.params?.fieldName;
-    //@ts-expect-error
     const rfieldValue = route?.params?.fieldValue;
     if (rlink) {
       fetchData({link: rlink, fieldName: rfieldName, fieldValue: rfieldValue});
     }
   }, [
-    //@ts-ignore
     route?.params?.fieldName,
-    //@ts-ignore
     route?.params?.link,
-    //@ts-ignore
     route?.params?.fieldValue,
   ]);
 
   useEffect(() => {
-    //@ts-expect-error
     const tAutoFocus = route?.params?.autoFocus;
     console.log(
       '🚀 ~ file: ProductList.tsx:26 ~ ProductList ~ autoFocus:',
       tAutoFocus,
     );
     setAutoFocus(tAutoFocus);
-    //@ts-ignore
   }, [route?.params?.autoFocus]);
 
   return (
