@@ -9,6 +9,7 @@ import {useQuery} from 'react-query';
 import {fetchSubCategories} from '../api/fetchSubCategories';
 import SearchScreen from './SearchScreen';
 import {useRoute} from '@react-navigation/native';
+import SubCategoryCard from '../components/SubCategoryScreenComponents/SubCategoryCard';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
@@ -40,7 +41,7 @@ const SubCategoryScreen = ({navigation}: any) => {
             numColumns={2}
             renderItem={({item}) => {
               return (
-                <CategoryCard
+                <SubCategoryCard
                   key={item.id}
                   title={item.name}
                   image={item.image}
