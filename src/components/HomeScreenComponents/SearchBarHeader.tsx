@@ -6,7 +6,7 @@ import SearchScreen from '../../screens/SearchScreen';
 const SearchBarHeader = () => {
   return (
     <View style={styles.root}>
-      <SearchBar navigateTo={SearchScreen.name} />
+      <SearchBar placeholder="Search Store" navigateTo={SearchScreen.name} />
     </View>
   );
 };

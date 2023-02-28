@@ -1,13 +1,16 @@
+/*eslint eqeqeq:0*/
 import {Image, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
+//@ts-ignore
 import LocationPin from '../../../assets/icons/home_screen/location-pin.svg';
 
 const Header = () => {
+  const logo = {width: 26.48, height: 30.0};
   return (
     <View style={styles.header}>
       <Image
         source={require('../../../assets/images/logo-colour.png')}
-        style={styles.logo}
+        style={{...logo}}
       />
       <View style={styles.locationBox}>
         <LocationPin style={styles.locationIcon} />
@@ -36,6 +39,7 @@ const styles = StyleSheet.create({
   },
   locationText: {
     fontFamily: 'gilroyNormal600',
+    //@ts-ignore
     fontSize: '1.125rem',
   },
   locationIcon: {
