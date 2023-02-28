@@ -1,10 +1,8 @@
 import React from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {View, Text} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import {useNavigation} from '@react-navigation/native';
 
-const CategorySectionTitle = ({title, linkPage}) => {
-  const navigation = useNavigation();
+const CategorySectionTitle = ({title}: {title: string; linkPage?: string}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
