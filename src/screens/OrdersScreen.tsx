@@ -62,7 +62,7 @@ const OrdersScreen = () => {
       <View style={styles.listContainer}>
         <FlatList
           data={[1, 2, 3, 4]}
-          renderItem={({item}) => {
+          renderItem={() => {
             return <OrderPreview order={''} />;
           }}
         />
