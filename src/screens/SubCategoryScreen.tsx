@@ -4,7 +4,6 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
 import Header from '../components/Header';
 import SearchBar from '../components/SearchBar';
-import CategoryCard from '../components/ExploreComponents/CategoryCard';
 import {useQuery} from 'react-query';
 import {fetchSubCategories} from '../api/fetchSubCategories';
 import SearchScreen from './SearchScreen';
