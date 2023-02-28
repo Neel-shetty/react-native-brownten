@@ -9,17 +9,7 @@ import {ProductPreviewType, variantType} from '../../screens/tabs/Home';
 // import {useDispatch} from 'react-redux';
 import {ProductProps} from '../../screens/ProductScreen';
 import {Dropdown} from 'react-native-element-dropdown';
-
-const data = [
-  {label: 'Item 1', value: '1'},
-  {label: 'Item 2', value: '2'},
-  {label: 'Item 3', value: '3'},
-  {label: 'Item 4', value: '4'},
-  {label: 'Item 5', value: '5'},
-  {label: 'Item 6', value: '6'},
-  {label: 'Item 7', value: '7'},
-  {label: 'Item 8', value: '8'},
-];
+import {colors} from '../../constants/colors';
 
 interface dropdownDataType {
   label: string;
@@ -29,13 +19,10 @@ interface dropdownDataType {
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
 const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
-  const [value, setValue] = useState<string>('');
-  // console.log('🚀 ~ file: FoodCard.tsx:29 ~ FoodCard ~ value:', value);
   const [isFocus, setIsFocus] = useState(false);
   const [variants, setVariants] = useState<dropdownDataType[]>([]);
   const [currentVariant, setCurrentVariant] = useState<variantType>();
 
-  // console.log('🚀 ~ file: FoodCard.js:11 ~ FoodCard ~ slug:', slug);
   const navigation: any = useNavigation();
 
   useEffect(() => {
@@ -85,7 +72,7 @@ const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
         {item.name}
       </Text>
       <Dropdown
-        style={[styles.dropdown, isFocus && {borderColor: 'green'}]}
+        style={[styles.dropdown, isFocus && {borderColor: colors.green}]}
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
@@ -96,13 +83,11 @@ const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
         valueField="value"
         placeholder={`${currentVariant?.weight}${currentVariant?.unit}`}
         searchPlaceholder="Search..."
-        value={value}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
-        onChange={item => {
-          setValue(item.value);
+        onChange={itm => {
           setIsFocus(false);
-          setCurrentVariant(item.value);
+          setCurrentVariant(itm.value);
         }}
         disable={item?.variants?.length > 1 ? false : true}
         renderRightIcon={item?.variants?.length > 1 ? undefined : () => null}
