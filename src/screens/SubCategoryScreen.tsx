@@ -46,7 +46,7 @@ const SubCategoryScreen = ({navigation}: any) => {
                   image={item.image}
                   onPress={() => {
                     navigation.navigate(SearchScreen.name, {
-                      link: '/category/wise/products',
+                      link: '/sub/category/wise/products',
                       fieldName: 'slug',
                       fieldValue: item.slug,
                       autoFocus: false,
