@@ -51,7 +51,7 @@ const Fields = () => {
   }, [route?.params?.edit, route?.params?.address]);
 
   if (!address && route?.params?.edit === true) {
-    return;
+    return null;
   }
 
   return (
