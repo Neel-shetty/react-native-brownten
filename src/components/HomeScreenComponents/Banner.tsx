@@ -1,7 +1,8 @@
 import {Image, StyleSheet, View} from 'react-native';
 import React from 'react';
+//@ts-ignore
 import BannerImage from '../../../assets/images/home_screen/banner.png';
-import {Layout} from 'react-native-reanimated';
+import {layout} from '../../constants/Layout';
 
 const Banner = () => {
   return (
@@ -19,7 +20,7 @@ const styles = StyleSheet.create({
   },
   banner: {
     marginTop: 20.0,
-    width: Layout.widthp,
+    width: layout.widthp,
     resizeMode: 'contain',
   },
 });

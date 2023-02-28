@@ -8,14 +8,24 @@ import {useNavigation} from '@react-navigation/native';
 import SearchScreen from '../../screens/SearchScreen';
 import {useQuery} from 'react-query';
 
-const CategorySection = ({title}) => {
+interface CategoryType {
+  id: number;
+  orderby: number;
+  name: string;
+  slug: string;
+  image: string;
+  created_at: string;
+  updated_at: string;
+}
+
+const CategorySection = ({title}: {title: string}) => {
   const {
     isLoading,
     error,
     data: categoriesFetched,
   } = useQuery('homeSubCategories', fetchHomeSubCategories);
 
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
 
   if (isLoading || error) {
     return <ActivityIndicator />;
@@ -24,11 +34,11 @@ const CategorySection = ({title}) => {
   return (
     <View>
       <View style={styles.localBox}>
-        <CategorySectionTitle title={title} />
+        <CategorySectionTitle linkPage={''} title={title} />
       </View>
       <View style={styles.list}>
         <FlashList
-          data={categoriesFetched?.data?.data}
+          data={categoriesFetched?.data?.data as CategoryType[]}
           renderItem={({item}) => {
             return (
               <CategoryCard

@@ -8,13 +8,17 @@ import CategoryCard from '../components/ExploreComponents/CategoryCard';
 import {useQuery} from 'react-query';
 import {fetchSubCategories} from '../api/fetchSubCategories';
 import SearchScreen from './SearchScreen';
+import {useRoute} from '@react-navigation/native';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
 const SubCategoryScreen = ({navigation}: any) => {
+  const route: any = useRoute();
   const {isLoading, data: categoriesFetched} = useQuery(
     'SubCategories',
-    fetchSubCategories as any,
+    async () => {
+      return await fetchSubCategories(route?.params?.category_id);
+    },
   );
 
   return (

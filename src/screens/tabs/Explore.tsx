@@ -8,6 +8,7 @@ import CategoryCard from '../../components/ExploreComponents/CategoryCard';
 import {useQuery} from 'react-query';
 import {fetchAllCategories} from '../../api/fetchAllCategories';
 import SubCategoryScreen from '../SubCategoryScreen';
+import SearchScreen from '../SearchScreen';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
@@ -18,11 +19,15 @@ const ExploreTab = ({navigation}: any) => {
     data: categoriesFetched,
   } = useQuery('categories', fetchAllCategories);
 
+  if (error) {
+    return <ActivityIndicator />;
+  }
+
   return (
     <ScrollView style={styles.container}>
       <Header title="Find Products" />
       <View style={styles.searchBarBox}>
-        <SearchBar navigation={navigation} navigateTo="SearchScreen" />
+        <SearchBar placeholder="Search Store" navigateTo={SearchScreen.name} />
       </View>
       <View style={styles.body}>
         {isLoading ? (
