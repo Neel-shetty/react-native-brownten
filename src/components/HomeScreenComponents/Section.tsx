@@ -2,7 +2,7 @@ import {StyleSheet, View, ActivityIndicator, FlatList} from 'react-native';
 import React from 'react';
 import FoodCard from './FoodCard';
 import SectionTitle from './SectionTitle';
-import {FlashList} from '@shopify/flash-list';
+// import {FlashList} from '@shopify/flash-list';
 import {ProductPreviewType} from '../../screens/tabs/Home';
 
 interface SectionProps {

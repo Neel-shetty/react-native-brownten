@@ -53,8 +53,11 @@ const Home = () => {
     return response.data.data as ProductPreviewType[];
   });
 
-  if (allProductsErrored) {
-    Alert.alert('Failed fetching products', allProductsError.message);
+  if (allProductsErrored || trendingProductsErrored) {
+    Alert.alert(
+      'Failed fetching products',
+      allProductsError?.message || trendingProductsError?.message,
+    );
   }
   return (
     <ScrollView style={styles.container}>

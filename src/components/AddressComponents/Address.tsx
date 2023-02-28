@@ -8,6 +8,8 @@ import Pen from '../../../assets/icons/commons/Pen.svg';
 import Trash from '../../../assets/icons/commons/Trash.svg';
 import {layout} from '../../constants/Layout';
 import {deleteAddress} from '../../api/deleteAddress';
+import {useNavigation} from '@react-navigation/native';
+import AddAddressScreen from '../../screens/AddAddressScreen';
 
 interface AddressPropType {
   address: AddressType;
@@ -18,6 +20,8 @@ const Address = ({address, onPressRadio}: AddressPropType) => {
   async function deleteAddr() {
     await deleteAddress(address.id);
   }
+
+  const navigation: any = useNavigation();
 
   return (
     <View style={styles.root}>
@@ -48,7 +52,10 @@ const Address = ({address, onPressRadio}: AddressPropType) => {
         </View>
       </View>
       <View style={styles.editContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.navigate(AddAddressScreen.name);
+          }}>
           <Pen />
         </TouchableOpacity>
         <View style={styles.smallLine} />

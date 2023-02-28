@@ -13,10 +13,13 @@ import Input from '../Input';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {Formik} from 'formik';
 import * as yup from 'yup';
+import {addAddress} from '../../api/AddAddress';
+import {useNavigation} from '@react-navigation/native';
 
 const Fields = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
+  const navigation = useNavigation();
   const behavior = Platform.OS === 'ios' ? 'padding' : undefined;
   const formScheme = yup.object({
     phone: yup
@@ -82,7 +85,17 @@ const Fields = () => {
             setLoading(true);
             console.log('onsubmit');
             console.log(values);
-
+            const result = await addAddress({
+              name: values.name,
+              address1: values.address1,
+              address2: values.address2,
+              city: values.city,
+              state: values.state,
+              pincode: values.pincode,
+              phone: values.phone,
+            });
+            console.log('🚀 ~ file: Fields.tsx:95 ~ Fields ~ result:', result);
+            navigation.goBack();
             setLoading(false);
           }}
           validationSchema={formScheme}>

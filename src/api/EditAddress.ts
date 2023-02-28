@@ -12,7 +12,7 @@ interface props {
   phone: string;
 }
 
-export async function addAddress({
+export async function editAddress({
   name,
   address1,
   address2,
@@ -23,7 +23,7 @@ export async function addAddress({
 }: props) {
   const user_id = await EncryptedStorage.getItem('id');
   const response = api
-    .post('/user/add/address', {
+    .post('/user/update/address', {
       user_id,
       name,
       address1,
@@ -49,7 +49,7 @@ export async function addAddress({
     });
   const result = await response;
   if (result.status === 1) {
-    Alert.alert('Success', result.message);
+    return result.data;
   } else {
     Alert.alert('Failed', result?.data);
   }

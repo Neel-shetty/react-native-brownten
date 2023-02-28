@@ -4,6 +4,7 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  FlatList,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {layout} from '../constants/Layout';
@@ -19,30 +20,31 @@ import AddAddressScreen from './AddAddressScreen';
 
 const AddressScreen = ({navigation}: any) => {
   const [address, setAddress] = useState<AddressType[]>();
+  const [flatlistLoading, setFlatlistLoading] = useState(false);
   console.log(
     '🚀 ~ file: AddressScreen.tsx:16 ~ AddressScreen ~ address:',
     address,
   );
 
-  useEffect(() => {
-    async function getAddress() {
-      const user_id = await EncryptedStorage.getItem('id');
-      if (!user_id) {
-        return;
-      }
-      const result = await fetchAddress(parseInt(user_id, 10));
-      console.log(
-        '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
-        result,
-      );
-      if (result) {
-        let tempArr: AddressType[] = [];
-        result.map((item, index) => {
-          tempArr.push({...item, selected: index === 0 ? true : false});
-        });
-        setAddress(tempArr);
-      }
+  async function getAddress() {
+    const user_id = await EncryptedStorage.getItem('id');
+    if (!user_id) {
+      return;
     }
+    const result = await fetchAddress(parseInt(user_id, 10));
+    console.log(
+      '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
+      result,
+    );
+    if (result) {
+      let tempArr: AddressType[] = [];
+      result.map((item, index) => {
+        tempArr.push({...item, selected: index === 0 ? true : false});
+      });
+      setAddress(tempArr);
+    }
+  }
+  useEffect(() => {
     getAddress();
   }, []);
 
@@ -79,33 +81,46 @@ const AddressScreen = ({navigation}: any) => {
         <View style={styles.space} />
       </View>
       <View style={styles.listContainer}>
-        <ScrollView showsVerticalScrollIndicator={false}>
-          {address.map((item, index) => {
-            return (
-              <>
-                <Address
-                  key={index}
-                  address={item}
-                  onPressRadio={onPressRadio}
-                />
-                {index === address.length - 1 && (
-                  <TouchableOpacity
-                    key={index + 4}
-                    onPress={() => {
-                      navigation.navigate(AddAddressScreen.name);
-                    }}>
-                    <View key={index + 1} style={styles.addContainer}>
-                      <Add key={index + 2} />
-                      <Text key={index + 3} style={styles.addText}>
-                        Add New
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                )}
-              </>
-            );
-          })}
-        </ScrollView>
+        <View>
+          <FlatList
+            data={address}
+            onRefresh={() => {
+              getAddress();
+            }}
+            refreshing={flatlistLoading}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item, index}) => {
+              return (
+                <>
+                  <Address
+                    key={index}
+                    address={item}
+                    onPressRadio={onPressRadio}
+                  />
+                  {index === address.length - 1 && (
+                    <TouchableOpacity
+                      key={item as unknown as string}
+                      onPress={() => {
+                        navigation.navigate(AddAddressScreen.name);
+                      }}>
+                      <View
+                        key={index + Math.random()}
+                        style={styles.addContainer}>
+                        <Add key={index + Math.random()} />
+                        <Text
+                          key={index + Math.random()}
+                          style={styles.addText}>
+                          Add New
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                </>
+              );
+            }}
+          />
+          {/* {address.map((item, index) => {})} */}
+        </View>
       </View>
     </View>
   );
