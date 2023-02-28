@@ -7,6 +7,7 @@ import SearchBarHeader from '../../components/HomeScreenComponents/SearchBarHead
 import CategorySection from '../../components/HomeScreenComponents/CategorySection';
 import {useQuery} from 'react-query';
 import {api} from '../../api';
+import BrandSection from '../../components/HomeScreenComponents/BrandSection';
 // import Header from '../../components/HomeScreenComponents/Header';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
@@ -77,6 +78,7 @@ const Home = () => {
         loading={allProductsisLoading}
         goToPage={'SearchScreen'}
       />
+      <BrandSection title="Top Brands" />
       {/* <Section
         title={'All Products'}
         items={allProducts ? allProducts : []}

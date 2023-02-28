@@ -78,6 +78,7 @@ const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
             uri: item.images[0],
           }}
           style={styles.image}
+          resizeMode="contain"
         />
       </View>
       <Text style={styles.title} numberOfLines={1}>

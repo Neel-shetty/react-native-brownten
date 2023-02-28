@@ -19,6 +19,7 @@ const CategoryCard = ({image, title, onPress}: CategoryCardProps) => {
         source={{
           uri: image,
         }}
+        resizeMode="contain"
       />
       <Text style={styles.text}>{title}</Text>
     </TouchableOpacity>
