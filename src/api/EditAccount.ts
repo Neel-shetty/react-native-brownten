@@ -11,7 +11,7 @@ interface props {
 export async function EditAccount({name, phone, email}: props) {
   const user_id = await EncryptedStorage.getItem('id');
   const response = api
-    .post('/user/add/address', {
+    .post('/user/account-update', {
       user_id,
       name,
       email,

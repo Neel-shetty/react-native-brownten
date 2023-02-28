@@ -15,11 +15,15 @@ import Input from './Input';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {Formik} from 'formik';
 import * as yup from 'yup';
+import {EditAccount} from '../../api/EditAccount';
+import {useNavigation} from '@react-navigation/native';
+import PasswordUpdateScreen from '../../screens/PasswordUpdateScreen';
 
 const Fields = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [editMode, setEditMode] = useState({counter: 0, editable: false});
-  console.log('🚀 ~ file: Fields.tsx:20 ~ Fields ~ editMode:', editMode);
+
+  const naviagtion: any = useNavigation();
 
   const behavior = Platform.OS === 'ios' ? 'padding' : undefined;
   const formScheme = yup.object({
@@ -31,27 +35,11 @@ const Fields = () => {
       .string()
       .email('Email format is invalid')
       .required('Email is required!'),
-    password: yup
-      .string()
-      .required('Password is required')
-      .min(8, 'Password has to be atleast 8 characters'),
     username: yup.string().required('Username is required'),
   });
 
   const onChangeEdit = (editable: boolean) => {
-    console.log(
-      '🚀 ~ file: Fields.tsx:40 ~ onChangeEdit ~ editable:',
-      editable,
-    );
     const prevCount = editMode.counter;
-    console.log(
-      '🚀 ~ file: Fields.tsx:45 ~ onChangeEdit ~ prevCount:',
-      prevCount,
-    );
-    //resetting the value when it goes more than the number of inputs
-    // if (editMode.counter > 3) {
-    //   setEditMode({counter: 0, editable: editable});
-    // }
 
     if (!editable) {
       const num = editMode.counter + 1;
@@ -92,7 +80,13 @@ const Fields = () => {
             setLoading(true);
             console.log('onsubmit');
             console.log(values);
-
+            await EditAccount({
+              name: values.username,
+              phone: values.phone,
+              email: values.email,
+            });
+            setEditMode({counter: 0, editable: false});
+            //fetchDetails()
             setLoading(false);
           }}
           validationSchema={formScheme}>
@@ -154,16 +148,12 @@ const Fields = () => {
                   </>
                 )}
                 <View style={{marginTop: layout.height * 0.011}} />
-                {/* <Input
-                  label="Password"
-                  onChangeText={handleChange('password')}
-                  onBlur={handleBlur('password')}
-                  value={values.password}
-                  secure
-                /> */}
               </KeyboardAvoidingView>
               <View style={estyles.termsBox}>
-                <TouchableOpacity onPress={() => {}}>
+                <TouchableOpacity
+                  onPress={() => {
+                    naviagtion.navigate(PasswordUpdateScreen.name);
+                  }}>
                   <Text style={estyles.infoText}>
                     <Text style={[estyles.infoText, estyles.greenInfoText]}>
                       Change Password

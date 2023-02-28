@@ -23,6 +23,7 @@ import AddressScreen from '../screens/AddressScreen';
 import AccountDetailsScreen from '../screens/AccountDetailsScreen';
 import OrdersScreen from '../screens/OrdersScreen';
 import AddAddressScreen from '../screens/AddAddressScreen';
+import PasswordUpdateScreen from '../screens/PasswordUpdateScreen';
 
 const Stack = createStackNavigator();
 
@@ -106,6 +107,10 @@ const Navigator = () => {
               <Stack.Screen
                 name={AddAddressScreen.name}
                 component={AddAddressScreen.component}
+              />
+              <Stack.Screen
+                name={PasswordUpdateScreen.name}
+                component={PasswordUpdateScreen.component}
               />
             </>
           )}
