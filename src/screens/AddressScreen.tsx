@@ -2,9 +2,9 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView,
   TouchableOpacity,
   FlatList,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {layout} from '../constants/Layout';
@@ -20,13 +20,14 @@ import AddAddressScreen from './AddAddressScreen';
 
 const AddressScreen = ({navigation}: any) => {
   const [address, setAddress] = useState<AddressType[]>();
-  const [flatlistLoading, setFlatlistLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   console.log(
     '🚀 ~ file: AddressScreen.tsx:16 ~ AddressScreen ~ address:',
     address,
   );
 
   async function getAddress() {
+    setLoading(true);
     const user_id = await EncryptedStorage.getItem('id');
     if (!user_id) {
       return;
@@ -43,6 +44,7 @@ const AddressScreen = ({navigation}: any) => {
       });
       setAddress(tempArr);
     }
+    setLoading(false);
   }
   useEffect(() => {
     getAddress();
@@ -63,6 +65,14 @@ const AddressScreen = ({navigation}: any) => {
     });
     setAddress(tempArr);
   };
+
+  if (loading) {
+    return (
+      <View style={styles.flex1}>
+        <ActivityIndicator size={'large'} />
+      </View>
+    );
+  }
 
   if (!address) {
     return;
@@ -87,7 +97,7 @@ const AddressScreen = ({navigation}: any) => {
             onRefresh={() => {
               getAddress();
             }}
-            refreshing={flatlistLoading}
+            refreshing={loading}
             showsVerticalScrollIndicator={false}
             renderItem={({item, index}) => {
               return (
@@ -179,6 +189,12 @@ const styles = StyleSheet.create({
   },
   space: {
     width: 30,
+  },
+  flex1: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
   },
 });
 
