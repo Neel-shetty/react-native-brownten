@@ -54,7 +54,10 @@ const Address = ({address, onPressRadio}: AddressPropType) => {
       <View style={styles.editContainer}>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate(AddAddressScreen.name);
+            navigation.navigate(AddAddressScreen.name, {
+              edit: true,
+              address: address,
+            });
           }}>
           <Pen />
         </TouchableOpacity>

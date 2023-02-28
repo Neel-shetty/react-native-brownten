@@ -1,6 +1,5 @@
 import {Alert} from 'react-native';
 import {api} from '.';
-import EncryptedStorage from 'react-native-encrypted-storage';
 
 interface props {
   name: string;
@@ -10,6 +9,7 @@ interface props {
   state: string;
   pincode: string;
   phone: string;
+  id: number;
 }
 
 export async function editAddress({
@@ -20,11 +20,11 @@ export async function editAddress({
   state,
   pincode,
   phone,
+  id,
 }: props) {
-  const user_id = await EncryptedStorage.getItem('id');
   const response = api
     .post('/user/update/address', {
-      user_id,
+      id,
       name,
       address1,
       address2,
@@ -49,7 +49,7 @@ export async function editAddress({
     });
   const result = await response;
   if (result.status === 1) {
-    return result.data;
+    Alert.alert('Success', result.message);
   } else {
     Alert.alert('Failed', result?.data);
   }

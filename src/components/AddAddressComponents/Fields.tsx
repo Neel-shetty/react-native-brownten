@@ -6,7 +6,7 @@ import {
   Text,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {layout} from '../../constants/Layout';
 import Button from '../Button';
 import Input from '../Input';
@@ -14,11 +14,15 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import {addAddress} from '../../api/AddAddress';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {editAddress} from '../../api/EditAddress';
+import {AddressType} from '../../api/fetchAddress';
 
 const Fields = () => {
   const [loading, setLoading] = useState<boolean>(false);
-
+  const [address, setAddress] = useState<AddressType>();
+  console.log('🚀 ~ file: Fields.tsx:24 ~ Fields ~ address:', address);
+  const route: any = useRoute();
   const navigation = useNavigation();
   const behavior = Platform.OS === 'ios' ? 'padding' : undefined;
   const formScheme = yup.object({
@@ -37,34 +41,18 @@ const Fields = () => {
       .length(6, 'Pincode must be 6 digits'),
   });
 
-  // const onChangeEdit = (editable: boolean) => {
-  //   console.log(
-  //     '🚀 ~ file: Fields.tsx:40 ~ onChangeEdit ~ editable:',
-  //     editable,
-  //   );
-  //   const prevCount = editMode.counter;
-  //   console.log(
-  //     '🚀 ~ file: Fields.tsx:45 ~ onChangeEdit ~ prevCount:',
-  //     prevCount,
-  //   );
-  //   //resetting the value when it goes more than the number of inputs
-  //   // if (editMode.counter > 3) {
-  //   //   setEditMode({counter: 0, editable: editable});
-  //   // }
+  useEffect(() => {
+    async function loadAddress() {}
+    if (route?.params?.edit === true) {
+      loadAddress();
+      const adr: AddressType = route?.params?.address;
+      setAddress(adr);
+    }
+  }, [route?.params?.edit, route?.params?.address]);
 
-  //   if (!editable) {
-  //     const num = editMode.counter + 1;
-  //     console.log('🚀 ~ file: Fields.tsx:51 ~ onChangeEdit ~ num:', num);
-  //     setEditMode({counter: num, editable: true});
-  //   } else if (editable) {
-  //     setEditMode({counter: editMode.counter - 1, editable: true});
-  //     console.log(editMode.counter);
-  //     if (editMode.counter === 1 && prevCount === 1) {
-  //       console.log('last condition');
-  //       setEditMode({counter: 0, editable: false});
-  //     }
-  //   }
-  // };
+  if (!address && route?.params?.edit === true) {
+    return;
+  }
 
   return (
     <ScrollView
@@ -72,30 +60,72 @@ const Fields = () => {
       showsVerticalScrollIndicator={false}>
       <View style={styles.fieldContainer}>
         <Formik
-          initialValues={{
-            name: '',
-            address1: '',
-            address2: '',
-            state: '',
-            city: '',
-            pincode: '',
-            phone: '',
-          }}
+          initialValues={
+            !address
+              ? {
+                  name: '',
+                  address1: '',
+                  address2: '',
+                  state: '',
+                  city: '',
+                  pincode: '',
+                  phone: '',
+                }
+              : {
+                  name: address.name,
+                  address1: address.address1,
+                  address2: address.address2,
+                  state: address.state,
+                  city: address.city,
+                  pincode: address.pincode,
+                  phone: address.phone,
+                }
+          }
           onSubmit={async values => {
             setLoading(true);
             console.log('onsubmit');
             console.log(values);
-            const result = await addAddress({
-              name: values.name,
-              address1: values.address1,
-              address2: values.address2,
-              city: values.city,
-              state: values.state,
-              pincode: values.pincode,
-              phone: values.phone,
-            });
-            console.log('🚀 ~ file: Fields.tsx:95 ~ Fields ~ result:', result);
-            navigation.goBack();
+            async function add() {
+              const result = await addAddress({
+                name: values.name,
+                address1: values.address1,
+                address2: values.address2,
+                city: values.city,
+                state: values.state,
+                pincode: values.pincode,
+                phone: values.phone,
+              });
+              console.log(
+                '🚀 ~ file: Fields.tsx:95 ~ Fields ~ result:',
+                result,
+              );
+              navigation.goBack();
+            }
+            async function edit() {
+              if (!address) {
+                return;
+              }
+              const result = await editAddress({
+                id: address.id,
+                name: values.name,
+                address1: values.address1,
+                address2: values.address2,
+                city: values.city,
+                state: values.state,
+                pincode: values.pincode,
+                phone: values.phone,
+              });
+              console.log(
+                '🚀 ~ file: Fields.tsx:95 ~ Fields ~ result:',
+                result,
+              );
+              navigation.goBack();
+            }
+            if (route?.params?.edit === true) {
+              edit();
+            } else {
+              add();
+            }
             setLoading(false);
           }}
           validationSchema={formScheme}>
