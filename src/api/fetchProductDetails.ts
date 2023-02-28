@@ -1,6 +1,6 @@
 import {api} from '.';
 
-export async function fetchProductDetails(slug) {
+export async function fetchProductDetails(slug: string) {
   return api
     .post('/product/detail', {slug: slug})
     .then(res => {

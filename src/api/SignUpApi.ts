@@ -1,6 +1,14 @@
 import {api} from '.';
 
-export async function SignUpApi({password, phone, email, name, image}) {
+interface props {
+  password: string;
+  phone: string;
+  email: string;
+  name: string;
+  image: any;
+}
+
+export async function SignUpApi({password, phone, email, name, image}: props) {
   console.log(
     '🚀 ~ file: SignUpApi.js:4 ~ SignUpApi ~ password',
     password,

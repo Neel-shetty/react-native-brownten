@@ -13,7 +13,9 @@ interface SectionProps {
 }
 
 const Section = ({goToPage, title, items, loading}: SectionProps) => {
-  if (loading) return <ActivityIndicator />;
+  if (loading) {
+    return <ActivityIndicator />;
+  }
   return (
     <View>
       <View style={styles.localBox}>

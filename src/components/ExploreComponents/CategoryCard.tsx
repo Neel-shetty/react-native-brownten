@@ -13,7 +13,7 @@ const CategoryCard = ({image, title, onPress}: CategoryCardProps) => {
   return (
     <TouchableOpacity
       onPress={() => onPress()}
-      style={[styles.card, {backgroundColor: 'white', borderColor: '#E2E2E2'}]}>
+      style={[styles.card, styles.green]}>
       <Image
         style={styles.image}
         source={{
@@ -52,6 +52,7 @@ const styles = EStyleSheet.create({
     fontSize: '1rem',
     letterSpacing: 0.1,
   },
+  green: {backgroundColor: 'white', borderColor: '#E2E2E2'},
 });
 
 export default CategoryCard;
