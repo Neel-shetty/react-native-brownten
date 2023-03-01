@@ -10,7 +10,7 @@ import OrderPreview from '../components/OrdersScreenComponents/OrderPreview';
 import {FlatList} from 'react-native';
 import {useQuery} from 'react-query';
 import {api} from '../api';
-import EncryptedStorage from 'react-native-encrypted-storage';
+// import EncryptedStorage from 'react-native-encrypted-storage';
 import OrderDetailScreen from './OrderDetailScreen';
 
 export interface OrdersResponseType {
@@ -41,7 +41,7 @@ export interface OrderType {
 const OrdersScreen = () => {
   const navigation: any = useNavigation();
   const {data} = useQuery<OrdersResponseType, Error>('orders', async () => {
-    const user_id = await EncryptedStorage.getItem('id');
+    // const user_id = await EncryptedStorage.getItem('id');
     return api.post('/user/order-history', {user_id: 2});
   });
   return (
@@ -60,14 +60,12 @@ const OrdersScreen = () => {
         <FlatList
           data={data?.data.data ? data.data.data : []}
           renderItem={item => {
-            console.log(
-              '🚀 ~ file: OrdersScreen.tsx:77 ~ OrdersScreen ~ item:',
-              item.item,
-            );
             return (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate(OrderDetailScreen.name, {order_id: ''});
+                  navigation.navigate(OrderDetailScreen.name, {
+                    order_id: item.item.order_id,
+                  });
                 }}>
                 <OrderPreview order={item.item} />
               </TouchableOpacity>

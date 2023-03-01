@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {useQuery} from 'react-query';
@@ -9,12 +9,17 @@ import {layout} from '../constants/Layout';
 import {colors} from '../constants/colors';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Details from '../components/OrderDetailComponents/Details';
-import {OrdersResponseType} from './OrdersScreen';
+import {OrderType} from './OrdersScreen';
+
+export interface SingleOrdersResponseType {
+  status: number;
+  data: {data: OrderType};
+}
 
 const OrderDetailScreen = () => {
   const navigation: any = useNavigation();
   const route: any = useRoute();
-  const {data} = useQuery<OrdersResponseType, Error>(
+  const {data} = useQuery<SingleOrdersResponseType, Error>(
     'singleOrder',
     async () => {
       return api.post('/user/order/detail', {
@@ -39,7 +44,7 @@ const OrderDetailScreen = () => {
         <View style={styles.space} />
       </View>
       <View style={styles.listContainer}>
-        <Details />
+        <Details order={data?.data?.data ? data?.data.data : null} />
       </View>
     </View>
   );
