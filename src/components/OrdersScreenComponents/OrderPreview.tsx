@@ -3,13 +3,22 @@ import React from 'react';
 import {layout} from '../../constants/Layout';
 import {colors} from '../../constants/colors';
 import {OrderType} from '../../screens/OrdersScreen';
+import {format} from 'date-fns';
 
 const OrderPreview = ({order}: {order: OrderType}) => {
+  if (!order) return;
+  const created_at = new Date(order.created_at);
+  const month = format(created_at, 'MMM');
+  const date = format(created_at, 'd');
+  const year = format(created_at, 'yyyy');
+  const day = format(created_at, 'iii');
   return (
     <View style={styles.root}>
       <View style={styles.infoContainer}>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Tue 28 Feb 2023</Text>
+          <Text style={styles.title}>
+            {day} {date} {month} {year}
+          </Text>
         </View>
         <View>
           <Text style={styles.subtitle} numberOfLines={3}>
@@ -20,7 +29,7 @@ const OrderPreview = ({order}: {order: OrderType}) => {
         </View>
       </View>
       <View style={styles.editContainer}>
-        <Text style={styles.cost}>$4500</Text>
+        <Text style={styles.cost}>₹{order.total_amount}</Text>
       </View>
     </View>
   );
