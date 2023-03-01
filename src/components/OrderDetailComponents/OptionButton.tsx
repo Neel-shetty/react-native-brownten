@@ -10,11 +10,7 @@ const OptionButton = ({
 }) => {
   console.log(selected);
   return (
-    <View
-      style={[
-        styles.root,
-        selected ? {backgroundColor: 'rgba(83, 177, 117, 0.1)'} : null,
-      ]}>
+    <View style={[styles.root, selected ? styles.green : null]}>
       <Text style={styles.title}>{title}</Text>
     </View>
   );
@@ -37,5 +33,8 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     fontSize: 20,
     color: 'black',
+  },
+  green: {
+    backgroundColor: 'rgba(83, 177, 117, 0.1)',
   },
 });

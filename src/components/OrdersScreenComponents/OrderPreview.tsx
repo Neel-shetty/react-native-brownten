@@ -6,7 +6,9 @@ import {OrderType} from '../../screens/OrdersScreen';
 import {format} from 'date-fns';
 
 const OrderPreview = ({order}: {order: OrderType}) => {
-  if (!order) return null;
+  if (!order) {
+    return null;
+  }
   const created_at = new Date(order.created_at);
   const month = format(created_at, 'MMM');
   const date = format(created_at, 'd');
