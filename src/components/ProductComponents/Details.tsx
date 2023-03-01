@@ -13,7 +13,11 @@ interface Details {
 }
 
 const Details = ({product}: Details) => {
-  
+  console.log(
+    '🚀 ~ file: Details.tsx:16 ~ Details ~ product:',
+    product.variants,
+  );
+
   return (
     <ScrollView
       contentContainerStyle={styles.root}
@@ -24,7 +28,6 @@ const Details = ({product}: Details) => {
             <View style={styles.flex}>
               <Text style={styles.title}>{product.name}</Text>
             </View>
-            <AntDesign name="hearto" size={24} color={'#7C7C7C'} />
           </View>
           <Text style={styles.info}>{product.variants[0].selling_price}g</Text>
         </View>
@@ -52,6 +55,9 @@ const Details = ({product}: Details) => {
         </View>
       </View>
       <View style={styles.flex}>
+        {product.variants.map(item => {
+          return <Text key={item.variant_id}>{JSON.stringify(item)}</Text>;
+        })}
         <Info product={product} />
       </View>
     </ScrollView>

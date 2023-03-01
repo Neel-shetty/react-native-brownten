@@ -23,16 +23,19 @@ const ProductList = ({}) => {
     fieldName: string;
     fieldValue: string;
   }) {
+    setLoading(true);
     api
       .post(`${link}`, {[fieldName]: fieldValue})
       .then(res => {
         setItems(res.data.data);
+        setLoading(false);
       })
       .catch(error => {
         if (error?.response) {
           console.log(error.response.data);
           Alert.alert('Failed', error.response.data.message);
         }
+        setLoading(false);
       });
   }
 

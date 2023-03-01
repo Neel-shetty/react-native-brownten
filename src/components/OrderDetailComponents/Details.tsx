@@ -1,14 +1,26 @@
 import {StyleSheet, View, Text} from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 import Toggle from './Toggle';
 import OrderPreview from '../OrdersScreenComponents/OrderPreview';
 import {layout} from '../../constants/Layout';
 
 const Details = () => {
+  const [info, setInfo] = useState(true);
+  const handlePressInfo = () => {
+    setInfo(true);
+  };
+  const handlePressItems = () => {
+    setInfo(false);
+  };
   return (
     <View style={styles.root}>
       <View style={styles.toggleContainer}>
-        <Toggle info={true} items={false} />
+        <Toggle
+          info={info}
+          items={!info}
+          onPressInfo={handlePressInfo}
+          onPressItems={handlePressItems}
+        />
       </View>
       <OrderPreview order={''} />
       <View style={styles.addressContainer}>

@@ -1,15 +1,27 @@
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import React from 'react';
 import OptionButton from './OptionButton';
 
-const Toggle = ({info, items}: {items: boolean; info: boolean}) => {
-  console.log('🚀 ~ file: Toggle.tsx:6 ~ Toggle ~ items:', items);
-  console.log('🚀 ~ file: Toggle.tsx:6 ~ Toggle ~ info:', info);
+const Toggle = ({
+  onPressInfo,
+  onPressItems,
+  info,
+  items,
+}: {
+  onPressInfo: () => void;
+  onPressItems: () => void;
+  items: boolean;
+  info: boolean;
+}) => {
   return (
     <View style={styles.root}>
-      <OptionButton selected={info} title="Info" />
+      <TouchableOpacity onPress={onPressInfo}>
+        <OptionButton selected={info} title="Info" />
+      </TouchableOpacity>
       <View style={styles.line} />
-      <OptionButton selected={items} title="Items" />
+      <TouchableOpacity onPress={onPressItems}>
+        <OptionButton selected={items} title="Items" />
+      </TouchableOpacity>
     </View>
   );
 };
