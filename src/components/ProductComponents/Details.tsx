@@ -13,6 +13,7 @@ interface Details {
 }
 
 const Details = ({product}: Details) => {
+  
   return (
     <ScrollView
       contentContainerStyle={styles.root}

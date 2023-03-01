@@ -1,4 +1,10 @@
-import {StyleSheet, View, ActivityIndicator, FlatList} from 'react-native';
+import {
+  StyleSheet,
+  View,
+  ActivityIndicator,
+  FlatList,
+  Text,
+} from 'react-native';
 import React from 'react';
 import FoodCard from './FoodCard';
 import SectionTitle from './SectionTitle';
@@ -13,6 +19,7 @@ interface SectionProps {
 }
 
 const Section = ({goToPage, title, items, loading}: SectionProps) => {
+  console.log(items);
   if (loading) {
     return <ActivityIndicator />;
   }
@@ -24,8 +31,9 @@ const Section = ({goToPage, title, items, loading}: SectionProps) => {
       <View style={styles.list}>
         <FlatList
           data={items}
-          renderItem={({item}: {item: ProductPreviewType}) => {
-            return <FoodCard item={item} />;
+          renderItem={({item}) => {
+            console.log(item, '1,2');
+            return <Text>abc</Text>;
           }}
           horizontal
           showsHorizontalScrollIndicator={false}

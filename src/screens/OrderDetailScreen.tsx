@@ -1,44 +1,18 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {TouchableOpacity} from 'react-native';
-import {layout} from '../constants/Layout';
-import {colors} from '../constants/colors';
-import EStyleSheet from 'react-native-extended-stylesheet';
-import Ionicons from 'react-native-vector-icons/EvilIcons';
-import OrderPreview from '../components/OrdersScreenComponents/OrderPreview';
-import {FlatList} from 'react-native';
 import {useQuery} from 'react-query';
 import {api} from '../api';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import OrderDetailScreen from './OrderDetailScreen';
+import OrderPreview from '../components/OrdersScreenComponents/OrderPreview';
+import Ionicons from 'react-native-vector-icons/EvilIcons';
+import {layout} from '../constants/Layout';
+import {colors} from '../constants/colors';
+import EStyleSheet from 'react-native-extended-stylesheet';
+import Toggle from '../components/OrderDetailComponents/Toggle';
+import Details from '../components/OrderDetailComponents/Details';
 
-interface OrdersResponseType {
-  status: number;
-  data: OrderType[];
-}
-
-interface OrderType {
-  id: number;
-  user_id: number;
-  order_id: string;
-  order_status: string;
-  username: string;
-  shipping_address: string;
-  item_name: string;
-  item_weight: string;
-  item_qty: string;
-  item_price: string;
-  shipping_charge: string;
-  total_amount: string;
-  payment_method: string;
-  payment_status: string;
-  transation_id: string;
-  created_at: string;
-  updated_at: string;
-}
-
-const OrdersScreen = () => {
+const OrderDetailScreen = () => {
   const navigation: any = useNavigation();
   const {data} = useQuery<OrdersResponseType, Error>('orders', async () => {
     const user_id = await EncryptedStorage.getItem('id');
@@ -57,29 +31,17 @@ const OrdersScreen = () => {
           }}>
           <Ionicons name="chevron-left" size={30} color={'black'} />
         </TouchableOpacity>
-        <Text style={eStyles.text}>My Orders</Text>
+        <Text style={eStyles.text}>Order Details</Text>
         <View style={styles.space} />
       </View>
       <View style={styles.listContainer}>
-        <FlatList
-          data={[1, 2, 3, 4]}
-          renderItem={() => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate(OrderDetailScreen.name);
-                }}>
-                <OrderPreview order={''} />
-              </TouchableOpacity>
-            );
-          }}
-        />
+        <Details />
       </View>
     </View>
   );
 };
 
-export default {component: OrdersScreen, name: 'OrdersScreen'};
+export default {component: OrderDetailScreen, name: 'OrderDetailScreen'};
 
 const styles = StyleSheet.create({
   root: {

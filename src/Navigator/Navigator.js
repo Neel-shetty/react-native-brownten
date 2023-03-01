@@ -24,6 +24,7 @@ import AccountDetailsScreen from '../screens/AccountDetailsScreen';
 import OrdersScreen from '../screens/OrdersScreen';
 import AddAddressScreen from '../screens/AddAddressScreen';
 import PasswordUpdateScreen from '../screens/PasswordUpdateScreen';
+import OrderDetailScreen from '../screens/OrderDetailScreen';
 
 const Stack = createStackNavigator();
 
@@ -111,6 +112,10 @@ const Navigator = () => {
               <Stack.Screen
                 name={PasswordUpdateScreen.name}
                 component={PasswordUpdateScreen.component}
+              />
+              <Stack.Screen
+                name={OrderDetailScreen.name}
+                component={OrderDetailScreen.component}
               />
             </>
           )}

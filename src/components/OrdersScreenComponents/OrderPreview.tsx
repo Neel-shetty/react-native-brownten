@@ -1,12 +1,9 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {TouchableOpacity} from 'react-native';
 import {layout} from '../../constants/Layout';
 import {colors} from '../../constants/colors';
 
 const OrderPreview = ({order}) => {
-  const navigation: any = useNavigation();
   return (
     <View style={styles.root}>
       <View style={styles.infoContainer}>
