@@ -19,7 +19,6 @@ interface SectionProps {
 }
 
 const Section = ({goToPage, title, items, loading}: SectionProps) => {
-  console.log(items);
   if (loading) {
     return <ActivityIndicator />;
   }

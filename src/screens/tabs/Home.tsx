@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, ScrollView, Dimensions, Alert} from 'react-native';
+import {View, ScrollView, Dimensions, Alert, StatusBar} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Section from '../../components/HomeScreenComponents/Section';
 import Banner from '../../components/HomeScreenComponents/Banner';
@@ -62,6 +62,14 @@ const Home = () => {
   }
   return (
     <ScrollView style={styles.container}>
+      <StatusBar
+        animated={true}
+        backgroundColor="white"
+        barStyle={'dark-content'}
+        showHideTransition={'fade'}
+        hidden={false}
+      />
+
       {/* <Header /> */}
       <SearchBarHeader />
       <Banner />

@@ -13,12 +13,12 @@ import {api} from '../api';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import OrderDetailScreen from './OrderDetailScreen';
 
-interface OrdersResponseType {
+export interface OrdersResponseType {
   status: number;
-  data: OrderType[];
+  data: {data: OrderType[]};
 }
 
-interface OrderType {
+export interface OrderType {
   id: number;
   user_id: number;
   order_id: string;
@@ -42,12 +42,8 @@ const OrdersScreen = () => {
   const navigation: any = useNavigation();
   const {data} = useQuery<OrdersResponseType, Error>('orders', async () => {
     const user_id = await EncryptedStorage.getItem('id');
-    return api.post('/user/order-history', {user_id});
+    return api.post('/user/order-history', {user_id: 2});
   });
-  console.log(
-    '🚀 ~ file: OrdersScreen.tsx:46 ~ const{data}=useQuery<OrdersResponseType,Error> ~ data:',
-    data?.data,
-  );
   return (
     <View style={styles.root}>
       <View style={styles.headerContainer}>
@@ -62,14 +58,18 @@ const OrdersScreen = () => {
       </View>
       <View style={styles.listContainer}>
         <FlatList
-          data={[1, 2, 3, 4]}
-          renderItem={() => {
+          data={data?.data.data ? data.data.data : []}
+          renderItem={item => {
+            console.log(
+              '🚀 ~ file: OrdersScreen.tsx:77 ~ OrdersScreen ~ item:',
+              item.item,
+            );
             return (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate(OrderDetailScreen.name);
+                  navigation.navigate(OrderDetailScreen.name, {order_id: ''});
                 }}>
-                <OrderPreview order={''} />
+                <OrderPreview order={item.item} />
               </TouchableOpacity>
             );
           }}

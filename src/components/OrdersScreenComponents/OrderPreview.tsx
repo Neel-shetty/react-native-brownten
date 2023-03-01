@@ -2,8 +2,9 @@ import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {layout} from '../../constants/Layout';
 import {colors} from '../../constants/colors';
+import {OrderType} from '../../screens/OrdersScreen';
 
-const OrderPreview = ({order}) => {
+const OrderPreview = ({order}: {order: OrderType}) => {
   return (
     <View style={styles.root}>
       <View style={styles.infoContainer}>
@@ -12,7 +13,9 @@ const OrderPreview = ({order}) => {
         </View>
         <View>
           <Text style={styles.subtitle} numberOfLines={3}>
-            {'Order ID - 14089114\n' + 'Order Status - Delivered\n' + '6 items'}
+            {`Order ID - ${order.order_id}\n` +
+              `Order Status - ${order.order_status}\n` +
+              `${order.item_qty} items`}
           </Text>
         </View>
       </View>

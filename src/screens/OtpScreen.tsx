@@ -13,7 +13,6 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import SignScaffold from '../components/SignScaffold';
-import Tabs from './Tabs';
 import {Formik} from 'formik';
 import * as yup from 'yup';
 import {OtpApi, verifyOtp} from '../api/OtpApi';
@@ -22,24 +21,16 @@ import {useRoute} from '@react-navigation/native';
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
 const logo = require('../../assets/images/logo-colour.png');
 
-interface otpProps {
-  navigation: any;
-}
-
-const OtpScreen = ({navigation}: otpProps) => {
+const OtpScreen = () => {
   const [loading, setLoading] = useState(false);
   const behavior = Platform.OS === 'ios' ? 'padding' : undefined;
 
-  const route = useRoute();
+  const route: any = useRoute();
   console.log('🚀 ~ file: OtpScreen.tsx:36 ~ route', route.params);
 
   const formScheme = yup.object({
     otp: yup.string().required('OTP is required!'),
   });
-
-  const goToHome = () => {
-    navigation.navigate(Tabs.name);
-  };
 
   useEffect(() => {
     const sendOtpToUser = async () => {

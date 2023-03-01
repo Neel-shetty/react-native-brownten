@@ -1,23 +1,27 @@
 import {StyleSheet, Text, View, TouchableOpacity, FlatList} from 'react-native';
 import React from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {useQuery} from 'react-query';
 import {api} from '../api';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import OrderPreview from '../components/OrdersScreenComponents/OrderPreview';
 import Ionicons from 'react-native-vector-icons/EvilIcons';
 import {layout} from '../constants/Layout';
 import {colors} from '../constants/colors';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import Toggle from '../components/OrderDetailComponents/Toggle';
 import Details from '../components/OrderDetailComponents/Details';
+import {OrdersResponseType} from './OrdersScreen';
 
 const OrderDetailScreen = () => {
   const navigation: any = useNavigation();
-  const {data} = useQuery<OrdersResponseType, Error>('orders', async () => {
-    const user_id = await EncryptedStorage.getItem('id');
-    return api.post('/user/order-history', {user_id});
-  });
+  const route: any = useRoute();
+  const {data} = useQuery<OrdersResponseType, Error>(
+    'singleOrder',
+    async () => {
+      return api.post('/user/order/detail', {
+        order_id: route?.params?.order_id,
+      });
+    },
+  );
   console.log(
     '🚀 ~ file: OrdersScreen.tsx:46 ~ const{data}=useQuery<OrdersResponseType,Error> ~ data:',
     data?.data,

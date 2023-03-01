@@ -1,22 +1,49 @@
 import {ScrollView, StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {layout} from '../../constants/Layout';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {colors} from '../../constants/colors';
 import RenderHtml, {defaultSystemFonts} from 'react-native-render-html';
 import {ProductProps} from '../../screens/ProductScreen';
+import VariantInfo from './VariantInfo';
+import {variantType} from '../../screens/tabs/Home';
+import CartButton from './CartButton';
 
 interface Details {
   product: ProductProps;
 }
 
+interface selectVariant {
+  selected: boolean;
+  variant: variantType;
+}
+
 const Details = ({product}: Details) => {
-  console.log(
-    '🚀 ~ file: Details.tsx:16 ~ Details ~ product:',
-    product.variants,
+  const [variants, setvariants] = useState<selectVariant[]>([
+    {
+      selected: true,
+      variant: product.variants[0],
+    },
+  ]);
+  const [currentVariant, setCurrentVariant] = useState<variantType>(
+    product.variants[0],
   );
+  console.log(
+    '🚀 ~ file: Details.tsx:31 ~ Details ~ currentVariant:',
+    currentVariant,
+  );
+  console.log('🚀 ~ file: Details.tsx:28 ~ Details ~ variants:', variants);
+
+  useEffect(() => {
+    let tempArr: selectVariant[] = [];
+    for (let i = 0; i < product.variants.length; i++) {
+      if (i === 0) {
+        tempArr.push({selected: true, variant: product.variants[i]});
+      } else {
+        tempArr.push({selected: false, variant: product.variants[i]});
+      }
+    }
+    setvariants(tempArr);
+  }, [product.variants]);
 
   return (
     <ScrollView
@@ -29,34 +56,49 @@ const Details = ({product}: Details) => {
               <Text style={styles.title}>{product.name}</Text>
             </View>
           </View>
-          <Text style={styles.info}>{product.variants[0].selling_price}g</Text>
+          <Text style={styles.info}>
+            {currentVariant.weight + ' '}
+            {currentVariant.unit}
+          </Text>
         </View>
         <View style={styles.secondContainer}>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              onPress={() => null}
-              style={styles.quantityContainer}>
-              <Icon name="minus" size={24} color={'#B3B3B3'} />
-            </TouchableOpacity>
-            <View style={styles.button}>
-              <Text style={styles.quantity}>1</Text>
-            </View>
-            <TouchableOpacity
-              onPress={() => null}
-              style={styles.quantityContainer}>
-              <Icon name="plus" size={24} color={colors.green} />
-            </TouchableOpacity>
-          </View>
+          <CartButton />
           <View style={styles.priceContainer}>
-            <Text style={styles.price}>
-              ₹{product.variants[0].selling_price}
-            </Text>
+            <Text style={styles.price}>₹{currentVariant.selling_price}</Text>
           </View>
         </View>
       </View>
       <View style={styles.flex}>
-        {product.variants.map(item => {
-          return <Text key={item.variant_id}>{JSON.stringify(item)}</Text>;
+        {variants.map(item => {
+          return (
+            <TouchableOpacity
+              onPress={() => {
+                setCurrentVariant(item.variant);
+                let tempArr: selectVariant[] = [];
+                for (let i = 0; i < product.variants.length; i++) {
+                  if (
+                    variants[i].variant.variant_id === item.variant.variant_id
+                  ) {
+                    tempArr.push({
+                      selected: true,
+                      variant: variants[i].variant,
+                    });
+                  } else {
+                    tempArr.push({
+                      selected: false,
+                      variant: variants[i].variant,
+                    });
+                  }
+                }
+                setvariants(tempArr);
+              }}>
+              <VariantInfo
+                key={item.variant.variant_id}
+                variant={item.variant}
+                selected={item.selected}
+              />
+            </TouchableOpacity>
+          );
         })}
         <Info product={product} />
       </View>
@@ -177,30 +219,6 @@ const styles = StyleSheet.create({
   info: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 16,
-  },
-  button: {
-    borderColor: '#F0F0F0',
-    borderWidth: 1,
-    // width: 40,
-    // height: 40,
-    borderRadius: 15,
-    // padding: 16,
-    width: 50,
-    height: 50,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  buttonContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 10,
-  },
-  quantityContainer: {
-    marginHorizontal: 15,
-  },
-  quantity: {
-    fontFamily: 'Poppins-SemiBold',
-    fontSize: 18,
   },
   secondContainer: {
     width: layout.widthp,
