@@ -16,6 +16,7 @@ import Button from '../../components/Button';
 import AddressScreen from '../AddressScreen';
 import AccountDetailsScreen from '../AccountDetailsScreen';
 import OrdersScreen from '../OrdersScreen';
+import RazorPayScreen from '../RazorPayScreen';
 
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 const AccountTab = () => {
@@ -40,6 +41,7 @@ const AccountTab = () => {
     {
       label: 'Payment Methods',
       icon: <AccountIcons.PaymentIcon color={'#181725'} />,
+      navigateTo: RazorPayScreen.name,
     },
     {
       label: 'Help',

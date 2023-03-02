@@ -25,6 +25,7 @@ import OrdersScreen from '../screens/OrdersScreen';
 import AddAddressScreen from '../screens/AddAddressScreen';
 import PasswordUpdateScreen from '../screens/PasswordUpdateScreen';
 import OrderDetailScreen from '../screens/OrderDetailScreen';
+import RazorPayScreen from '../screens/RazorPayScreen';
 
 const Stack = createStackNavigator();
 
@@ -116,6 +117,10 @@ const Navigator = () => {
               <Stack.Screen
                 name={OrderDetailScreen.name}
                 component={OrderDetailScreen.component}
+              />
+              <Stack.Screen
+                name={RazorPayScreen.name}
+                component={RazorPayScreen.component}
               />
             </>
           )}
