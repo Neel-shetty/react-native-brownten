@@ -1,15 +1,15 @@
 import {StyleSheet, Text, View, Button, Alert} from 'react-native';
 import React from 'react';
-import RazorpayCheckout from 'react-native-razorpay';
+import RazorpayCheckout, {CheckoutOptions} from 'react-native-razorpay';
 
 const RazorPayScreen = () => {
   function pay() {
-    var options = {
+    var options: CheckoutOptions = {
       description: 'Credits towards consultation',
       image: 'https://i.imgur.com/3g7nmJC.jpg',
       currency: 'INR',
       key: 'rzp_live_DuYBNnUQGI2bMj',
-      amount: '1',
+      amount: 1,
       name: 'Acme Corp',
       order_id: 'order_DslnoIgkIDL8Zt', //Replace this with an order_id created using Orders API.
       prefill: {
