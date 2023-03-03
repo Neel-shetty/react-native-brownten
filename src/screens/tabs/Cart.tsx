@@ -7,6 +7,8 @@ import {layout} from '../../constants/Layout';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CustomBackdrop from '../../components/CartComponents/CustomBackdrop';
+import CartItem from '../../components/CartComponents/CartItem';
+import SheetItem from '../../components/CartComponents/SheetItem';
 
 const CartTab = ({navigation}: any) => {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
@@ -68,6 +70,15 @@ const CartTab = ({navigation}: any) => {
           <View style={styles.checkoutContainer}>
             <View style={styles.bottomSheetHeaderContainer}>
               <Text style={eStyles.text}>Checkout</Text>
+            </View>
+            <View style={styles.itemContainer}>
+              <SheetItem
+                onPress={() => {
+                  console.log('pressed');
+                }}
+                title="Payment Method"
+                value="Online"
+              />
             </View>
           </View>
         </BottomSheet>
