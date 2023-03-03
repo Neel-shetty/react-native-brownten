@@ -1,4 +1,4 @@
-import React, {useCallback, useMemo, useRef, useState, useEffect} from 'react';
+import React, {useCallback, useMemo, useRef, useState} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import CartList from '../../components/CartComponents/CartList';
 import Button from '../../components/Button';
@@ -7,9 +7,8 @@ import {layout} from '../../constants/Layout';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CustomBackdrop from '../../components/CartComponents/CustomBackdrop';
-import {setBottomSheetShown} from '../../store/uiTrigger';
 
-const CartTab = ({navigation}) => {
+const CartTab = ({navigation}: any) => {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
 
   // ref
@@ -19,16 +18,19 @@ const CartTab = ({navigation}) => {
   const snapPoints = useMemo(() => ['25%', '50%'], []);
 
   // callbacks
-  const handleSheetChanges = useCallback((index: number) => {
-    console.log('handleSheetChanges', index);
-    if (index === 1) {
-      navigation.setOptions({tabBarStyle: {display: 'none'}});
-    }
-    if (index === -1) {
-      setShowBottomSheet(false);
-      navigation.setOptions({tabBarStyle: {display: 'flex'}});
-    }
-  }, []);
+  const handleSheetChanges = useCallback(
+    (index: number) => {
+      console.log('handleSheetChanges', index);
+      if (index === 1) {
+        navigation.setOptions({tabBarStyle: {display: 'none'}});
+      }
+      if (index === -1) {
+        setShowBottomSheet(false);
+        navigation.setOptions({tabBarStyle: {display: 'flex'}});
+      }
+    },
+    [navigation],
+  );
 
   // useEffect(() => {
   //   navigation.setOptions({tabBarStyle: {display: 'flex'}});
@@ -64,7 +66,9 @@ const CartTab = ({navigation}) => {
           // }}
           onChange={handleSheetChanges}>
           <View style={styles.checkoutContainer}>
-            <Text>Awesome 🎉</Text>
+            <View style={styles.bottomSheetHeaderContainer}>
+              <Text style={eStyles.text}>Checkout</Text>
+            </View>
           </View>
         </BottomSheet>
       ) : null}
@@ -112,12 +116,22 @@ const styles = StyleSheet.create({
   checkoutContainer: {
     flex: 1,
     alignItems: 'center',
+    // justifyContent: 'center',
+  },
+  bottomSheetHeaderContainer: {
+    width: layout.width,
+    borderBottomWidth: 1,
+    borderColor: '#e2e2e2',
+    paddingHorizontal: layout.width * 0.05,
+    paddingBottom: 10,
+    // backgroundColor: 'pink',
+    // alignItems: 'flex-start',
   },
 });
 
 const eStyles = EStyleSheet.create({
   text: {
-    alignSelf: 'center',
+    // alignSelf: 'center',
     color: 'black',
     fontFamily: 'Poppins-SemiBold',
     fontSize: '1.125rem',
