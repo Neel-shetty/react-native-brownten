@@ -11,7 +11,7 @@ const RazorPayScreen = () => {
       key: 'rzp_live_DuYBNnUQGI2bMj',
       amount: 1,
       name: 'Acme Corp',
-      order_id: 'order_DslnoIgkIDL8Zt', //Replace this with an order_id created using Orders API.
+      order_id: 'order_LMxl2u6UGi2tw8', //Replace this with an order_id created using Orders API.
       prefill: {
         email: 'gaurav.kumar@example.com',
         contact: '9191919191',

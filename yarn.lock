@@ -2003,6 +2003,11 @@
   dependencies:
     ts-toolbelt "^6.15.1"
 
+"@types/react-native-razorpay@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@types/react-native-razorpay/-/react-native-razorpay-2.2.1.tgz#5acaaf3f14bec5eb892f6a6e9bf7f13eacd44d1c"
+  integrity sha512-0LBRxLyAuwvYAdbnmVkARu6ECoae83ZtTQSn5bqMAykPxikSMRSFa6waB1QR/cCxHzhc7kbvcR7bwwsB3/ZEOA==
+
 "@types/react-native-vector-icons@^6.4.13":
   version "6.4.13"
   resolved "https://registry.yarnpkg.com/@types/react-native-vector-icons/-/react-native-vector-icons-6.4.13.tgz#28b34d15094e040718beefb67cb3eff0c4994cb6"

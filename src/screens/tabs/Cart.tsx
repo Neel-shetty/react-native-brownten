@@ -1,12 +1,39 @@
-import React from 'react';
+import React, {useCallback, useMemo, useRef, useState, useEffect} from 'react';
 import {View, StyleSheet, Text} from 'react-native';
 import CartList from '../../components/CartComponents/CartList';
 import Button from '../../components/Button';
 import {colors} from '../../constants/colors';
 import {layout} from '../../constants/Layout';
 import EStyleSheet from 'react-native-extended-stylesheet';
+import BottomSheet from '@gorhom/bottom-sheet';
+import CustomBackdrop from '../../components/CartComponents/CustomBackdrop';
+import {setBottomSheetShown} from '../../store/uiTrigger';
 
-const CartTab = () => {
+const CartTab = ({navigation}) => {
+  const [showBottomSheet, setShowBottomSheet] = useState(false);
+
+  // ref
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ['25%', '50%'], []);
+
+  // callbacks
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+    if (index === 1) {
+      navigation.setOptions({tabBarStyle: {display: 'none'}});
+    }
+    if (index === -1) {
+      setShowBottomSheet(false);
+      navigation.setOptions({tabBarStyle: {display: 'flex'}});
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   navigation.setOptions({tabBarStyle: {display: 'flex'}});
+  // }, []);
+
   return (
     <View style={styles.root}>
       <View style={styles.headerContainer}>
@@ -19,10 +46,28 @@ const CartTab = () => {
         <Button
           text="Go To Checkout"
           bgColour={colors.green}
-          onPress={() => {}}
+          onPress={() => {
+            setShowBottomSheet(true);
+          }}
           txtColour="white"
         />
       </View>
+      {showBottomSheet ? (
+        <BottomSheet
+          ref={bottomSheetRef}
+          index={showBottomSheet ? 1 : -1}
+          snapPoints={snapPoints}
+          backdropComponent={CustomBackdrop}
+          enablePanDownToClose={true}
+          // onClose={() => {
+          //   setBottomSheetShown(false);
+          // }}
+          onChange={handleSheetChanges}>
+          <View style={styles.checkoutContainer}>
+            <Text>Awesome 🎉</Text>
+          </View>
+        </BottomSheet>
+      ) : null}
     </View>
   );
 };
@@ -63,6 +108,10 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     position: 'absolute',
     bottom: 0,
+  },
+  checkoutContainer: {
+    flex: 1,
+    alignItems: 'center',
   },
 });
 
