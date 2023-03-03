@@ -78,6 +78,15 @@ const CartTab = ({navigation}: any) => {
                 }}
                 title="Payment Method"
                 value="Online"
+                field="payment"
+              />
+              <SheetItem
+                onPress={() => {
+                  console.log('pressed');
+                }}
+                title="Total Cost"
+                value="$25.99"
+                field="cost"
               />
             </View>
           </View>
