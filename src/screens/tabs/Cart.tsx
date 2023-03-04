@@ -7,7 +7,6 @@ import {layout} from '../../constants/Layout';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CustomBackdrop from '../../components/CartComponents/CustomBackdrop';
-import CartItem from '../../components/CartComponents/CartItem';
 import SheetItem from '../../components/CartComponents/SheetItem';
 
 const CartTab = ({navigation}: any) => {

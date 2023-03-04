@@ -5,18 +5,21 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import Navigator from './src/Navigator/Navigator';
 import {QueryClient, QueryClientProvider} from 'react-query';
 import {Provider} from 'react-redux';
-import {store} from './src/store';
+import {persistor, store} from './src/store';
+import {PersistGate} from 'redux-persist/integration/react';
 
 const queryClient = new QueryClient();
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <GestureHandlerRootView style={styles.root}>
-          <Navigator />
-        </GestureHandlerRootView>
-      </QueryClientProvider>
+    <Provider loading={null} store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <QueryClientProvider client={queryClient}>
+          <GestureHandlerRootView style={styles.root}>
+            <Navigator />
+          </GestureHandlerRootView>
+        </QueryClientProvider>
+      </PersistGate>
     </Provider>
   );
 };

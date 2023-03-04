@@ -7,6 +7,8 @@ import {ProductProps} from '../../screens/ProductScreen';
 import VariantInfo from './VariantInfo';
 import {variantType} from '../../screens/tabs/Home';
 import CartButton from './CartButton';
+import {useDispatch} from 'react-redux';
+import {addToCart} from '../../store/cart';
 
 interface Details {
   product: ProductProps;
@@ -27,11 +29,21 @@ const Details = ({product}: Details) => {
   const [currentVariant, setCurrentVariant] = useState<variantType>(
     product.variants[0],
   );
-  console.log(
-    '🚀 ~ file: Details.tsx:31 ~ Details ~ currentVariant:',
-    currentVariant,
-  );
-  console.log('🚀 ~ file: Details.tsx:28 ~ Details ~ variants:', variants);
+  const [quantity, setQuantity] = useState(0);
+
+  const dispatch = useDispatch();
+  function addItemToCart() {
+    setQuantity(quantity + 1);
+    dispatch(
+      addToCart({
+        id: product.id,
+        image: product.images[0],
+        name: product.name,
+        quantity: quantity,
+        variant: currentVariant,
+      }),
+    );
+  }
 
   useEffect(() => {
     let tempArr: selectVariant[] = [];
@@ -62,7 +74,7 @@ const Details = ({product}: Details) => {
           </Text>
         </View>
         <View style={styles.secondContainer}>
-          <CartButton />
+          <CartButton addItemToCart={addItemToCart} />
           <View style={styles.priceContainer}>
             <Text style={styles.price}>₹{currentVariant.selling_price}</Text>
           </View>
@@ -72,6 +84,7 @@ const Details = ({product}: Details) => {
         {variants.map(item => {
           return (
             <TouchableOpacity
+              key={Math.random()}
               onPress={() => {
                 setCurrentVariant(item.variant);
                 let tempArr: selectVariant[] = [];

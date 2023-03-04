@@ -2,20 +2,31 @@ import {FlatList, StyleSheet, View} from 'react-native';
 import React from 'react';
 import {layout} from '../../constants/Layout';
 import CartItem from './CartItem';
+import {useSelector} from 'react-redux';
+import {cartItemType} from '../../store/cart';
+import {RootState} from '../../store';
 
 const CartList = () => {
+  const items: cartItemType[] = useSelector(
+    (state: RootState) => state.cart.cartItems,
+  );
+  console.log('🚀 ~ file: CartList.tsx:9 ~ CartList ~ items:', items);
   return (
     <View style={styles.root}>
       <FlatList
-        data={[1, 2, 3, 4, 5, 6, 7, 8]}
-        renderItem={() => (
-          <View style={{width: layout.width}}>
+        data={items}
+        renderItem={({item}) => (
+          <View
+            style={{
+              width: layout.width,
+            }}>
             <CartItem
-              name={'Bell Pepper Red'}
-              quantity={1}
-              info={'1kg, Price'}
-              cost={4.99}
-              image="https://media.istockphoto.com/id/1130564105/photo/sweet-pepper-paprika-isolated-on-white-background-clipping-path-full-depth-of-field.jpg?s=612x612&w=0&k=20&c=m_01GdGMntpr6B3tiplqxbtPN8zTKN1xfucAaBu3Mkw="
+              name={item.name}
+              quantity={item.quantity}
+              info={`${item.variant.weight} ${item.variant.unit}`}
+              cost={item.variant.price}
+              image={item.image}
+              id={item.id}
             />
           </View>
         )}
@@ -31,7 +42,7 @@ export default CartList;
 const styles = StyleSheet.create({
   root: {
     alignItems: 'center',
-    justifyContent: 'center',
     width: layout.width,
+    flex: 1,
   },
 });

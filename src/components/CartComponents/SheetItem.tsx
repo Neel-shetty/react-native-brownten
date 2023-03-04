@@ -17,6 +17,7 @@ const SheetItem = ({
 }) => {
   const [idk, setIdk] = useState<boolean>(false);
   const [optionSelected, setoptionSelected] = useState(true);
+  const [selected, setSelected] = useState('Online');
   const initalOptions = [
     {title: 'Online', selected: true},
     {title: 'Cash on Delivery', selected: false},
@@ -33,6 +34,7 @@ const SheetItem = ({
               key={index}
               onPress={() => {
                 setIdk(false);
+                setSelected(item.title);
                 if (item.title === 'Online') {
                   setOptions([
                     {title: item.title, selected: true},
@@ -62,18 +64,6 @@ const SheetItem = ({
             </TouchableOpacity>
           );
         })}
-        {/* <TouchableOpacity>
-          <View
-            style={[
-              styles.optionContainer,
-              !optionSelected ? {backgroundColor: colors.green} : null,
-            ]}>
-            <Text
-              style={[styles.value, !optionSelected ? {color: 'white'} : null]}>
-              Cash on Delivery
-            </Text>
-          </View>
-        </TouchableOpacity> */}
       </View>
     );
   }
@@ -88,7 +78,9 @@ const SheetItem = ({
               setIdk(true);
             }}>
             <View style={styles.valueContainer}>
-              <Text style={styles.value}>{value}</Text>
+              <Text style={styles.value}>
+                {selected === 'Cash on Delivery' ? 'COD' : selected}
+              </Text>
               <EvilIcons name={'chevron-right'} size={34} color={'black'} />
             </View>
           </TouchableOpacity>

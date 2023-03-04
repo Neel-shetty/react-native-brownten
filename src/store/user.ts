@@ -1,6 +1,9 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {PayloadAction, createSlice} from '@reduxjs/toolkit';
 
-const initialState = {
+interface initalStateType {
+  loggedIn: boolean;
+}
+const initialState: initalStateType = {
   loggedIn: true,
 };
 
@@ -8,7 +11,7 @@ export const UserSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    setLoggedIn: (state, action) => {
+    setLoggedIn: (state, action: PayloadAction<boolean>) => {
       state.loggedIn = action.payload;
     },
   },

@@ -4,34 +4,50 @@ import {layout} from '../../constants/Layout';
 import {colors} from '../../constants/colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {useDispatch} from 'react-redux';
+import {decrementQuantity, incrementQuantity} from '../../store/cart';
 
 interface props {
   name: string;
   quantity: number;
   info: string;
-  cost: number;
+  cost: string;
   image: string;
+  id: number;
 }
 
-const CartItem = ({name, quantity, info, cost, image}: props) => {
+const CartItem = ({name, quantity, info, cost, image, id}: props) => {
+  const dispatch = useDispatch();
+  function increase() {
+    dispatch(incrementQuantity(id));
+  }
+  function decrease() {
+    dispatch(decrementQuantity(id));
+  }
   return (
     <View style={styles.root}>
       <View style={styles.imageContainer}>
-        <Image source={{uri: image}} style={styles.image} />
+        <Image
+          source={{uri: image}}
+          style={styles.image}
+          resizeMode="contain"
+        />
       </View>
       <View style={styles.middleContainer}>
         <View style={styles.idkContainer}>
-          <Text style={styles.name}>{name}</Text>
+          <Text style={styles.name} numberOfLines={1}>
+            {name}
+          </Text>
           <Text style={styles.info}>{info}</Text>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={() => null} style={styles.button}>
+            <TouchableOpacity onPress={decrease} style={styles.button}>
               {/* <PlusIcon /> */}
               <Icon name="minus" size={24} color={'#B3B3B3'} />
             </TouchableOpacity>
             <View style={styles.quantityContainer}>
               <Text style={styles.name}>{quantity}</Text>
             </View>
-            <TouchableOpacity onPress={() => null} style={styles.button}>
+            <TouchableOpacity onPress={increase} style={styles.button}>
               {/* <PlusIcon /> */}
               <Icon name="plus" size={24} color={colors.green} />
             </TouchableOpacity>
@@ -67,6 +83,7 @@ const styles = StyleSheet.create({
   image: {
     height: 90,
     width: 90,
+    borderRadius: 10,
   },
   imageContainer: {
     flex: 2,
