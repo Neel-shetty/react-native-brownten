@@ -10,6 +10,7 @@ const VariantInfo = ({
   selected: boolean;
   variant: variantType;
 }) => {
+  console.log('🚀 ~ file: VariantInfo.tsx:13 ~ selected:', selected);
   return (
     <View style={[styles.root, selected ? styles.greenBorder : null]}>
       <View style={styles.weightContainer}>

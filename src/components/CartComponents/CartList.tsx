@@ -22,9 +22,9 @@ const CartList = () => {
             }}>
             <CartItem
               name={item.name}
-              quantity={item.quantity}
-              info={`${item.variant.weight} ${item.variant.unit}`}
-              cost={item.variant.price}
+              quantity={item.variant.quantity}
+              info={`${item.variant.item.weight} ${item.variant.item.unit}`}
+              cost={item.variant.item.price}
               image={item.image}
               id={item.id}
             />
