@@ -5,7 +5,11 @@ import {colors} from '../../constants/colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useDispatch} from 'react-redux';
-import {decrementQuantity, incrementQuantity} from '../../store/cart';
+import {
+  decrementQuantity,
+  incrementQuantity,
+  removeItem,
+} from '../../store/cart';
 
 interface props {
   name: string;
@@ -14,15 +18,19 @@ interface props {
   cost: string;
   image: string;
   id: number;
+  vId: number;
 }
 
-const CartItem = ({name, quantity, info, cost, image, id}: props) => {
+const CartItem = ({name, quantity, info, cost, image, id, vId}: props) => {
   const dispatch = useDispatch();
   function increase() {
-    dispatch(incrementQuantity(id));
+    dispatch(incrementQuantity({pId: id, vId: vId}));
   }
   function decrease() {
-    dispatch(decrementQuantity(id));
+    dispatch(decrementQuantity({pId: id, vId: vId}));
+  }
+  function remove() {
+    dispatch(removeItem({vId: vId}));
   }
   return (
     <View style={styles.root}>
@@ -54,7 +62,9 @@ const CartItem = ({name, quantity, info, cost, image, id}: props) => {
           </View>
         </View>
         <View style={styles.priceContainer}>
-          <Ionicons name="close" size={24} color={'#B3B3B3'} />
+          <TouchableOpacity onPress={remove}>
+            <Ionicons name="close" size={24} color={'#B3B3B3'} />
+          </TouchableOpacity>
           <Text style={styles.cost}>${cost}</Text>
         </View>
       </View>

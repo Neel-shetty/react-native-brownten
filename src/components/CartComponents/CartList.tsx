@@ -15,7 +15,7 @@ const CartList = () => {
     <View style={styles.root}>
       <FlatList
         data={items}
-        renderItem={({item}) => (
+        renderItem={({item, index}) => (
           <View
             style={{
               width: layout.width,
@@ -23,15 +23,19 @@ const CartList = () => {
             <CartItem
               name={item.name}
               quantity={item.variant.quantity}
-              info={`${item.variant.item.weight} ${item.variant.item.unit}`}
-              cost={item.variant.item.price}
+              info={`${item.variant.item?.weight} ${item.variant.item?.unit}`}
+              cost={item.variant.item?.price}
               image={item.image}
               id={item.id}
+              vId={item.variant.item.variant_id}
             />
           </View>
         )}
         style={{width: layout.width}}
         showsVerticalScrollIndicator={false}
+        keyExtractor={(item, index) =>
+          JSON.stringify(item.variant.item.variant_id)
+        }
       />
     </View>
   );

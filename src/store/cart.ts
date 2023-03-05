@@ -32,26 +32,41 @@ export const CartSlice = createSlice({
       }
     },
     incrementQuantity: (state, action) => {
-      const item = state.cartItems.find(item => item.id === action.payload);
+      const item = state.cartItems.find(
+        item => item.variant.item.variant_id === action.payload.vId,
+      );
       if (item?.variant.quantity) {
         item.variant.quantity++;
       }
     },
     decrementQuantity: (state, action) => {
-      const item = state.cartItems.find(item => item.id === action.payload);
-      if (!item) {
-        return;
-      }
-      if (item.variant.quantity === 1) {
-        state.cartItems = [];
-      } else {
+      // const item = state.cartItems.find(item => item.id === action.payload);
+      // if (!item) {
+      //   return;
+      // }
+      // if (item.variant.quantity === 1) {
+      //   state.cartItems = [];
+      // } else {
+      //   item.variant.quantity--;
+      // }
+      const item = state.cartItems.find(
+        item => item.variant.item.variant_id === action.payload.vId,
+      );
+      if (item?.variant.quantity) {
+        if (item?.variant.quantity === 1) {
+          const removeItem = state.cartItems.filter(
+            item => item.variant.item.variant_id !== action.payload.vId,
+          );
+          state.cartItems = removeItem;
+        }
         item.variant.quantity--;
       }
     },
     removeItem: (state, action) => {
       const removeItem = state.cartItems.filter(
-        item => item.variant.item.variant_id !== action.payload,
+        item => item.variant.item.variant_id !== action.payload.vId,
       );
+      console.log('🚀 ~ file: cart.ts:69 ~ removeItem:', removeItem);
       state.cartItems = removeItem;
     },
   },

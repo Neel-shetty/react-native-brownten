@@ -56,13 +56,17 @@ const Details = ({product}: Details) => {
   );
 
   const globalQuantity = useSelector((state: RootState) => {
-    const item = state.cart.cartItems.find(item => item.id === product.id);
+    const item = state.cart.cartItems.find(
+      item => item.variant.item.variant_id === currentVariant.item.variant_id,
+    );
     if (item) {
-      if (currentVariant.item.variant_id === item.variant.item.variant_id) {
-        return item.variant.quantity;
-      }
+      return item.variant.quantity;
     }
   });
+  console.log(
+    '🚀 ~ file: Details.tsx:63 ~ globalQuantity ~ globalQuantity:',
+    globalQuantity,
+  );
 
   const dispatch = useDispatch();
   function addItemToCart() {
@@ -76,10 +80,14 @@ const Details = ({product}: Details) => {
     );
   }
   function increase() {
-    dispatch(incrementQuantity(product.id));
+    dispatch(
+      incrementQuantity({pId: product.id, vId: currentVariant.item.variant_id}),
+    );
   }
   function decrease() {
-    dispatch(decrementQuantity(product.id));
+    dispatch(
+      decrementQuantity({pId: product.id, vId: currentVariant.item.variant_id}),
+    );
   }
 
   useEffect(() => {
@@ -115,8 +123,8 @@ const Details = ({product}: Details) => {
             </View>
           </View>
           <Text style={styles.info}>
-            {currentVariant.weight + ' '}
-            {currentVariant.unit}
+            {currentVariant.item?.weight + ' '}
+            {currentVariant.item?.unit}
           </Text>
         </View>
         <View style={styles.secondContainer}>
@@ -128,7 +136,9 @@ const Details = ({product}: Details) => {
             quantity={globalQuantity ? globalQuantity : 0}
           />
           <View style={styles.priceContainer}>
-            <Text style={styles.price}>₹{currentVariant.selling_price}</Text>
+            <Text style={styles.price}>
+              ₹{currentVariant.item?.selling_price}
+            </Text>
           </View>
         </View>
       </View>
