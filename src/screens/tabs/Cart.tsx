@@ -11,6 +11,7 @@ import SheetItem from '../../components/CartComponents/SheetItem';
 import OrderAccepted from '../status/OrderAccepted';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../store';
+import Button2 from '../../components/CartComponents/Button';
 
 const CartTab = ({navigation}: any) => {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
@@ -56,13 +57,14 @@ const CartTab = ({navigation}: any) => {
         <CartList />
       </View>
       <View style={styles.buttonContainer}>
-        <Button
+        <Button2
           text="Go To Checkout"
           bgColour={colors.green}
           onPress={() => {
             setShowBottomSheet(true);
           }}
           txtColour="white"
+          value={itemCost.reduce((a: number, b: number) => a + b, 10)}
         />
       </View>
       {showBottomSheet ? (
