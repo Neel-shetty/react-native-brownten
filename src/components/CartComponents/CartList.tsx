@@ -22,16 +22,22 @@ const CartList = () => {
             }}>
             <CartItem
               name={item.name}
-              quantity={item.quantity}
-              info={`${item.variant.weight} ${item.variant.unit}`}
-              cost={item.variant.price}
+              quantity={item.variant.quantity}
+              info={`${item.variant.item?.weight} ${item.variant.item?.unit}`}
+              cost={(
+                parseInt(item.variant.item?.selling_price, 10) *
+                item.variant.quantity
+              ).toString()}
               image={item.image}
               id={item.id}
+              vId={item.variant.item.variant_id}
             />
           </View>
         )}
         style={{width: layout.width}}
         showsVerticalScrollIndicator={false}
+        keyExtractor={item => JSON.stringify(item.variant.item.variant_id)}
+        ListFooterComponent={<View style={{height: 70}} />}
       />
     </View>
   );

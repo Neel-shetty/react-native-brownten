@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {View, Dimensions, ActivityIndicator} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {FlatList, ScrollView} from 'react-native-gesture-handler';
@@ -20,6 +20,10 @@ const SubCategoryScreen = ({navigation}: any) => {
       return await fetchSubCategories(route?.params?.category_id);
     },
   );
+
+  useEffect(() => {
+    return () => {};
+  }, []);
 
   return (
     <ScrollView style={styles.container}>

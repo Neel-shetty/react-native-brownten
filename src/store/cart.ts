@@ -4,8 +4,7 @@ import {variantType} from '../screens/tabs/Home';
 export interface cartItemType {
   image: string;
   name: string;
-  variant: variantType;
-  quantity: number;
+  variant: {item: variantType; quantity: number};
   id: number;
 }
 
@@ -22,38 +21,52 @@ export const CartSlice = createSlice({
   reducers: {
     addToCart: (state, action: PayloadAction<cartItemType>) => {
       const itemInCart = state.cartItems.find(
-        item => item.id === action.payload.id,
+        item =>
+          item.variant.item.variant_id ===
+          action.payload.variant.item.variant_id,
       );
       if (itemInCart) {
-        itemInCart.quantity++;
+        itemInCart.variant.quantity++;
       } else {
-        state.cartItems.push({...action.payload, quantity: 1});
+        state.cartItems.push({...action.payload});
       }
     },
     incrementQuantity: (state, action) => {
-      const item = state.cartItems.find(item => item.id === action.payload);
-      if (item) {
-        item.quantity++;
+      const item = state.cartItems.find(
+        item => item.variant.item.variant_id === action.payload.vId,
+      );
+      if (item?.variant.quantity) {
+        item.variant.quantity++;
       }
     },
     decrementQuantity: (state, action) => {
-      const item = state.cartItems.find(item => item.id === action.payload);
-      if (!item) {
-        return;
-      }
-      if (item.quantity === 1) {
-        const removeItem = state.cartItems.filter(
-          item => item.id !== action.payload,
-        );
-        state.cartItems = removeItem;
-      } else {
-        item.quantity--;
+      // const item = state.cartItems.find(item => item.id === action.payload);
+      // if (!item) {
+      //   return;
+      // }
+      // if (item.variant.quantity === 1) {
+      //   state.cartItems = [];
+      // } else {
+      //   item.variant.quantity--;
+      // }
+      const item = state.cartItems.find(
+        item => item.variant.item.variant_id === action.payload.vId,
+      );
+      if (item?.variant.quantity) {
+        if (item?.variant.quantity === 1) {
+          const removeItem = state.cartItems.filter(
+            item => item.variant.item.variant_id !== action.payload.vId,
+          );
+          state.cartItems = removeItem;
+        }
+        item.variant.quantity--;
       }
     },
     removeItem: (state, action) => {
       const removeItem = state.cartItems.filter(
-        item => item.id !== action.payload,
+        item => item.variant.item.variant_id !== action.payload.vId,
       );
+      console.log('🚀 ~ file: cart.ts:69 ~ removeItem:', removeItem);
       state.cartItems = removeItem;
     },
   },

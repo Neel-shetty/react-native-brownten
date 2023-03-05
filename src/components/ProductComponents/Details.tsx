@@ -8,7 +8,13 @@ import VariantInfo from './VariantInfo';
 import {variantType} from '../../screens/tabs/Home';
 import CartButton from './CartButton';
 import {useDispatch} from 'react-redux';
-import {addToCart} from '../../store/cart';
+import {
+  addToCart,
+  decrementQuantity,
+  incrementQuantity,
+} from '../../store/cart';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../store';
 
 interface Details {
   product: ProductProps;
@@ -17,6 +23,7 @@ interface Details {
 interface selectVariant {
   selected: boolean;
   variant: variantType;
+  quantity: number;
 }
 
 const Details = ({product}: Details) => {
@@ -24,24 +31,62 @@ const Details = ({product}: Details) => {
     {
       selected: true,
       variant: product.variants[0],
+      quantity: 0,
     },
   ]);
-  const [currentVariant, setCurrentVariant] = useState<variantType>(
-    product.variants[0],
+  const [currentVariant, setCurrentVariant] = useState<{
+    item: variantType;
+    quantity: number;
+  }>({item: product.variants[0], quantity: 0});
+  console.log(
+    '🚀 ~ file: Details.tsx:38 ~ Details ~ currentVariant:',
+    currentVariant,
   );
-  const [quantity, setQuantity] = useState(0);
+  // const [quantity, setQuantity] = useState(0);
+  const itemInCart = useSelector((state: RootState) =>
+    state.cart.cartItems.find(item => {
+      if (
+        item.id === product.id &&
+        item.variant.item.variant_id === currentVariant.item.variant_id
+      ) {
+        return true;
+      }
+      return undefined;
+    }),
+  );
+
+  const globalQuantity = useSelector((state: RootState) => {
+    const item = state.cart.cartItems.find(
+      item => item.variant.item.variant_id === currentVariant.item.variant_id,
+    );
+    if (item) {
+      return item.variant.quantity;
+    }
+  });
+  console.log(
+    '🚀 ~ file: Details.tsx:63 ~ globalQuantity ~ globalQuantity:',
+    globalQuantity,
+  );
 
   const dispatch = useDispatch();
   function addItemToCart() {
-    setQuantity(quantity + 1);
     dispatch(
       addToCart({
         id: product.id,
         image: product.images[0],
         name: product.name,
-        quantity: quantity,
-        variant: currentVariant,
+        variant: {item: currentVariant.item, quantity: 1},
       }),
+    );
+  }
+  function increase() {
+    dispatch(
+      incrementQuantity({pId: product.id, vId: currentVariant.item.variant_id}),
+    );
+  }
+  function decrease() {
+    dispatch(
+      decrementQuantity({pId: product.id, vId: currentVariant.item.variant_id}),
     );
   }
 
@@ -49,11 +94,20 @@ const Details = ({product}: Details) => {
     let tempArr: selectVariant[] = [];
     for (let i = 0; i < product.variants.length; i++) {
       if (i === 0) {
-        tempArr.push({selected: true, variant: product.variants[i]});
+        tempArr.push({
+          selected: true,
+          variant: product.variants[i],
+          quantity: 0,
+        });
       } else {
-        tempArr.push({selected: false, variant: product.variants[i]});
+        tempArr.push({
+          selected: false,
+          variant: product.variants[i],
+          quantity: 0,
+        });
       }
     }
+    console.log('🚀 ~ file: Details.tsx:94 ~ useEffect ~ tempArr:', tempArr);
     setvariants(tempArr);
   }, [product.variants]);
 
@@ -69,46 +123,65 @@ const Details = ({product}: Details) => {
             </View>
           </View>
           <Text style={styles.info}>
-            {currentVariant.weight + ' '}
-            {currentVariant.unit}
+            {currentVariant.item?.weight + ' '}
+            {currentVariant.item?.unit}
           </Text>
         </View>
         <View style={styles.secondContainer}>
-          <CartButton addItemToCart={addItemToCart} />
+          <CartButton
+            addItemToCart={addItemToCart}
+            increment={increase}
+            decrement={decrease}
+            itemInCart={itemInCart ? true : false}
+            quantity={globalQuantity ? globalQuantity : 0}
+          />
           <View style={styles.priceContainer}>
-            <Text style={styles.price}>₹{currentVariant.selling_price}</Text>
+            <Text style={styles.price}>
+              ₹{currentVariant.item?.selling_price}
+            </Text>
           </View>
         </View>
       </View>
       <View style={styles.flex}>
-        {variants.map(item => {
+        {variants.map((item, index) => {
+          console.log(
+            '🚀 ~ file: Details.tsx:126 ~ {variants.map ~ item:',
+            item.variant.variant_id,
+          );
           return (
             <TouchableOpacity
-              key={Math.random()}
+              key={index}
               onPress={() => {
-                setCurrentVariant(item.variant);
-                let tempArr: selectVariant[] = [];
-                for (let i = 0; i < product.variants.length; i++) {
-                  if (
-                    variants[i].variant.variant_id === item.variant.variant_id
-                  ) {
-                    tempArr.push({
-                      selected: true,
-                      variant: variants[i].variant,
-                    });
-                  } else {
-                    tempArr.push({
-                      selected: false,
-                      variant: variants[i].variant,
-                    });
-                  }
-                }
-                setvariants(tempArr);
+                setCurrentVariant({
+                  item: item.variant,
+                  quantity: item.quantity,
+                });
+                // let tempArr: selectVariant[] = [];
+                // for (let i = 0; i < product.variants.length; i++) {
+                //   if (
+                //     product.variants[i].variant_id === item.variant.variant_id
+                //   ) {
+                //     tempArr.push({
+                //       selected: true,
+                //       variant: variants[i].variant,
+                //     });
+                //   } else {
+                //     tempArr.push({
+                //       selected: false,
+                //       variant: variants[i].variant,
+                //     });
+                //   }
+                // }
+                // setvariants(tempArr);
               }}>
               <VariantInfo
                 key={item.variant.variant_id}
                 variant={item.variant}
-                selected={item.selected}
+                selected={
+                  item.variant.variant_id === currentVariant.item.variant_id
+                    ? true
+                    : false
+                }
               />
             </TouchableOpacity>
           );

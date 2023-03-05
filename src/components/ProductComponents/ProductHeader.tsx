@@ -15,7 +15,7 @@ const ProductHeader = ({product}: ProductHeadeProps) => {
   const navigation = useNavigation();
   function createImagesArray() {
     const images = [];
-    for (let i = 0; i < product.images.length; i++) {
+    for (let i = 0; i < product.images?.length; i++) {
       images.push({img: product.images[i]});
     }
     return images;

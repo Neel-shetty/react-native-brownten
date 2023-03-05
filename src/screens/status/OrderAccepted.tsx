@@ -6,10 +6,13 @@ import Success from '../../../assets/images/order_accepted/success.png';
 //@ts-ignore
 import Background from '../../../assets/images/order_accepted/background-accepted.png';
 import Button from '../../components/Button';
+import {useNavigation} from '@react-navigation/native';
+import Home from '../tabs/Home';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
 const OrderAccepted = () => {
+  const navigation: any = useNavigation();
   return (
     <>
       <View style={style.background}>
@@ -26,10 +29,10 @@ const OrderAccepted = () => {
             onPress={() => null}
             txtColour="#F2F3F2"
             bgColour="#53B175"
-            text="Track Offer"
+            text="View Order Details"
           />
           <Button
-            onPress={() => null}
+            onPress={() => navigation.navigate(Home.name)}
             txtColour="#181725"
             bgColour="transparent"
             text="Back to home"

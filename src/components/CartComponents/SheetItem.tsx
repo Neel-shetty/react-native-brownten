@@ -9,14 +9,15 @@ const SheetItem = ({
   value,
   onPress,
   field,
+  setOnline,
 }: {
   title: string;
-  value: string;
+  value?: string;
   onPress: () => void;
   field: string;
+  setOnline?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const [idk, setIdk] = useState<boolean>(false);
-  const [optionSelected, setoptionSelected] = useState(true);
   const [selected, setSelected] = useState('Online');
   const initalOptions = [
     {title: 'Online', selected: true},
@@ -26,46 +27,58 @@ const SheetItem = ({
   console.log('🚀 ~ file: SheetItem.tsx:25 ~ options:', options);
 
   if (idk) {
-    return (
-      <View>
-        {options.map((item, index) => {
-          return (
-            <TouchableOpacity
-              key={index}
-              onPress={() => {
-                setIdk(false);
-                setSelected(item.title);
-                if (item.title === 'Online') {
-                  setOptions([
-                    {title: item.title, selected: true},
-                    {title: 'Cash on Delivery', selected: false},
-                  ]);
-                }
-                if (item.title === 'Cash on Delivery') {
-                  setOptions([
-                    {title: 'Online', selected: false},
-                    {title: 'Cash on Delivery', selected: true},
-                  ]);
-                }
-              }}>
-              <View
-                style={[
-                  styles.optionContainer,
-                  item.selected ? {backgroundColor: colors.green} : null,
-                ]}>
-                <Text
+    if (field === 'payment') {
+      return (
+        <View>
+          {options.map((item, index) => {
+            return (
+              <TouchableOpacity
+                key={index}
+                onPress={() => {
+                  setIdk(false);
+                  setSelected(item.title);
+                  if (item.title === 'Online') {
+                    //@ts-ignore
+                    setOnline(true);
+                    setOptions([
+                      {title: item.title, selected: true},
+                      {title: 'Cash on Delivery', selected: false},
+                    ]);
+                  }
+                  if (item.title === 'Cash on Delivery') {
+                    //@ts-ignore
+                    setOnline(false);
+                    setOptions([
+                      {title: 'Online', selected: false},
+                      {title: 'Cash on Delivery', selected: true},
+                    ]);
+                  }
+                }}>
+                <View
                   style={[
-                    styles.value,
-                    item.selected ? {color: 'white'} : null,
+                    styles.optionContainer,
+                    item.selected ? {backgroundColor: colors.green} : null,
                   ]}>
-                  {item.title}
-                </Text>
-              </View>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-    );
+                  <Text
+                    style={[
+                      styles.value,
+                      item.selected ? {color: 'white'} : null,
+                    ]}>
+                    {item.title}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            );
+          })}
+        </View>
+      );
+    } else {
+      return (
+        <View>
+          <Text>abc</Text>
+        </View>
+      );
+    }
   }
   if (field === 'payment') {
     return (
@@ -88,23 +101,40 @@ const SheetItem = ({
       </View>
     );
   }
-  return (
-    <View style={styles.root}>
-      <View style={styles.container}>
-        <Text style={styles.key}>{title}</Text>
-        <TouchableOpacity
-          onPress={() => {
-            onPress();
-            setIdk(true);
-          }}>
+  if (field === 'address') {
+    return (
+      <View style={styles.root}>
+        <View style={styles.container}>
+          <Text style={styles.key}>{title}</Text>
+          <TouchableOpacity
+            onPress={() => {
+              onPress();
+              setIdk(true);
+            }}>
+            <View style={styles.valueContainer}>
+              <Text style={styles.value}>
+                {selected === 'Cash on Delivery' ? 'COD' : selected}
+              </Text>
+              <EvilIcons name={'chevron-right'} size={34} color={'black'} />
+            </View>
+          </TouchableOpacity>
+        </View>
+      </View>
+    );
+  }
+  if (field === 'cost') {
+    return (
+      <View style={styles.root}>
+        <View style={styles.container}>
+          <Text style={styles.key}>{title}</Text>
           <View style={styles.valueContainer}>
             <Text style={styles.value}>{value}</Text>
             <View style={styles.placeHolder} />
           </View>
-        </TouchableOpacity>
+        </View>
       </View>
-    </View>
-  );
+    );
+  }
 };
 
 export default SheetItem;

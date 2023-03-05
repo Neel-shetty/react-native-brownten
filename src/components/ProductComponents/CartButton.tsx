@@ -4,18 +4,29 @@ import {TouchableOpacity} from '@gorhom/bottom-sheet';
 import {colors} from '../../constants/colors';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-const CartButton = ({addItemToCart}: {addItemToCart: () => void}) => {
-  const condition = false;
-  if (condition) {
+const CartButton = ({
+  addItemToCart,
+  increment,
+  decrement,
+  itemInCart,
+  quantity,
+}: {
+  addItemToCart: () => void;
+  increment: () => void;
+  decrement: () => void;
+  itemInCart: boolean;
+  quantity: number;
+}) => {
+  if (itemInCart) {
     return (
       <View style={styles.buttonContainer}>
-        <TouchableOpacity onPress={() => null} style={styles.quantityContainer}>
+        <TouchableOpacity onPress={decrement} style={styles.quantityContainer}>
           <Icon name="minus" size={24} color={'#B3B3B3'} />
         </TouchableOpacity>
         <View style={styles.button}>
-          <Text style={styles.quantity}>1</Text>
+          <Text style={styles.quantity}>{quantity}</Text>
         </View>
-        <TouchableOpacity onPress={() => null} style={styles.quantityContainer}>
+        <TouchableOpacity onPress={increment} style={styles.quantityContainer}>
           <Icon name="plus" size={24} color={colors.green} />
         </TouchableOpacity>
       </View>
