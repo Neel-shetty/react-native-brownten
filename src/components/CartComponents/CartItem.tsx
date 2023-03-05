@@ -65,7 +65,7 @@ const CartItem = ({name, quantity, info, cost, image, id, vId}: props) => {
           <TouchableOpacity onPress={remove}>
             <Ionicons name="close" size={24} color={'#B3B3B3'} />
           </TouchableOpacity>
-          <Text style={styles.cost}>${cost}</Text>
+          <Text style={styles.cost}>₹{cost}</Text>
         </View>
       </View>
       {/* <View style={styles.priceContainer}>

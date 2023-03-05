@@ -10,6 +10,14 @@ import {ProductPreviewType, variantType} from '../../screens/tabs/Home';
 import {ProductProps} from '../../screens/ProductScreen';
 import {Dropdown} from 'react-native-element-dropdown';
 import {colors} from '../../constants/colors';
+import {useDispatch, useSelector} from 'react-redux';
+import {RootState} from '../../store';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {
+  addToCart,
+  decrementQuantity,
+  incrementQuantity,
+} from '../../store/cart';
 
 interface dropdownDataType {
   label: string;
@@ -22,8 +30,47 @@ const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
   const [isFocus, setIsFocus] = useState(false);
   const [variants, setVariants] = useState<dropdownDataType[]>([]);
   const [currentVariant, setCurrentVariant] = useState<variantType>();
+  console.log(
+    '🚀 ~ file: FoodCard.tsx:27 ~ FoodCard ~ currentVariant:',
+    currentVariant,
+  );
 
+  const dispatch = useDispatch();
   const navigation: any = useNavigation();
+  const globalQuantity = useSelector((state: RootState) => {
+    const item = state.cart.cartItems.find(
+      item => item.variant.item.variant_id === currentVariant?.variant_id,
+    );
+    if (item) {
+      return item.variant.quantity;
+    }
+  });
+
+  function addItemToCart() {
+    if (!currentVariant) {
+      return;
+    }
+    dispatch(
+      addToCart({
+        id: item.id,
+        image: item.images[0],
+        name: item.name,
+        variant: {item: currentVariant, quantity: 1},
+      }),
+    );
+  }
+  function increase() {
+    if (!currentVariant) {
+      return;
+    }
+    dispatch(incrementQuantity({pId: item.id, vId: currentVariant.variant_id}));
+  }
+  function decrease() {
+    if (!currentVariant) {
+      return;
+    }
+    dispatch(decrementQuantity({pId: item.id, vId: currentVariant.variant_id}));
+  }
 
   useEffect(() => {
     function createVariantsData() {
@@ -92,27 +139,41 @@ const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
         disable={item?.variants?.length > 1 ? false : true}
         renderRightIcon={item?.variants?.length > 1 ? undefined : () => null}
       />
-      {/* <TouchableOpacity
-        disabled={item.variants?.length > 1 ? false : true}
-        onPress={() => {
-          console.log('pressed');
-        }}>
-        <View style={styles.menuContainer}>
-          <Text style={styles.subtitle}>
-            {item.variants ? item.variants[0]?.weight : null} g
-          </Text>
-          {item.variants?.length > 1 ? (
-            <Icon name="chevron-down" size={24} />
-          ) : null}
-        </View>
-      </TouchableOpacity> */}
       <View style={styles.footer}>
-        <Text style={styles.price}>
-          ₹{currentVariant ? currentVariant.price : null}
-        </Text>
-        <TouchableOpacity onPress={() => null} style={styles.button}>
-          <PlusIcon />
-        </TouchableOpacity>
+        {!globalQuantity ? (
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: widthScreen * 0.42 - 30,
+              alignItems: 'center',
+            }}>
+            <Text style={styles.price}>
+              ₹{currentVariant ? currentVariant.price : null}
+            </Text>
+            <TouchableOpacity onPress={addItemToCart} style={styles.button}>
+              <PlusIcon />
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <>
+            <View style={styles.buttonContainer}>
+              <TouchableOpacity
+                onPress={decrease}
+                style={styles.quantityContainer}>
+                <Icon name="minus" size={24} color={'#B3B3B3'} />
+              </TouchableOpacity>
+              <View style={styles.button2}>
+                <Text style={styles.quantity}>{globalQuantity}</Text>
+              </View>
+              <TouchableOpacity
+                onPress={increase}
+                style={styles.quantityContainer}>
+                <Icon name="plus" size={24} color={colors.green} />
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
       </View>
     </TouchableOpacity>
   );
@@ -129,6 +190,7 @@ const styles = EStyleSheet.create({
     flexDirection: 'column',
     marginRight: 15.0,
     marginBottom: 10,
+    alignItems: 'center',
   },
   imageBox: {
     height: heightScreen * 0.11,
@@ -184,6 +246,7 @@ const styles = EStyleSheet.create({
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 8,
+    width: widthScreen * 0.42 - 30,
   },
   icon: {
     marginRight: 5,
@@ -195,6 +258,45 @@ const styles = EStyleSheet.create({
   selectedTextStyle: {
     fontSize: 12,
     color: 'black',
+  },
+  button2: {
+    borderColor: '#F0F0F0',
+    borderWidth: 1,
+    // width: 40,
+    // height: 40,
+    borderRadius: 15,
+    // padding: 16,
+    width: 45,
+    height: 45,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    justfyContent: 'center',
+    alignSelf: 'center',
+    flexDirection: 'row',
+  },
+  quantityContainer: {
+    marginHorizontal: 15,
+  },
+  quantity: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 18,
+  },
+  greenButtonContainer: {
+    height: 50,
+    width: 150,
+    backgroundColor: '#53B175',
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 10,
+  },
+  buttonText: {
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 20,
+    color: 'white',
   },
 });
 
