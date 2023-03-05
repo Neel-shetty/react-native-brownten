@@ -8,10 +8,20 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import BottomSheet from '@gorhom/bottom-sheet';
 import CustomBackdrop from '../../components/CartComponents/CustomBackdrop';
 import SheetItem from '../../components/CartComponents/SheetItem';
+import OrderAccepted from '../status/OrderAccepted';
+import {useSelector} from 'react-redux';
+import {RootState} from '../../store';
 
 const CartTab = ({navigation}: any) => {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
 
+  const itemCost = useSelector((state: RootState) =>
+    state.cart.cartItems.map(
+      item =>
+        parseInt(item?.variant.item.selling_price, 10) * item?.variant.quantity,
+    ),
+  );
+  console.log('🚀 ~ file: Cart.tsx:23 ~ CartTab ~ itemCost:', itemCost);
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -84,8 +94,26 @@ const CartTab = ({navigation}: any) => {
                   console.log('pressed');
                 }}
                 title="Total Cost"
-                value="$25.99"
+                value={JSON.stringify(
+                  itemCost.reduce((a: number, b: number) => a + b, 10),
+                )}
                 field="cost"
+              />
+            </View>
+            <View style={{flex: 1}}></View>
+            <View
+              style={{
+                width: layout.widthp,
+                alignSelf: 'center',
+                marginBottom: 20,
+              }}>
+              <Button
+                bgColour={colors.green}
+                text="Place Order"
+                txtColour="white"
+                onPress={() => {
+                  navigation.navigate(OrderAccepted.name);
+                }}
               />
             </View>
           </View>
