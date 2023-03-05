@@ -15,7 +15,7 @@ const CartList = () => {
     <View style={styles.root}>
       <FlatList
         data={items}
-        renderItem={({item, index}) => (
+        renderItem={({item}) => (
           <View
             style={{
               width: layout.width,
@@ -36,9 +36,8 @@ const CartList = () => {
         )}
         style={{width: layout.width}}
         showsVerticalScrollIndicator={false}
-        keyExtractor={(item, index) =>
-          JSON.stringify(item.variant.item.variant_id)
-        }
+        keyExtractor={item => JSON.stringify(item.variant.item.variant_id)}
+        ListFooterComponent={<View style={{height: 70}} />}
       />
     </View>
   );
