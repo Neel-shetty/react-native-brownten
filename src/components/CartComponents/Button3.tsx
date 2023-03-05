@@ -1,5 +1,4 @@
 import React from 'react';
-import {View} from 'react-native';
 import {
   TouchableOpacity,
   Text,
@@ -7,7 +6,6 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import {layout} from '../../constants/Layout';
 
 const {height: screenHeight} = Dimensions.get('screen');
 interface ButtonProps {
@@ -16,7 +14,6 @@ interface ButtonProps {
   txtColour: string;
   onPress: () => void;
   loading?: boolean;
-  value: number;
 }
 const Button = ({
   text,
@@ -24,7 +21,6 @@ const Button = ({
   txtColour,
   onPress,
   loading = false,
-  value,
 }: ButtonProps) => {
   return (
     <TouchableOpacity
@@ -33,10 +29,7 @@ const Button = ({
       {loading ? (
         <ActivityIndicator color={'white'} />
       ) : (
-        <View style={styles.textContainer}>
-          <Text style={[styles.buttonText, {color: txtColour}]}>{text}</Text>
-          <Text style={[styles.buttonText, {color: txtColour}]}>{value}</Text>
-        </View>
+        <Text style={[styles.buttonText, {color: txtColour}]}>{text}</Text>
       )}
     </TouchableOpacity>
   );
@@ -58,11 +51,6 @@ const styles = EStyleSheet.create({
     fontSize: '1.125rem',
     lineHeight: '1.25rem',
     height: '1.25rem',
-  },
-  textContainer: {
-    flexDirection: 'row',
-    width: layout.width * 0.8,
-    justifyContent: 'space-between',
   },
 });
 

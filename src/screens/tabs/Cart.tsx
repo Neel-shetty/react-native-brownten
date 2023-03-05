@@ -1,7 +1,6 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {View, StyleSheet, Text} from 'react-native';
+import {View, StyleSheet, Text, Alert} from 'react-native';
 import CartList from '../../components/CartComponents/CartList';
-import Button from '../../components/Button';
 import {colors} from '../../constants/colors';
 import {layout} from '../../constants/Layout';
 import EStyleSheet from 'react-native-extended-stylesheet';
@@ -12,9 +11,16 @@ import OrderAccepted from '../status/OrderAccepted';
 import {useSelector} from 'react-redux';
 import {RootState} from '../../store';
 import Button2 from '../../components/CartComponents/Button';
+import Button3 from '../../components/CartComponents/Button3';
+import RazorpayCheckout, {CheckoutOptions} from 'react-native-razorpay';
+import {api} from '../../api';
+import {ScrollView} from 'react-native';
 
 const CartTab = ({navigation}: any) => {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
+  const [online, setOnline] = useState(true);
+  const [loading, setLoading] = useState(false);
+  console.log('🚀 ~ file: Cart.tsx:21 ~ CartTab ~ online:', online);
 
   const itemCost = useSelector((state: RootState) =>
     state.cart.cartItems.map(
@@ -22,7 +28,6 @@ const CartTab = ({navigation}: any) => {
         parseInt(item?.variant.item.selling_price, 10) * item?.variant.quantity,
     ),
   );
-  console.log('🚀 ~ file: Cart.tsx:23 ~ CartTab ~ itemCost:', itemCost);
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -44,9 +49,80 @@ const CartTab = ({navigation}: any) => {
     [navigation],
   );
 
-  // useEffect(() => {
-  //   navigation.setOptions({tabBarStyle: {display: 'flex'}});
-  // }, []);
+  function pay() {
+    setLoading(true);
+    const totalCost = itemCost.reduce((a: number, b: number) => a + b);
+    console.log('🚀 ~ file: Cart.tsx:57 ~ pay ~ totalCost:', totalCost);
+    api
+      .post('/create/order/id', {
+        amount: totalCost,
+      })
+      .then(res => {
+        console.log('🚀 ~ file: Cart.tsx:73 ~ pay ~ res.data:', res.data);
+        if (res.data.status === 1) {
+          var options: CheckoutOptions = {
+            description: 'Pay Brownten',
+            image: 'https://i.imgur.com/3g7nmJC.jpg',
+            currency: 'INR',
+            key: 'rzp_test_RFqjBfnOlEqSwr',
+            amount: totalCost,
+            name: 'Brownten',
+            order_id: res.data.data, //res.data.data.order_id, //Replace this with an order_id created using Orders API.
+            prefill: {
+              email: 'gaurav.kumar@example.com',
+              contact: '9191919191',
+              name: 'Gaurav Kumar',
+            },
+            theme: {color: colors.green},
+          };
+          RazorpayCheckout.open(options)
+            .then(data => {
+              // handle success
+              // Alert.alert(`Success: ${data.razorpay_payment_id}`);
+              console.log('🚀 ~ file: Cart.tsx:87 ~ pay ~ data:', data);
+              api
+                .post('/payment/details', {
+                  razorpay_payment_id: data.razorpay_payment_id,
+                  razorpay_order_id: data.razorpay_order_id,
+                  razorpay_signature: data.razorpay_signature,
+                })
+                .then(response => {
+                  if (response.data?.status === 1) {
+                    navigation.navigate(OrderAccepted.name);
+                  }
+                })
+                .catch(err => {
+                  if (err.response) {
+                    console.log(
+                      '🚀 ~ file: Cart.tsx:96 ~ pay ~ err.response:',
+                      err.response,
+                    );
+                    Alert.alert('Failed', err.response.message);
+                  }
+                });
+            })
+            .catch(error => {
+              // handle failure\
+              console.log(
+                '🚀 ~ file: Cart.tsx:113 ~ pay ~ error:',
+                error.description,
+              );
+              Alert.alert(
+                'Failed',
+                `Error: ${error?.code} | ${error?.description}`,
+              );
+            });
+          setLoading(false);
+        }
+      })
+      .catch(error => {
+        console.log('🚀 ~ file: Cart.tsx:125 ~ pay ~ error:', error);
+        if (error) {
+          Alert.alert('failed', error.response);
+        }
+        setLoading(false);
+      });
+  }
 
   return (
     <View style={styles.root}>
@@ -64,7 +140,7 @@ const CartTab = ({navigation}: any) => {
             setShowBottomSheet(true);
           }}
           txtColour="white"
-          value={itemCost.reduce((a: number, b: number) => a + b, 10)}
+          value={itemCost.reduce((a: number, b: number) => a + b)}
         />
       </View>
       {showBottomSheet ? (
@@ -82,7 +158,7 @@ const CartTab = ({navigation}: any) => {
             <View style={styles.bottomSheetHeaderContainer}>
               <Text style={eStyles.text}>Checkout</Text>
             </View>
-            <View style={styles.itemContainer}>
+            <ScrollView showsVerticalScrollIndicator={false}>
               <SheetItem
                 onPress={() => {
                   console.log('pressed');
@@ -90,6 +166,14 @@ const CartTab = ({navigation}: any) => {
                 title="Payment Method"
                 value="Online"
                 field="payment"
+                setOnline={setOnline}
+              />
+              <SheetItem
+                onPress={() => {
+                  console.log('pressed');
+                }}
+                title="Address"
+                field="address"
               />
               <SheetItem
                 onPress={() => {
@@ -97,11 +181,11 @@ const CartTab = ({navigation}: any) => {
                 }}
                 title="Total Cost"
                 value={JSON.stringify(
-                  itemCost.reduce((a: number, b: number) => a + b, 10),
+                  itemCost.reduce((a: number, b: number) => a + b),
                 )}
                 field="cost"
               />
-            </View>
+            </ScrollView>
             <View style={{flex: 1}}></View>
             <View
               style={{
@@ -109,13 +193,18 @@ const CartTab = ({navigation}: any) => {
                 alignSelf: 'center',
                 marginBottom: 20,
               }}>
-              <Button
+              <Button3
                 bgColour={colors.green}
                 text="Place Order"
                 txtColour="white"
-                onPress={() => {
-                  navigation.navigate(OrderAccepted.name);
-                }}
+                loading={loading}
+                onPress={
+                  online
+                    ? pay
+                    : () => {
+                        navigation.navigate(OrderAccepted.name);
+                      }
+                }
               />
             </View>
           </View>
