@@ -14,9 +14,10 @@ import AddAddressScreen from '../../screens/AddAddressScreen';
 interface AddressPropType {
   address: AddressType;
   onPressRadio: (id: number) => void;
+  edit?: boolean;
 }
 
-const Address = ({address, onPressRadio}: AddressPropType) => {
+const Address = ({address, onPressRadio, edit = true}: AddressPropType) => {
   async function deleteAddr() {
     await deleteAddress(address.id);
   }
@@ -52,19 +53,23 @@ const Address = ({address, onPressRadio}: AddressPropType) => {
         </View>
       </View>
       <View style={styles.editContainer}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate(AddAddressScreen.name, {
-              edit: true,
-              address: address,
-            });
-          }}>
-          <Pen />
-        </TouchableOpacity>
-        <View style={styles.smallLine} />
-        <TouchableOpacity onPress={deleteAddr}>
-          <Trash />
-        </TouchableOpacity>
+        {edit ? (
+          <>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(AddAddressScreen.name, {
+                  edit: true,
+                  address: address,
+                });
+              }}>
+              <Pen />
+            </TouchableOpacity>
+            <View style={styles.smallLine} />
+            <TouchableOpacity onPress={deleteAddr}>
+              <Trash />
+            </TouchableOpacity>
+          </>
+        ) : null}
       </View>
     </View>
   );

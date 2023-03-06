@@ -1,8 +1,19 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import React, {useState} from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
+import React, {useState, useEffect} from 'react';
 import {layout} from '../../constants/Layout';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {colors} from '../../constants/colors';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {AddressType, fetchAddress} from '../../api/fetchAddress';
+import Address from '../AddressComponents/Address';
+import {BottomSheetFlatList, BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import {current} from '@reduxjs/toolkit';
 
 const SheetItem = ({
   title,
@@ -17,6 +28,7 @@ const SheetItem = ({
   field: string;
   setOnline?: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  console.log('🚀 ~ file: SheetItem.tsx:20 ~ field:', field);
   const [idk, setIdk] = useState<boolean>(false);
   const [selected, setSelected] = useState('Online');
   const initalOptions = [
@@ -24,7 +36,65 @@ const SheetItem = ({
     {title: 'Cash on Delivery', selected: false},
   ];
   const [options, setOptions] = useState(initalOptions);
-  console.log('🚀 ~ file: SheetItem.tsx:25 ~ options:', options);
+  const [address, setAddress] = useState<AddressType[]>();
+  const [loading, setLoading] = useState(false);
+  const [selectedAddress, setSelectedAddress] = useState<AddressType>();
+  console.log(
+    '🚀 ~ file: SheetItem.tsx:41 ~ selectedAddress:',
+    selectedAddress,
+  );
+
+  async function getAddress() {
+    setLoading(true);
+    const user_id = await EncryptedStorage.getItem('id');
+    if (!user_id) {
+      return;
+    }
+    const result = await fetchAddress(parseInt(user_id, 10));
+    console.log(
+      '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
+      result,
+    );
+    if (result) {
+      let tempArr: AddressType[] = [];
+      result.map((item, index) => {
+        tempArr.push({...item, selected: index === 0 ? true : false});
+      });
+      setAddress(tempArr);
+      if (address) {
+        setSelectedAddress(address[0]);
+      }
+    }
+    setLoading(false);
+  }
+  const onPressRadio = (id: number) => {
+    console.log(id);
+    let tempArr: AddressType[] = [];
+    if (!address) {
+      return;
+    }
+    address.map(item => {
+      if (item.id === id) {
+        tempArr.push({...item, selected: true});
+        setSelectedAddress(item);
+      } else {
+        tempArr.push({...item, selected: false});
+      }
+    });
+    setAddress(tempArr);
+    setIdk(false);
+  };
+  useEffect(() => {
+    getAddress();
+  }, []);
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
+
+  if (!address || !selectedAddress) {
+    return;
+  }
 
   if (idk) {
     if (field === 'payment') {
@@ -72,69 +142,92 @@ const SheetItem = ({
           })}
         </View>
       );
-    } else {
+    } else if (field === 'address') {
       return (
-        <View>
-          <Text>abc</Text>
+        <View style={{height: layout.height * 0.3}}>
+          <BottomSheetFlatList
+            data={address}
+            onRefresh={() => {
+              getAddress();
+            }}
+            refreshing={loading}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item, index}) => {
+              return (
+                <>
+                  <Address
+                    key={index}
+                    address={item}
+                    onPressRadio={onPressRadio}
+                    edit={false}
+                  />
+                </>
+              );
+            }}
+          />
+        </View>
+      );
+    }
+  } else {
+    if (field === 'payment') {
+      return (
+        <View style={styles.root}>
+          <View style={styles.container}>
+            <Text style={styles.key}>{title}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                onPress();
+                setIdk(true);
+              }}>
+              <View style={styles.valueContainer}>
+                <Text style={styles.value}>
+                  {selected === 'Cash on Delivery' ? 'COD' : selected}
+                </Text>
+                <EvilIcons name={'chevron-right'} size={34} color={'black'} />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    }
+    console.log(
+      "🚀 ~ file: SheetItem.tsx:106 ~ field === 'address':",
+      field === 'address',
+    );
+    if (field === 'address') {
+      return (
+        <View style={styles.root}>
+          <View style={styles.container}>
+            <Text style={styles.key}>{title}</Text>
+            <TouchableOpacity
+              onPress={() => {
+                onPress();
+                setIdk(true);
+              }}>
+              <View style={styles.valueContainer}>
+                <Text style={styles.value}>{selectedAddress?.name}</Text>
+                <EvilIcons name={'chevron-right'} size={34} color={'black'} />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+      );
+    }
+    if (field === 'cost') {
+      return (
+        <View style={styles.root}>
+          <View style={styles.container}>
+            <Text style={styles.key}>{title}</Text>
+            <View style={styles.valueContainer}>
+              <Text style={styles.value}>{value}</Text>
+              <View style={styles.placeHolder} />
+            </View>
+          </View>
         </View>
       );
     }
   }
-  if (field === 'payment') {
-    return (
-      <View style={styles.root}>
-        <View style={styles.container}>
-          <Text style={styles.key}>{title}</Text>
-          <TouchableOpacity
-            onPress={() => {
-              onPress();
-              setIdk(true);
-            }}>
-            <View style={styles.valueContainer}>
-              <Text style={styles.value}>
-                {selected === 'Cash on Delivery' ? 'COD' : selected}
-              </Text>
-              <EvilIcons name={'chevron-right'} size={34} color={'black'} />
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
-  if (field === 'address') {
-    return (
-      <View style={styles.root}>
-        <View style={styles.container}>
-          <Text style={styles.key}>{title}</Text>
-          <TouchableOpacity
-            onPress={() => {
-              onPress();
-              setIdk(true);
-            }}>
-            <View style={styles.valueContainer}>
-              <Text style={styles.value}>
-                {selected === 'Cash on Delivery' ? 'COD' : selected}
-              </Text>
-              <EvilIcons name={'chevron-right'} size={34} color={'black'} />
-            </View>
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  }
-  if (field === 'cost') {
-    return (
-      <View style={styles.root}>
-        <View style={styles.container}>
-          <Text style={styles.key}>{title}</Text>
-          <View style={styles.valueContainer}>
-            <Text style={styles.value}>{value}</Text>
-            <View style={styles.placeHolder} />
-          </View>
-        </View>
-      </View>
-    );
-  }
+  return null;
 };
 
 export default SheetItem;

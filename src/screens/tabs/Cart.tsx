@@ -32,7 +32,7 @@ const CartTab = ({navigation}: any) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['25%', '50%'], []);
+  const snapPoints = useMemo(() => ['25%', '50%', '75%'], []);
 
   // callbacks
   const handleSheetChanges = useCallback(
@@ -146,7 +146,7 @@ const CartTab = ({navigation}: any) => {
       {showBottomSheet ? (
         <BottomSheet
           ref={bottomSheetRef}
-          index={showBottomSheet ? 1 : -1}
+          index={showBottomSheet ? 2 : -1}
           snapPoints={snapPoints}
           backdropComponent={CustomBackdrop}
           enablePanDownToClose={true}
@@ -158,7 +158,7 @@ const CartTab = ({navigation}: any) => {
             <View style={styles.bottomSheetHeaderContainer}>
               <Text style={eStyles.text}>Checkout</Text>
             </View>
-            <ScrollView showsVerticalScrollIndicator={false}>
+            {/* <ScrollView showsVerticalScrollIndicator={false}> */}
               <SheetItem
                 onPress={() => {
                   console.log('pressed');
@@ -174,6 +174,7 @@ const CartTab = ({navigation}: any) => {
                 }}
                 title="Address"
                 field="address"
+                value="address"
               />
               <SheetItem
                 onPress={() => {
@@ -185,7 +186,7 @@ const CartTab = ({navigation}: any) => {
                 )}
                 field="cost"
               />
-            </ScrollView>
+            {/* </ScrollView> */}
             <View style={{flex: 1}}></View>
             <View
               style={{
