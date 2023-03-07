@@ -32,7 +32,7 @@ const CartTab = ({navigation}: any) => {
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   // variables
-  const snapPoints = useMemo(() => ['25%', '50%', '75%'], []);
+  const snapPoints = useMemo(() => ['25%', '75%'], []);
 
   // callbacks
   const handleSheetChanges = useCallback(
@@ -83,7 +83,7 @@ const CartTab = ({navigation}: any) => {
               api
                 .post('/payment/details', {
                   razorpay_payment_id: data.razorpay_payment_id,
-                  razorpay_order_id: data.razorpay_order_id,
+                  razorpay_order_id: res.data.data,
                   razorpay_signature: data.razorpay_signature,
                 })
                 .then(response => {
@@ -146,7 +146,7 @@ const CartTab = ({navigation}: any) => {
       {showBottomSheet ? (
         <BottomSheet
           ref={bottomSheetRef}
-          index={showBottomSheet ? 2 : -1}
+          index={showBottomSheet ? 1 : -1}
           snapPoints={snapPoints}
           backdropComponent={CustomBackdrop}
           enablePanDownToClose={true}
@@ -159,33 +159,33 @@ const CartTab = ({navigation}: any) => {
               <Text style={eStyles.text}>Checkout</Text>
             </View>
             {/* <ScrollView showsVerticalScrollIndicator={false}> */}
-              <SheetItem
-                onPress={() => {
-                  console.log('pressed');
-                }}
-                title="Payment Method"
-                value="Online"
-                field="payment"
-                setOnline={setOnline}
-              />
-              <SheetItem
-                onPress={() => {
-                  console.log('pressed');
-                }}
-                title="Address"
-                field="address"
-                value="address"
-              />
-              <SheetItem
-                onPress={() => {
-                  console.log('pressed');
-                }}
-                title="Total Cost"
-                value={JSON.stringify(
-                  itemCost.reduce((a: number, b: number) => a + b),
-                )}
-                field="cost"
-              />
+            <SheetItem
+              onPress={() => {
+                console.log('pressed');
+              }}
+              title="Payment Method"
+              value="Online"
+              field="payment"
+              setOnline={setOnline}
+            />
+            <SheetItem
+              onPress={() => {
+                console.log('pressed');
+              }}
+              title="Address"
+              field="address"
+              value="address"
+            />
+            <SheetItem
+              onPress={() => {
+                console.log('pressed');
+              }}
+              title="Total Cost"
+              value={JSON.stringify(
+                itemCost.reduce((a: number, b: number) => a + b),
+              )}
+              field="cost"
+            />
             {/* </ScrollView> */}
             <View style={{flex: 1}}></View>
             <View

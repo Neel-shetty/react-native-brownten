@@ -39,10 +39,7 @@ const SheetItem = ({
   const [address, setAddress] = useState<AddressType[]>();
   const [loading, setLoading] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState<AddressType>();
-  console.log(
-    '🚀 ~ file: SheetItem.tsx:41 ~ selectedAddress:',
-    selectedAddress,
-  );
+  console.log('🚀 ~ file: SheetItem.tsx:41 ~ selectedAddress:', address);
 
   async function getAddress() {
     setLoading(true);
@@ -85,15 +82,45 @@ const SheetItem = ({
     setIdk(false);
   };
   useEffect(() => {
+    async function getAddress() {
+      setLoading(true);
+      const user_id = await EncryptedStorage.getItem('id');
+      if (!user_id) {
+        return;
+      }
+      const result = await fetchAddress(parseInt(user_id, 10));
+      console.log(
+        '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
+        result,
+      );
+      if (result) {
+        let tempArr: AddressType[] = [];
+        result.map((item, index) => {
+          tempArr.push({...item, selected: index === 0 ? true : false});
+        });
+        setAddress(tempArr);
+      }
+      setLoading(false);
+    }
     getAddress();
   }, []);
+
+  useEffect(() => {
+    if (address) {
+      setSelectedAddress(address[0]);
+    }
+  }, [address]);
 
   if (loading) {
     return <ActivityIndicator />;
   }
 
-  if (!address || !selectedAddress) {
-    return;
+  if (field === 'address' && !selectedAddress) {
+    return (
+      <View>
+        <Text>Error fetching address, close this window and try again</Text>
+      </View>
+    );
   }
 
   if (idk) {
@@ -219,7 +246,7 @@ const SheetItem = ({
           <View style={styles.container}>
             <Text style={styles.key}>{title}</Text>
             <View style={styles.valueContainer}>
-              <Text style={styles.value}>{value}</Text>
+              <Text style={styles.value}>₹{value}</Text>
               <View style={styles.placeHolder} />
             </View>
           </View>
