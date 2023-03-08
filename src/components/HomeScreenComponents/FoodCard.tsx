@@ -123,6 +123,7 @@ const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
         placeholderStyle={styles.placeholderStyle}
         selectedTextStyle={styles.selectedTextStyle}
         inputSearchStyle={styles.inputSearchStyle}
+        containerStyle={styles.containerStyle}
         iconStyle={styles.iconStyle}
         data={variants}
         maxHeight={300}
@@ -297,6 +298,10 @@ const styles = EStyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     fontSize: 20,
     color: 'white',
+  },
+  containerStyle: {
+    marginTop: 5,
+    borderRadius: 10,
   },
 });
 

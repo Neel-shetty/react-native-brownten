@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {View, StyleSheet, Text, Alert} from 'react-native';
+import {View, StyleSheet, Text, Alert, ActivityIndicator} from 'react-native';
 import CartList from '../../components/CartComponents/CartList';
 import {colors} from '../../constants/colors';
 import {layout} from '../../constants/Layout';
@@ -14,7 +14,8 @@ import Button2 from '../../components/CartComponents/Button';
 import Button3 from '../../components/CartComponents/Button3';
 import RazorpayCheckout, {CheckoutOptions} from 'react-native-razorpay';
 import {api} from '../../api';
-import {ScrollView} from 'react-native';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {useQuery} from 'react-query';
 
 const CartTab = ({navigation}: any) => {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
@@ -22,7 +23,7 @@ const CartTab = ({navigation}: any) => {
   const [loading, setLoading] = useState(false);
   console.log('🚀 ~ file: Cart.tsx:21 ~ CartTab ~ online:', online);
 
-  const itemCost = useSelector((state: RootState) =>
+  const itemCost: number[] = useSelector((state: RootState) =>
     state.cart.cartItems.map(
       item =>
         parseInt(item?.variant.item.selling_price, 10) * item?.variant.quantity,
@@ -31,6 +32,20 @@ const CartTab = ({navigation}: any) => {
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
 
+  const {
+    data: deliveryCharge,
+    error,
+    isLoading: deliveryChargeLoading,
+  } = useQuery(['deliveryCharge', online], async () =>
+    api.post('/get/shipping-charge', {
+      method: online ? 'Online' : 'Cash on Delivery',
+    }),
+  );
+  console.log(
+    '🚀 ~ file: Cart.tsx:38 ~ CartTab ~ data:',
+    deliveryCharge?.data.data,
+    error,
+  );
   // variables
   const snapPoints = useMemo(() => ['25%', '75%'], []);
 
@@ -51,7 +66,12 @@ const CartTab = ({navigation}: any) => {
 
   function pay() {
     setLoading(true);
-    const totalCost = itemCost.reduce((a: number, b: number) => a + b);
+    if (!deliveryCharge) {
+      return;
+    }
+    const totalCost =
+      itemCost.reduce((a: number, b: number) => a + b) +
+      parseInt(deliveryCharge.data.data, 10);
     console.log('🚀 ~ file: Cart.tsx:57 ~ pay ~ totalCost:', totalCost);
     api
       .post('/create/order/id', {
@@ -86,8 +106,25 @@ const CartTab = ({navigation}: any) => {
                   razorpay_order_id: res.data.data,
                   razorpay_signature: data.razorpay_signature,
                 })
-                .then(response => {
+                .then(async response => {
                   if (response.data?.status === 1) {
+                    const id = await EncryptedStorage.getItem('id');
+                    api
+                      .post('', {
+                        userid: id,
+                        shippingAddress: '',
+                        items: [],
+                        total_amount:
+                          itemCost.reduce((a: number, b: number) => a + b) +
+                          parseInt(deliveryCharge.data.data, 10),
+
+                        payment_method: online ? 'online' : 'Cash On Delivery',
+                        transaction_id: data.razorpay_payment_id,
+                      })
+                      .then(result => {
+                        console.log(result.data);
+                      })
+                      .catch();
                     navigation.navigate(OrderAccepted.name);
                   }
                 })
@@ -124,6 +161,10 @@ const CartTab = ({navigation}: any) => {
       });
   }
 
+  if (deliveryChargeLoading || error || !deliveryCharge) {
+    return <ActivityIndicator />;
+  }
+
   return (
     <View style={styles.root}>
       <View style={styles.headerContainer}>
@@ -140,7 +181,10 @@ const CartTab = ({navigation}: any) => {
             setShowBottomSheet(true);
           }}
           txtColour="white"
-          value={itemCost.reduce((a: number, b: number) => a + b)}
+          value={
+            itemCost.reduce((a: number, b: number) => a + b) +
+            parseInt(deliveryCharge.data.data, 10)
+          }
         />
       </View>
       {showBottomSheet ? (
@@ -180,9 +224,18 @@ const CartTab = ({navigation}: any) => {
               onPress={() => {
                 console.log('pressed');
               }}
+              title="Delivery Charge"
+              value={deliveryCharge.data.data}
+              field="cost"
+            />
+            <SheetItem
+              onPress={() => {
+                console.log('pressed');
+              }}
               title="Total Cost"
               value={JSON.stringify(
-                itemCost.reduce((a: number, b: number) => a + b),
+                itemCost.reduce((a: number, b: number) => a + b) +
+                  parseInt(deliveryCharge?.data.data, 10),
               )}
               field="cost"
             />
@@ -202,7 +255,7 @@ const CartTab = ({navigation}: any) => {
                 onPress={
                   online
                     ? pay
-                    : () => {
+                    : async () => {
                         navigation.navigate(OrderAccepted.name);
                       }
                 }
