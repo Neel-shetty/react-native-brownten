@@ -12,8 +12,7 @@ import {colors} from '../../constants/colors';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {AddressType, fetchAddress} from '../../api/fetchAddress';
 import Address from '../AddressComponents/Address';
-import {BottomSheetFlatList, BottomSheetScrollView} from '@gorhom/bottom-sheet';
-import {current} from '@reduxjs/toolkit';
+import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 
 const SheetItem = ({
   title,
@@ -21,14 +20,16 @@ const SheetItem = ({
   onPress,
   field,
   setOnline,
+  setMainAddress,
 }: {
   title: string;
   value?: string;
   onPress: () => void;
   field: string;
   setOnline?: React.Dispatch<React.SetStateAction<boolean>>;
+  setMainAddress?: React.Dispatch<React.SetStateAction<AddressType>>;
 }) => {
-  console.log('🚀 ~ file: SheetItem.tsx:20 ~ field:', field);
+  // console.log('🚀 ~ file: SheetItem.tsx:20 ~ field:', field);
   const [idk, setIdk] = useState<boolean>(false);
   const [selected, setSelected] = useState('Online');
   const initalOptions = [
@@ -38,8 +39,10 @@ const SheetItem = ({
   const [options, setOptions] = useState(initalOptions);
   const [address, setAddress] = useState<AddressType[]>();
   const [loading, setLoading] = useState(false);
-  const [selectedAddress, setSelectedAddress] = useState<AddressType>();
-  console.log('🚀 ~ file: SheetItem.tsx:41 ~ selectedAddress:', address);
+  const [selectedAddress, setSelectedAddress] = useState<
+    AddressType | undefined
+  >();
+  // console.log('🚀 ~ file: SheetItem.tsx:41 ~ selectedAddress:', address);
 
   async function getAddress() {
     setLoading(true);
@@ -48,10 +51,10 @@ const SheetItem = ({
       return;
     }
     const result = await fetchAddress(parseInt(user_id, 10));
-    console.log(
-      '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
-      result,
-    );
+    // console.log(
+    //   '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
+    //   result,
+    // );
     if (result) {
       let tempArr: AddressType[] = [];
       result.map((item, index) => {
@@ -60,12 +63,16 @@ const SheetItem = ({
       setAddress(tempArr);
       if (address) {
         setSelectedAddress(address[0]);
+        //@ts-ignore
+        if (setMainAddress) {
+          setMainAddress(address[0]);
+        }
       }
     }
     setLoading(false);
   }
   const onPressRadio = (id: number) => {
-    console.log(id);
+    // console.log(id);
     let tempArr: AddressType[] = [];
     if (!address) {
       return;
@@ -74,6 +81,11 @@ const SheetItem = ({
       if (item.id === id) {
         tempArr.push({...item, selected: true});
         setSelectedAddress(item);
+        //@ts-ignore
+        if (setMainAddress) {
+          setMainAddress(address[0]);
+        }
+        // setMainAddress(item);
       } else {
         tempArr.push({...item, selected: false});
       }
@@ -89,10 +101,10 @@ const SheetItem = ({
         return;
       }
       const result = await fetchAddress(parseInt(user_id, 10));
-      console.log(
-        '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
-        result,
-      );
+      // console.log(
+      //   '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
+      //   result,
+      // );
       if (result) {
         let tempArr: AddressType[] = [];
         result.map((item, index) => {
@@ -108,8 +120,13 @@ const SheetItem = ({
   useEffect(() => {
     if (address) {
       setSelectedAddress(address[0]);
+      //@ts-ignore
+      if (setMainAddress) {
+        setMainAddress(address[0]);
+      }
+      // setMainAddress(address[0]);
     }
-  }, [address]);
+  }, [address, setMainAddress]);
 
   if (loading) {
     return <ActivityIndicator />;
@@ -217,10 +234,10 @@ const SheetItem = ({
         </View>
       );
     }
-    console.log(
-      "🚀 ~ file: SheetItem.tsx:106 ~ field === 'address':",
-      field === 'address',
-    );
+    // console.log(
+    //   "🚀 ~ file: SheetItem.tsx:106 ~ field === 'address':",
+    //   field === 'address',
+    // );
     if (field === 'address') {
       return (
         <View style={styles.root}>

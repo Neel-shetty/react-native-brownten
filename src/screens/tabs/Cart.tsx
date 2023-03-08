@@ -16,18 +16,26 @@ import RazorpayCheckout, {CheckoutOptions} from 'react-native-razorpay';
 import {api} from '../../api';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {useQuery} from 'react-query';
+import {AddressType} from '../../api/fetchAddress';
+// import {useSelector} from 'react-redux';
+import {cartItemType} from '../../store/cart';
+// import {RootState} from '../../store';
 
 const CartTab = ({navigation}: any) => {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
   const [online, setOnline] = useState(true);
   const [loading, setLoading] = useState(false);
-  console.log('🚀 ~ file: Cart.tsx:21 ~ CartTab ~ online:', online);
+  const [address, setAddress] = useState<AddressType>();
+  console.log('🚀 ~ file: Cart.tsx:26 ~ CartTab ~ address:', address);
 
   const itemCost: number[] = useSelector((state: RootState) =>
     state.cart.cartItems.map(
       item =>
         parseInt(item?.variant.item.selling_price, 10) * item?.variant.quantity,
     ),
+  );
+  const cartItems: cartItemType[] = useSelector(
+    (state: RootState) => state.cart.cartItems,
   );
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -112,8 +120,9 @@ const CartTab = ({navigation}: any) => {
                     api
                       .post('', {
                         userid: id,
-                        shippingAddress: '',
-                        items: [],
+                        shippingAddress: address,
+                        shippingCharge: deliveryCharge,
+                        items: cartItems,
                         total_amount:
                           itemCost.reduce((a: number, b: number) => a + b) +
                           parseInt(deliveryCharge.data.data, 10),
@@ -124,7 +133,9 @@ const CartTab = ({navigation}: any) => {
                       .then(result => {
                         console.log(result.data);
                       })
-                      .catch();
+                      .catch(sendCartError =>
+                        console.log(sendCartError.response),
+                      );
                     navigation.navigate(OrderAccepted.name);
                   }
                 })
@@ -219,6 +230,7 @@ const CartTab = ({navigation}: any) => {
               title="Address"
               field="address"
               value="address"
+              setMainAddress={setAddress}
             />
             <SheetItem
               onPress={() => {
