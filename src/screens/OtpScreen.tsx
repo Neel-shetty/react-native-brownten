@@ -73,12 +73,13 @@ const OtpScreen = () => {
               name: route?.params?.name,
               image: route?.params?.image,
             });
+            console.log('🚀 ~ file: OtpScreen.tsx:76 ~ result:', result);
             if (result?.status === 1) {
-              Alert.alert('Success', result.message);
+              Alert.alert('Success', result?.message);
             }
             console.log(
               '🚀 ~ file: SignIn.tsx:66 ~ Signin ~ result',
-              result?.response.data.status,
+              result?.response?.data?.status,
             );
             if (result?.response?.data?.status === 0) {
               Alert.alert('Failed', result.response.data.message);

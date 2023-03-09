@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {layout} from '../../constants/Layout';
 import Button from '../Button';
 import Input from './Input';
@@ -18,10 +18,29 @@ import * as yup from 'yup';
 import {EditAccount} from '../../api/EditAccount';
 import {useNavigation} from '@react-navigation/native';
 import PasswordUpdateScreen from '../../screens/PasswordUpdateScreen';
+import {useQuery} from 'react-query';
+import {api} from '../../api';
+import EncryptedStorage from 'react-native-encrypted-storage';
+
+export interface ProfileType {
+  created_at: '2022-08-09T05:33:25.000000Z';
+  email: 'mark@example.com';
+  email_verified_at: null;
+  forgot_pin: null;
+  id: 4;
+  image: 'uploads/profile/2409601481.jpg';
+  is_active: '1';
+  name: 'mark';
+  otp: null;
+  phone: '8787676565';
+  role: '3';
+  updated_at: '2022-08-09T05:33:25.000000Z';
+}
 
 const Fields = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [editMode, setEditMode] = useState({counter: 0, editable: false});
+  const [details, setDetails] = useState<ProfileType>();
 
   const naviagtion: any = useNavigation();
 
@@ -37,6 +56,18 @@ const Fields = () => {
       .required('Email is required!'),
     username: yup.string().required('Username is required'),
   });
+
+  async function fetchProfile() {
+    const id = await EncryptedStorage.getItem('id');
+    console.log('🚀 ~ file: Fields.tsx:46 ~ fetchProfile ~ id:', id);
+    api
+      .post('/user/profile', {user_id: 4})
+      .then(res => {
+        console.log(res.data);
+        setDetails(res.data.data);
+      })
+      .catch(error => console.log(error?.response?.data));
+  }
 
   const onChangeEdit = (editable: boolean) => {
     const prevCount = editMode.counter;
@@ -55,6 +86,14 @@ const Fields = () => {
     }
   };
 
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
+  if (!details) {
+    return null;
+  }
+
   return (
     <ScrollView
       contentContainerStyle={styles.root}
@@ -71,9 +110,9 @@ const Fields = () => {
       <View style={styles.fieldContainer}>
         <Formik
           initialValues={{
-            email: 'neelshetty@gmail.com',
-            username: 'Neel Shetty',
-            phone: '9934567890',
+            email: details.email,
+            username: details.name,
+            phone: details.phone,
             password: '',
           }}
           onSubmit={async values => {

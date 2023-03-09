@@ -32,9 +32,10 @@ export async function EditAccount({name, phone, email}: props) {
       return error?.response?.data;
     });
   const result = await response;
+  console.log('🚀 ~ file: EditAccount.ts:35 ~ EditAccount ~ result:', result);
   if (result.status === 1) {
     Alert.alert('Success', result.message);
   } else {
-    Alert.alert('Failed', result?.data);
+    Alert.alert('Failed', result?.message);
   }
 }

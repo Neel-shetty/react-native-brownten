@@ -32,12 +32,12 @@ const Stack = createStackNavigator();
 const Navigator = () => {
   const dispatch = useDispatch();
   const loggedIn = useSelector(state => state.user.loggedIn);
-  // console.log('🚀 ~ file: Navigator.js:23 ~ Navigator ~ loggedIn', loggedIn);
+  console.log('🚀 ~ file: Navigator.js:23 ~ Navigator ~ loggedIn', loggedIn);
 
   useLayoutEffect(() => {
     async function checkLogin() {
       const result = await EncryptedStorage.getItem('isLoggedIn');
-      // console.log('🚀 ~ file: Navigator.js:28 ~ checkLogin ~ result', result);
+      console.log('🚀 ~ file: Navigator.js:28 ~ checkLogin ~ result', result);
       if (result === 'true') {
         dispatch(setLoggedIn(true));
       }
@@ -62,6 +62,10 @@ const Navigator = () => {
               />
               <Stack.Screen name={SignIn.name} component={SignIn.component} />
               <Stack.Screen name={SignUp.name} component={SignUp.component} />
+              <Stack.Screen
+                name={OtpScreen.name}
+                component={OtpScreen.component}
+              />
             </>
           ) : (
             <>
@@ -81,10 +85,6 @@ const Navigator = () => {
               <Stack.Screen
                 name={MapScreen.name}
                 component={MapScreen.component}
-              />
-              <Stack.Screen
-                name={OtpScreen.name}
-                component={OtpScreen.component}
               />
               <Stack.Screen
                 name={CategoryScreen.name}

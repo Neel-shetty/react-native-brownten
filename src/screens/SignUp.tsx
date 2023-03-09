@@ -80,6 +80,7 @@ const SignUp = ({navigation}: SignUpProps) => {
             console.log(values);
             if (!image) {
               Alert.alert('Please select an Image');
+              setLoading(false);
               return;
             }
             const result = await SignUpApi({
