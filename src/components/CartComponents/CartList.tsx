@@ -10,7 +10,7 @@ const CartList = () => {
   const items: cartItemType[] = useSelector(
     (state: RootState) => state.cart.cartItems,
   );
-  console.log('🚀 ~ file: CartList.tsx:9 ~ CartList ~ items:', items);
+  console.info('🚀 ~ file: CartList.tsx:9 ~ CartList ~ items:', items);
   return (
     <View style={styles.root}>
       <FlatList

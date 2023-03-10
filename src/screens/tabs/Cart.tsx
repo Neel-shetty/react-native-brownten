@@ -28,15 +28,20 @@ const CartTab = ({navigation}: any) => {
   const [address, setAddress] = useState<AddressType>();
   console.log('🚀 ~ file: Cart.tsx:26 ~ CartTab ~ address:', address);
 
-  const itemCost: number[] = useSelector((state: RootState) =>
+  const itemCost = useSelector((state: RootState) =>
     state.cart.cartItems.map(
       item =>
-        parseInt(item?.variant.item.selling_price, 10) * item?.variant.quantity,
+        (parseInt(item?.variant.item.selling_price, 10) *
+          item?.variant.quantity) as number,
     ),
   );
+  console.log('🚀 ~ file: Cart.tsx:38 ~ CartTab ~ itemCost:', itemCost);
   const cartItems: cartItemType[] = useSelector(
     (state: RootState) => state.cart.cartItems,
   );
+
+  // itemCost = itemCost ? itemCost : [0, 0, 0];
+
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
 
@@ -54,6 +59,11 @@ const CartTab = ({navigation}: any) => {
     deliveryCharge?.data.data,
     error,
   );
+  console.log(itemCost);
+  const totalCartCost =
+    itemCost.reduce((a: number, b: number) => a + b, 0) +
+    parseInt(deliveryCharge?.data.data, 10);
+
   // variables
   const snapPoints = useMemo(() => ['25%', '75%'], []);
 
@@ -77,10 +87,8 @@ const CartTab = ({navigation}: any) => {
     if (!deliveryCharge) {
       return;
     }
-    const totalCost =
-      itemCost.reduce((a: number, b: number) => a + b) +
-      parseInt(deliveryCharge.data.data, 10);
-    console.log('🚀 ~ file: Cart.tsx:57 ~ pay ~ totalCost:', totalCost);
+    const totalCost = totalCartCost;
+    console.log('🚀 ~ file: Cart.tsx:92 ~ pay ~ totalCost:', totalCost);
     api
       .post('/create/order/id', {
         amount: totalCost,
@@ -123,9 +131,7 @@ const CartTab = ({navigation}: any) => {
                         shippingAddress: address,
                         shippingCharge: deliveryCharge,
                         items: cartItems,
-                        total_amount:
-                          itemCost.reduce((a: number, b: number) => a + b) +
-                          parseInt(deliveryCharge.data.data, 10),
+                        total_amount: totalCartCost,
 
                         payment_method: online ? 'online' : 'Cash On Delivery',
                         transaction_id: data.razorpay_payment_id,
@@ -192,10 +198,7 @@ const CartTab = ({navigation}: any) => {
             setShowBottomSheet(true);
           }}
           txtColour="white"
-          value={
-            itemCost.reduce((a: number, b: number) => a + b) +
-            parseInt(deliveryCharge.data.data, 10)
-          }
+          value={totalCartCost}
         />
       </View>
       {showBottomSheet ? (
@@ -245,10 +248,7 @@ const CartTab = ({navigation}: any) => {
                 console.log('pressed');
               }}
               title="Total Cost"
-              value={JSON.stringify(
-                itemCost.reduce((a: number, b: number) => a + b) +
-                  parseInt(deliveryCharge?.data.data, 10),
-              )}
+              value={JSON.stringify(totalCartCost)}
               field="cost"
             />
             {/* </ScrollView> */}

@@ -18,7 +18,6 @@ import * as yup from 'yup';
 import {EditAccount} from '../../api/EditAccount';
 import {useNavigation} from '@react-navigation/native';
 import PasswordUpdateScreen from '../../screens/PasswordUpdateScreen';
-import {useQuery} from 'react-query';
 import {api} from '../../api';
 import EncryptedStorage from 'react-native-encrypted-storage';
 

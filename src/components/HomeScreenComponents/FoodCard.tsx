@@ -150,7 +150,7 @@ const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
               alignItems: 'center',
             }}>
             <Text style={styles.price}>
-              ₹{currentVariant ? currentVariant.price : null}
+              ₹{currentVariant ? currentVariant.selling_price : null}
             </Text>
             <TouchableOpacity onPress={addItemToCart} style={styles.button}>
               <PlusIcon />

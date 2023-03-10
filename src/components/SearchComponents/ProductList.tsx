@@ -27,6 +27,7 @@ const ProductList = ({}) => {
     api
       .post(`${link}`, {[fieldName]: fieldValue})
       .then(res => {
+        console.log(res.data.data);
         setItems(res.data.data);
         setLoading(false);
       })
