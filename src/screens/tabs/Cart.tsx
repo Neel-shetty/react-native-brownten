@@ -126,18 +126,20 @@ const CartTab = ({navigation}: any) => {
                   if (response.data?.status === 1) {
                     const id = await EncryptedStorage.getItem('id');
                     api
-                      .post('', {
-                        userid: id,
+                      .post('/order/insert', {
+                        userid: 5,
                         shippingAddress: address,
                         shippingCharge: deliveryCharge,
                         items: cartItems,
                         total_amount: totalCartCost,
-
                         payment_method: online ? 'online' : 'Cash On Delivery',
                         transaction_id: data.razorpay_payment_id,
                       })
                       .then(result => {
-                        console.log(result.data);
+                        console.log(
+                          '----------------------------------x------------xxxxxxxxxxxxxxxxxxxxxx---------------------------------------------------------',
+                          result.data,
+                        );
                       })
                       .catch(sendCartError =>
                         console.log(sendCartError.response),

@@ -47,6 +47,7 @@ const Input = ({
   onPressEdit,
 }: InputProps) => {
   const [editable, setEditable] = useState<boolean>(false);
+  const [submitted, setSubmitted] = useState(true);
   console.log('🚀 ~ file: Input.tsx:45 ~ editable:', editable);
   return (
     <>

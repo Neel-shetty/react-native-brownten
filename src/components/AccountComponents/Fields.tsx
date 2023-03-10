@@ -60,7 +60,7 @@ const Fields = () => {
     const id = await EncryptedStorage.getItem('id');
     console.log('🚀 ~ file: Fields.tsx:46 ~ fetchProfile ~ id:', id);
     api
-      .post('/user/profile', {user_id: 4})
+      .post('/user/profile', {user_id: id})
       .then(res => {
         console.log(res.data);
         setDetails(res.data.data);

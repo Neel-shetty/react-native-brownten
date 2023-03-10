@@ -42,19 +42,23 @@ const SheetItem = ({
   const [selectedAddress, setSelectedAddress] = useState<
     AddressType | undefined
   >();
-  // console.log('🚀 ~ file: SheetItem.tsx:41 ~ selectedAddress:', address);
+  console.log(
+    '🚀 ~ file: SheetItem.tsx:43 ~ selectedAddress:',
+    selectedAddress,
+  );
 
   async function getAddress() {
     setLoading(true);
     const user_id = await EncryptedStorage.getItem('id');
-    if (!user_id) {
-      return;
-    }
-    const result = await fetchAddress(parseInt(user_id, 10));
-    // console.log(
-    //   '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
-    //   result,
-    // );
+    // if (!user_id) {
+    //   setLoading(false)
+    //   return;
+    // }
+    const result = await fetchAddress(parseInt('5', 10));
+    console.log(
+      '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
+      result,
+    );
     if (result) {
       let tempArr: AddressType[] = [];
       result.map((item, index) => {
@@ -96,15 +100,15 @@ const SheetItem = ({
   useEffect(() => {
     async function getAddress() {
       setLoading(true);
-      const user_id = await EncryptedStorage.getItem('id');
-      if (!user_id) {
-        return;
-      }
-      const result = await fetchAddress(parseInt(user_id, 10));
-      // console.log(
-      //   '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
-      //   result,
-      // );
+      // const user_id = await EncryptedStorage.getItem('id');
+      // if (!user_id) {
+      //   return;
+      // }
+      const result = await fetchAddress(2);
+      console.log(
+        '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
+        result,
+      );
       if (result) {
         let tempArr: AddressType[] = [];
         result.map((item, index) => {

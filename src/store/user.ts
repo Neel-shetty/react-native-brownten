@@ -4,7 +4,7 @@ interface initalStateType {
   loggedIn: boolean;
 }
 const initialState: initalStateType = {
-  loggedIn: true,
+  loggedIn: false,
 };
 
 export const UserSlice = createSlice({
