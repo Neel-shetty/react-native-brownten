@@ -1,9 +1,12 @@
-import {StyleSheet, View, Text} from 'react-native';
+import {StyleSheet, View, Text, FlatList} from 'react-native';
 import React, {useState} from 'react';
 import Toggle from './Toggle';
 import OrderPreview from '../OrdersScreenComponents/OrderPreview';
 import {layout} from '../../constants/Layout';
 import {OrderType} from '../../screens/OrdersScreen';
+import {FlashList} from '@shopify/flash-list';
+import FoodCard from '../HomeScreenComponents/FoodCard';
+import FoodCardPreview from './FoodCardPreview';
 
 const Details = ({order}: {order: OrderType}) => {
   console.log('🚀 ~ file: Details.tsx:9 ~ Details ~ order:', order);
@@ -24,36 +27,48 @@ const Details = ({order}: {order: OrderType}) => {
           onPressItems={handlePressItems}
         />
       </View>
-      <OrderPreview order={order} />
-      <View style={styles.addressContainer}>
-        <Text style={styles.title}>Address</Text>
-        <Text style={styles.name}>{order.username}</Text>
-        <Text>
-          {order.shipping_address + '\n'}
-          {/* {'No 10, xyz colony\n' +
+      {/* <OrderPreview order={order} /> */}
+      {info ? (
+        <>
+          <View style={styles.addressContainer}>
+            <Text style={styles.title}>Address</Text>
+            <Text style={styles.name}>{order?.username}</Text>
+            <Text>
+              {order?.shipping_address + '\n'}
+              {/* {'No 10, xyz colony\n' +
             'abc layout, efg nagar\n' +
             'Maharashtra - 560023\n' +
             'Phone - 9934567890\n'} */}
-        </Text>
-      </View>
-      <View style={styles.paymentContainer}>
-        <Text style={styles.title}>Payment Details</Text>
-        <TextPair title="Transaction ID" value={order.transation_id} />
-        <TextPair title="Payment Method" value={order.payment_method} />
-        <TextPair title="Payment Status" value={order.payment_status} />
-        <TextPair
-          title="SubTotal"
-          value={(
-            parseInt(order.total_amount, 10) -
-            parseInt(order.shipping_charge, 10)
-          ).toString()}
+            </Text>
+          </View>
+          <View style={styles.paymentContainer}>
+            <Text style={styles.title}>Payment Details</Text>
+            <TextPair title="Transaction ID" value={order?.transation_id} />
+            <TextPair title="Payment Method" value={order?.payment_method} />
+            <TextPair title="Payment Status" value={order?.payment_status} />
+            <TextPair
+              title="SubTotal"
+              value={(
+                parseInt(order?.total_amount, 10) -
+                parseInt(order?.shipping_charge, 10)
+              ).toString()}
+            />
+            <TextPair title="Shipping Charges" value={order?.shipping_charge} />
+            <Text style={styles.bkeyText}>
+              Total
+              <Text style={styles.bvalueText}> - Rs {order?.total_amount}</Text>
+            </Text>
+          </View>
+        </>
+      ) : (
+        <FlatList
+          data={order.items}
+          renderItem={({item}) => <FoodCardPreview item={item} />}
+          numColumns={2}
+          showsVerticalScrollIndicator={false}
+          estimatedItemSize={180}
         />
-        <TextPair title="Shipping Charges" value={order.shipping_charge} />
-        <Text style={styles.bkeyText}>
-          Total
-          <Text style={styles.bvalueText}> - Rs {order.total_amount}</Text>
-        </Text>
-      </View>
+      )}
     </View>
   );
 };

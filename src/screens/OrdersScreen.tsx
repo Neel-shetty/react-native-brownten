@@ -25,10 +25,13 @@ export interface OrderType {
   order_status: string;
   username: string;
   shipping_address: string;
-  item_name: string;
-  item_weight: string;
-  item_qty: string;
-  item_price: string;
+  items: {
+    item_name: string;
+    item_price: string;
+    item_qty: string;
+    image: string;
+    item_weight: string;
+  }[];
   shipping_charge: string;
   total_amount: string;
   payment_method: string;

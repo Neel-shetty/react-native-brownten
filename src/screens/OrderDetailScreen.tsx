@@ -19,7 +19,7 @@ export interface SingleOrdersResponseType {
 const OrderDetailScreen = () => {
   const navigation: any = useNavigation();
   const route: any = useRoute();
-  const {data} = useQuery<SingleOrdersResponseType, Error>(
+  const {data, error, isLoading} = useQuery<SingleOrdersResponseType, Error>(
     'singleOrder',
     async () => {
       return api.post('/user/order/detail', {
@@ -30,6 +30,8 @@ const OrderDetailScreen = () => {
   console.log(
     '🚀 ~ file: OrdersScreen.tsx:46 ~ const{data}=useQuery<OrdersResponseType,Error> ~ data:',
     data?.data,
+    error,
+    isLoading,
   );
   return (
     <View style={styles.root}>
@@ -44,7 +46,7 @@ const OrderDetailScreen = () => {
         <View style={styles.space} />
       </View>
       <View style={styles.listContainer}>
-        <Details order={data?.data?.data ? data?.data.data : null} />
+        <Details order={data?.data ? data?.data?.data : null} />
       </View>
     </View>
   );
