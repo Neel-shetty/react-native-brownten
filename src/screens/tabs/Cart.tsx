@@ -181,7 +181,11 @@ const CartTab = ({navigation}: any) => {
   }
 
   if (deliveryChargeLoading || error || !deliveryCharge) {
-    return <ActivityIndicator />;
+    return (
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <ActivityIndicator />
+      </View>
+    );
   }
 
   return (

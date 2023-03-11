@@ -4,8 +4,6 @@ import Toggle from './Toggle';
 import OrderPreview from '../OrdersScreenComponents/OrderPreview';
 import {layout} from '../../constants/Layout';
 import {OrderType} from '../../screens/OrdersScreen';
-import {FlashList} from '@shopify/flash-list';
-import FoodCard from '../HomeScreenComponents/FoodCard';
 import FoodCardPreview from './FoodCardPreview';
 
 const Details = ({order}: {order: OrderType}) => {

@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {layout} from '../../constants/Layout';
@@ -57,6 +58,7 @@ const Fields = () => {
   });
 
   async function fetchProfile() {
+    setLoading(true);
     const id = await EncryptedStorage.getItem('id');
     console.log('🚀 ~ file: Fields.tsx:46 ~ fetchProfile ~ id:', id);
     api
@@ -64,8 +66,12 @@ const Fields = () => {
       .then(res => {
         console.log(res.data);
         setDetails(res.data.data);
+        setLoading(false);
       })
-      .catch(error => console.log(error?.response?.data));
+      .catch(error => {
+        console.log(error?.response?.data);
+        setLoading(false);
+      });
   }
 
   const onChangeEdit = (editable: boolean) => {
@@ -88,6 +94,10 @@ const Fields = () => {
   useEffect(() => {
     fetchProfile();
   }, []);
+
+  if (loading) {
+    return <ActivityIndicator />;
+  }
 
   if (!details) {
     return null;
@@ -125,6 +135,7 @@ const Fields = () => {
             });
             setEditMode({counter: 0, editable: false});
             //fetchDetails()
+            fetchProfile();
             setLoading(false);
           }}
           validationSchema={formScheme}>

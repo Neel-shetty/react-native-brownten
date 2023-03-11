@@ -1,28 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import {View, Text, TouchableOpacity, Dimensions, Image} from 'react-native';
+import React from 'react';
+import {View, Text, Dimensions, Image} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
-//@ts-ignore
-import PlusIcon from '../../../assets/icons/commons/plus.svg';
-import {useNavigation} from '@react-navigation/native';
-import {ProductPreviewType, variantType} from '../../screens/tabs/Home';
-// import Icon from 'react-native-vector-icons/EvilIcons';
-// import {useDispatch} from 'react-redux';
-import {ProductProps} from '../../screens/ProductScreen';
 import {Dropdown} from 'react-native-element-dropdown';
-import {colors} from '../../constants/colors';
-import {useDispatch, useSelector} from 'react-redux';
-import {RootState} from '../../store';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import {
-  addToCart,
-  decrementQuantity,
-  incrementQuantity,
-} from '../../store/cart';
-
-interface dropdownDataType {
-  label: string;
-  value: variantType;
-}
 
 interface PropType {
   item: {
@@ -37,6 +16,7 @@ interface PropType {
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
 const FoodCardPreview = ({item}: PropType) => {
+  console.log(item.image);
   return (
     <View style={styles.card}>
       <View style={styles.imageBox}>
