@@ -13,6 +13,7 @@ interface PropType {
   };
 }
 
+
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
 const FoodCardPreview = ({item}: PropType) => {
