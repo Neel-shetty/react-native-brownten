@@ -42,10 +42,10 @@ const SheetItem = ({
   const [selectedAddress, setSelectedAddress] = useState<
     AddressType | undefined
   >();
-  console.log(
-    '🚀 ~ file: SheetItem.tsx:43 ~ selectedAddress:',
-    selectedAddress,
-  );
+  // console.log(
+  //   '🚀 ~ file: SheetItem.tsx:43 ~ selectedAddress:',
+  //   selectedAddress,
+  // );
 
   async function getAddress() {
     setLoading(true);
@@ -55,10 +55,10 @@ const SheetItem = ({
     //   return;
     // }
     const result = await fetchAddress(parseInt('5', 10));
-    console.log(
-      '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
-      result,
-    );
+    // console.log(
+    //   '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
+    //   result,
+    // );
     if (result) {
       let tempArr: AddressType[] = [];
       result.map((item, index) => {
@@ -105,10 +105,10 @@ const SheetItem = ({
       //   return;
       // }
       const result = await fetchAddress(2);
-      console.log(
-        '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
-        result,
-      );
+      // console.log(
+      //   '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
+      //   result,
+      // );
       if (result) {
         let tempArr: AddressType[] = [];
         result.map((item, index) => {

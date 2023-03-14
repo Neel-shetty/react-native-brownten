@@ -26,7 +26,7 @@ const CartTab = ({navigation}: any) => {
   const [online, setOnline] = useState(true);
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState<AddressType>();
-  console.log('🚀 ~ file: Cart.tsx:26 ~ CartTab ~ address:', address);
+  // console.log('🚀 ~ file: Cart.tsx:26 ~ CartTab ~ address:', address);
 
   const itemCost = useSelector((state: RootState) =>
     state.cart.cartItems.map(
@@ -35,9 +35,13 @@ const CartTab = ({navigation}: any) => {
           item?.variant.quantity) as number,
     ),
   );
-  console.log('🚀 ~ file: Cart.tsx:38 ~ CartTab ~ itemCost:', itemCost);
+  // console.log('🚀 ~ file: Cart.tsx:38 ~ CartTab ~ itemCost:', itemCost);
   const cartItems: cartItemType[] = useSelector(
     (state: RootState) => state.cart.cartItems,
+  );
+  console.log(
+    '🚀 ~ file: Cart.tsx:42 ~ CartTab ~ cartItems:',
+    cartItems[0].variant.item.selling_price,
   );
 
   // itemCost = itemCost ? itemCost : [0, 0, 0];
@@ -54,12 +58,12 @@ const CartTab = ({navigation}: any) => {
       method: online ? 'Online' : 'Cash on Delivery',
     }),
   );
-  console.log(
-    '🚀 ~ file: Cart.tsx:38 ~ CartTab ~ data:',
-    deliveryCharge?.data.data,
-    error,
-  );
-  console.log(itemCost);
+  // console.log(
+  //   '🚀 ~ file: Cart.tsx:38 ~ CartTab ~ data:',
+  //   deliveryCharge?.data.data,
+  //   error,
+  // );
+  // console.log(itemCost);
   const totalCartCost =
     itemCost.reduce((a: number, b: number) => a + b, 0) +
     parseInt(deliveryCharge?.data.data, 10);
@@ -115,7 +119,10 @@ const CartTab = ({navigation}: any) => {
             .then(data => {
               // handle success
               // Alert.alert(`Success: ${data.razorpay_payment_id}`);
-              console.log('🚀 ~ file: Cart.tsx:87 ~ pay ~ data:', data);
+              console.log(
+                '🚀 ~ file: Cart.tsx:87 ~ pay ~ data: ----------------------- ',
+                data,
+              );
               api
                 .post('/payment/details', {
                   razorpay_payment_id: data.razorpay_payment_id,
@@ -123,26 +130,26 @@ const CartTab = ({navigation}: any) => {
                   razorpay_signature: data.razorpay_signature,
                 })
                 .then(async response => {
-                  if (response.data?.status === 1) {
+                  if (response.data === 1) {
                     const id = await EncryptedStorage.getItem('id');
                     api
                       .post('/order/insert', {
-                        userid: 5,
-                        shippingAddress: address,
-                        shippingCharge: deliveryCharge,
+                        user_id: id,
+                        shipping_address: address?.id,
+                        shipping_charge: deliveryCharge.data.data,
                         items: cartItems,
                         total_amount: totalCartCost,
                         payment_method: online ? 'online' : 'Cash On Delivery',
                         transaction_id: data.razorpay_payment_id,
                       })
                       .then(result => {
-                        console.log(
-                          '----------------------------------x------------xxxxxxxxxxxxxxxxxxxxxx---------------------------------------------------------',
-                          result.data,
-                        );
+                        console.log('order insert response --- ', result.data);
                       })
                       .catch(sendCartError =>
-                        console.log(sendCartError.response),
+                        console.log(
+                          'order insert error --- ',
+                          sendCartError.response,
+                        ),
                       );
                     navigation.navigate(OrderAccepted.name);
                   }
