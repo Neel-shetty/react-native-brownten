@@ -5,7 +5,6 @@ export async function deleteAddress(id: number) {
   const response = api
     .post('/user/address/delete', {id: id})
     .then(res => {
-      // console.log(res.data);
       return res.data;
     })
     .catch(error => {

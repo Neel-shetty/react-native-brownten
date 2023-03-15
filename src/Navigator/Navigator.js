@@ -26,6 +26,8 @@ import AddAddressScreen from '../screens/AddAddressScreen';
 import PasswordUpdateScreen from '../screens/PasswordUpdateScreen';
 import OrderDetailScreen from '../screens/OrderDetailScreen';
 import RazorPayScreen from '../screens/RazorPayScreen';
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
+import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 
 const Stack = createStackNavigator();
 
@@ -65,6 +67,14 @@ const Navigator = () => {
               <Stack.Screen
                 name={OtpScreen.name}
                 component={OtpScreen.component}
+              />
+              <Stack.Screen
+                name={ForgotPasswordScreen.name}
+                component={ForgotPasswordScreen.component}
+              />
+              <Stack.Screen
+                name={ResetPasswordScreen.name}
+                component={ResetPasswordScreen.component}
               />
             </>
           ) : (

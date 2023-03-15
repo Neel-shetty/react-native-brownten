@@ -26,7 +26,7 @@ const CartTab = ({navigation}: any) => {
   const [online, setOnline] = useState(true);
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState<AddressType>();
-  // console.log('🚀 ~ file: Cart.tsx:26 ~ CartTab ~ address:', address);
+  console.log('🚀 ~ file: Cart.tsx:26 ~ CartTab ~ address:', address);
 
   const itemCost = useSelector((state: RootState) =>
     state.cart.cartItems.map(
@@ -85,6 +85,32 @@ const CartTab = ({navigation}: any) => {
     },
     [navigation],
   );
+
+  async function placeOrder() {
+    setLoading(true);
+    if (!deliveryCharge) {
+      return;
+    }
+    const totalCost = totalCartCost;
+    const id = await EncryptedStorage.getItem('id');
+    api
+      .post('/order/insert', {
+        user_id: id,
+        shipping_address: address?.id,
+        shipping_charge: deliveryCharge.data.data,
+        items: cartItems,
+        total_amount: totalCartCost,
+        payment_method: online ? 'online' : 'Cash On Delivery',
+        // transaction_id: data.razorpay_payment_id,
+      })
+      .then(result => {
+        console.log('order insert response --- ', result.data);
+      })
+      .catch(sendCartError =>
+        console.log('order insert error --- ', sendCartError.response),
+      );
+    navigation.navigate(OrderAccepted.name);
+  }
 
   function pay() {
     setLoading(true);
@@ -229,7 +255,6 @@ const CartTab = ({navigation}: any) => {
             <View style={styles.bottomSheetHeaderContainer}>
               <Text style={eStyles.text}>Checkout</Text>
             </View>
-            {/* <ScrollView showsVerticalScrollIndicator={false}> */}
             <SheetItem
               onPress={() => {
                 console.log('pressed');
@@ -280,7 +305,7 @@ const CartTab = ({navigation}: any) => {
                 onPress={
                   online
                     ? pay
-                    : async () => {
+                    : () => {
                         navigation.navigate(OrderAccepted.name);
                       }
                 }

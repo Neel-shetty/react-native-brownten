@@ -17,9 +17,20 @@ import AddressScreen from '../AddressScreen';
 import AccountDetailsScreen from '../AccountDetailsScreen';
 import OrdersScreen from '../OrdersScreen';
 import RazorPayScreen from '../RazorPayScreen';
+import {setLoggedIn} from '../../store/user';
+import EncryptedStorage from 'react-native-encrypted-storage';
+import {useDispatch} from 'react-redux';
 
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 const AccountTab = () => {
+  const dispatch = useDispatch();
+  function logout() {
+    console.log('logout running');
+    dispatch(setLoggedIn(false));
+    EncryptedStorage.removeItem('isLoggedIn');
+    EncryptedStorage.removeItem('id');
+  }
+
   const itemList = [
     {
       label: 'Orders',
@@ -37,19 +48,6 @@ const AccountTab = () => {
       label: 'Delivery Address',
       icon: <AccountIcons.PinIcon style={styles.icon} color={'#181725'} />,
       navigateTo: AddressScreen.name,
-    },
-    {
-      label: 'Payment Methods',
-      icon: <AccountIcons.PaymentIcon color={'#181725'} />,
-      navigateTo: RazorPayScreen.name,
-    },
-    {
-      label: 'Help',
-      icon: <AccountIcons.HelpIcon color={'#181725'} />,
-    },
-    {
-      label: 'About',
-      icon: <AccountIcons.AboutIcon color={'#181725'} />,
     },
   ];
 
@@ -82,7 +80,7 @@ const AccountTab = () => {
         </View>
         <View style={styles.buttonBox}>
           <Button
-            onPress={() => null}
+            onPress={logout}
             text="Log Out"
             bgColour="#F2F3F2"
             txtColour="#53B175"

@@ -3,7 +3,6 @@ import {
   View,
   Text,
   Image,
-  TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   Dimensions,
@@ -12,15 +11,11 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 import Button from '../components/Button';
 import Input from '../components/Input';
 import SignScaffold from '../components/SignScaffold';
-import SignUp from './SignUp';
 import {Formik} from 'formik';
+import {forgotPassword} from '../api/forgotPassword';
+import {setNewPassword} from '../api/setNewPassword';
 import * as yup from 'yup';
 import {SignIn} from '../api/SignIn';
-import {Alert} from 'react-native';
-import EncryptedStorage from 'react-native-encrypted-storage';
-import {useDispatch} from 'react-redux';
-import {setLoggedIn} from '../store/user';
-import ForgotPasswordScreen from './ForgotPasswordScreen';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
 const logo = require('../../assets/images/logo-colour.png');
@@ -29,53 +24,41 @@ interface SignInProps {
   navigation: any;
 }
 
-const Signin = ({navigation}: SignInProps) => {
+const formScheme = yup.object({
+  password: yup
+    .string()
+    .required('Password is required')
+    .min(8, 'Password has to be atleast 8 characters'),
+  otp: yup.string().required('otp is required'),
+});
+
+const ResetPasswordScreen = ({navigation}: SignInProps) => {
   const [loading, setLoading] = useState(false);
   const behavior = Platform.OS === 'ios' ? 'padding' : undefined;
-
-  const dispatch = useDispatch();
-
-  const formScheme = yup.object({
-    phone: yup
-      .string()
-      .length(10, 'Invalid Phone Number')
-      .required('Phone Number is Required!'),
-    password: yup
-      .string()
-      .required('Password is required!')
-      .min(8, 'Password has to be atleast 8 characters'),
-  });
-
-  const goToSignUp = () => {
-    navigation.navigate(SignUp.name);
-  };
-
   return (
     <SignScaffold>
       <Image style={styles.logo} source={logo} />
       <View style={styles.form}>
         <View>
-          <Text style={styles.headerTitle}>Sign in</Text>
+          <Text style={styles.headerTitle}>Reset Password</Text>
           <Text style={styles.headerSubtitle}>
-            Enter your email and password
+            Enter your OTP and new password
           </Text>
         </View>
         <Formik
-          initialValues={{phone: '', password: ''}}
+          initialValues={{otp: '', password: ''}}
           onSubmit={async values => {
             setLoading(true);
-            const result = await SignIn(values.phone, values.password);
-            if (result?.status === 1) {
-              Alert.alert('Success', result.message);
-              await EncryptedStorage.setItem('isLoggedIn', 'true');
-              await EncryptedStorage.setItem(
-                'id',
-                JSON.stringify(result.data.id),
-              );
-              dispatch(setLoggedIn(true));
-            }
-            if (result?.response?.data?.status === 0) {
-              Alert.alert('Failed', result.response.data.message);
+            const success = await setNewPassword({
+              otp: values.otp,
+              password: values.password,
+            });
+            console.log(
+              '🚀 ~ file: ResetPasswordScreen.tsx:56 ~ ResetPasswordScreen ~ success:',
+              success,
+            );
+            if (success) {
+              navigation.navigate(SignIn.name);
             }
             setLoading(false);
           }}
@@ -91,25 +74,23 @@ const Signin = ({navigation}: SignInProps) => {
             <>
               <KeyboardAvoidingView behavior={behavior}>
                 <Input
-                  label="Phone Number"
-                  onChangeText={handleChange('phone')}
-                  onBlur={handleBlur('phone')}
-                  value={values.phone}
+                  label="OTP"
+                  onChangeText={handleChange('otp')}
+                  onBlur={handleBlur('otp')}
+                  value={values.otp}
                   numeric
                 />
-                {errors.phone && touched.phone && (
+                {errors.otp && touched.otp && (
                   <>
-                    <Text style={styles.errorText}>{errors.phone}</Text>
+                    <Text style={styles.errorText}>{errors.otp}</Text>
                     <View style={{marginTop: heightScreen * 0.011}} />
                   </>
                 )}
-                <View style={{marginTop: heightScreen * 0.011}} />
                 <Input
+                  label="New Password"
                   onChangeText={handleChange('password')}
-                  label="Password"
                   onBlur={handleBlur('password')}
                   value={values.password}
-                  secure={true}
                 />
                 {errors.password && touched.password && (
                   <>
@@ -118,30 +99,16 @@ const Signin = ({navigation}: SignInProps) => {
                   </>
                 )}
               </KeyboardAvoidingView>
-
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate(ForgotPasswordScreen.name);
-                }}
-                style={styles.forgotButtonBox}>
-                <Text style={styles.infoText}>Forgot your password?</Text>
-              </TouchableOpacity>
               <Button
                 onPress={handleSubmit}
                 bgColour="#53B175"
                 txtColour="#FFF"
-                text="Sign in"
+                text="Reset Password"
                 loading={loading}
               />
             </>
           )}
         </Formik>
-        <View style={styles.footer}>
-          <Text style={styles.infoText}>Don't have an account?</Text>
-          <TouchableOpacity onPress={goToSignUp}>
-            <Text style={[styles.infoText, styles.greenInfoText]}>Sign up</Text>
-          </TouchableOpacity>
-        </View>
       </View>
     </SignScaffold>
   );
@@ -199,4 +166,4 @@ const styles = EStyleSheet.create({
   },
 });
 
-export default {component: Signin, name: 'Signin'};
+export default {component: ResetPasswordScreen, name: 'ResetPasswordScreen'};

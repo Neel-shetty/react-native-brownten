@@ -42,23 +42,23 @@ const SheetItem = ({
   const [selectedAddress, setSelectedAddress] = useState<
     AddressType | undefined
   >();
-  // console.log(
-  //   '🚀 ~ file: SheetItem.tsx:43 ~ selectedAddress:',
-  //   selectedAddress,
-  // );
+  if (field === 'address') {
+    console.log(
+      '🚀 ~ file: SheetItem.tsx:43 ~ selectedAddress:',
+      selectedAddress,
+    );
+  }
 
+  useEffect(() => {}, []);
   async function getAddress() {
     setLoading(true);
     const user_id = await EncryptedStorage.getItem('id');
-    // if (!user_id) {
-    //   setLoading(false)
-    //   return;
-    // }
-    const result = await fetchAddress(parseInt('5', 10));
-    // console.log(
-    //   '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
-    //   result,
-    // );
+    console.log('🚀 ~ file: SheetItem.tsx:56 ~ getAddress ~ user_id:', user_id);
+    if (!user_id) {
+      setLoading(false);
+      return;
+    }
+    const result = await fetchAddress(parseInt(user_id, 10));
     if (result) {
       let tempArr: AddressType[] = [];
       result.map((item, index) => {

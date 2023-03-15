@@ -30,10 +30,6 @@ const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
   const [isFocus, setIsFocus] = useState(false);
   const [variants, setVariants] = useState<dropdownDataType[]>([]);
   const [currentVariant, setCurrentVariant] = useState<variantType>();
-  console.log(
-    '🚀 ~ file: FoodCard.tsx:27 ~ FoodCard ~ currentVariant:',
-    currentVariant,
-  );
 
   const dispatch = useDispatch();
   const navigation: any = useNavigation();
