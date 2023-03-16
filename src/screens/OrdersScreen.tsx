@@ -12,6 +12,7 @@ import {useQuery} from 'react-query';
 import {api} from '../api';
 // import EncryptedStorage from 'react-native-encrypted-storage';
 import OrderDetailScreen from './OrderDetailScreen';
+import EncryptedStorage from 'react-native-encrypted-storage';
 
 export interface OrdersResponseType {
   status: number;
@@ -44,8 +45,8 @@ export interface OrderType {
 const OrdersScreen = () => {
   const navigation: any = useNavigation();
   const {data} = useQuery<OrdersResponseType, Error>('orders', async () => {
-    // const user_id = await EncryptedStorage.getItem('id');
-    return api.post('/user/order-history', {user_id: 2});
+    const user_id = await EncryptedStorage.getItem('id');
+    return api.post('/user/order-history', {user_id: user_id});
   });
   return (
     <View style={styles.root}>

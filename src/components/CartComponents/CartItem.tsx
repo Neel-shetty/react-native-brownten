@@ -35,17 +35,21 @@ const CartItem = ({name, quantity, info, cost, image, id, vId}: props) => {
   return (
     <View style={styles.root}>
       <View style={styles.imageContainer}>
-        <Image
-          source={{uri: image}}
-          style={styles.image}
-          resizeMode="contain"
-        />
+        <TouchableOpacity>
+          <Image
+            source={{uri: image}}
+            style={styles.image}
+            resizeMode="contain"
+          />
+        </TouchableOpacity>
       </View>
       <View style={styles.middleContainer}>
         <View style={styles.idkContainer}>
-          <Text style={styles.name} numberOfLines={1}>
-            {name}
-          </Text>
+          <TouchableOpacity>
+            <Text style={styles.name} numberOfLines={1}>
+              {name}
+            </Text>
+          </TouchableOpacity>
           <Text style={styles.info}>{info}</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={decrease} style={styles.button}>
@@ -68,10 +72,6 @@ const CartItem = ({name, quantity, info, cost, image, id, vId}: props) => {
           <Text style={styles.cost}>₹{cost}</Text>
         </View>
       </View>
-      {/* <View style={styles.priceContainer}>
-        <Ionicons name="close" size={24} color={'#B3B3B3'} />
-        <Text style={styles.cost}>${cost}</Text>
-      </View> */}
     </View>
   );
 };

@@ -13,7 +13,6 @@ interface PropType {
   };
 }
 
-
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
 const FoodCardPreview = ({item}: PropType) => {
@@ -23,7 +22,9 @@ const FoodCardPreview = ({item}: PropType) => {
       <View style={styles.imageBox}>
         <Image
           source={{
-            uri: item.image,
+            uri: item?.image
+              ? item.image
+              : 'https://i0.wp.com/roadmap-tech.com/wp-content/uploads/2019/04/placeholder-image.jpg?resize=400%2C400&ssl=1',
           }}
           style={styles.image}
           resizeMode="contain"

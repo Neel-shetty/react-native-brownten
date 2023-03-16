@@ -69,11 +69,19 @@ export const CartSlice = createSlice({
       console.log('🚀 ~ file: cart.ts:69 ~ removeItem:', removeItem);
       state.cartItems = removeItem;
     },
+    emptyCart: state => {
+      state.cartItems = [];
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const {addToCart, decrementQuantity, incrementQuantity, removeItem} =
-  CartSlice.actions;
+export const {
+  addToCart,
+  decrementQuantity,
+  incrementQuantity,
+  removeItem,
+  emptyCart,
+} = CartSlice.actions;
 
 export default CartSlice.reducer;

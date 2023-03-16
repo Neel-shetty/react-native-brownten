@@ -5,17 +5,18 @@ import React from 'react';
 import LocationPin from '../../../assets/icons/home_screen/location-pin.svg';
 
 const Header = () => {
-  const logo = {width: 26.48, height: 30.0};
+  const logo = {width: 75, height: 75};
   return (
     <View style={styles.header}>
       <Image
-        source={require('../../../assets/images/logo-colour.png')}
+        source={require('../../../assets/images/home_screen/brownten-logo.png')}
         style={{...logo}}
+        resizeMode="contain"
       />
-      <View style={styles.locationBox}>
+      {/* <View style={styles.locationBox}>
         <LocationPin style={styles.locationIcon} />
         <Text style={styles.locationText}>Dhaka, Banassre</Text>
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -24,9 +25,11 @@ export default Header;
 
 const styles = StyleSheet.create({
   header: {
-    display: 'flex',
+    // display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    justifyContent: 'flex-start',
+    // backgroundColor: 'pink',
   },
   logo: {
     width: 26.48,
@@ -39,8 +42,7 @@ const styles = StyleSheet.create({
   },
   locationText: {
     fontFamily: 'gilroyNormal600',
-    //@ts-ignore
-    fontSize: '1.125rem',
+    fontSize: 20,
   },
   locationIcon: {
     marginRight: 5.0,

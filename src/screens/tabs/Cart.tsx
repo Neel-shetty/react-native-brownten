@@ -8,7 +8,7 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import CustomBackdrop from '../../components/CartComponents/CustomBackdrop';
 import SheetItem from '../../components/CartComponents/SheetItem';
 import OrderAccepted from '../status/OrderAccepted';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from '../../store';
 import Button2 from '../../components/CartComponents/Button';
 import Button3 from '../../components/CartComponents/Button3';
@@ -18,7 +18,7 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {useQuery} from 'react-query';
 import {AddressType} from '../../api/fetchAddress';
 // import {useSelector} from 'react-redux';
-import {cartItemType} from '../../store/cart';
+import {cartItemType, emptyCart} from '../../store/cart';
 // import {RootState} from '../../store';
 
 const CartTab = ({navigation}: any) => {
@@ -27,6 +27,8 @@ const CartTab = ({navigation}: any) => {
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState<AddressType>();
   console.log('🚀 ~ file: Cart.tsx:26 ~ CartTab ~ address:', address);
+
+  const dispatch = useDispatch();
 
   const itemCost = useSelector((state: RootState) =>
     state.cart.cartItems.map(
@@ -38,10 +40,6 @@ const CartTab = ({navigation}: any) => {
   // console.log('🚀 ~ file: Cart.tsx:38 ~ CartTab ~ itemCost:', itemCost);
   const cartItems: cartItemType[] = useSelector(
     (state: RootState) => state.cart.cartItems,
-  );
-  console.log(
-    '🚀 ~ file: Cart.tsx:42 ~ CartTab ~ cartItems:',
-    cartItems[0].variant.item.selling_price,
   );
 
   // itemCost = itemCost ? itemCost : [0, 0, 0];
@@ -99,17 +97,20 @@ const CartTab = ({navigation}: any) => {
         shipping_address: address?.id,
         shipping_charge: deliveryCharge.data.data,
         items: cartItems,
-        total_amount: totalCartCost,
+        total_amount: totalCost,
         payment_method: online ? 'online' : 'Cash On Delivery',
         // transaction_id: data.razorpay_payment_id,
       })
       .then(result => {
         console.log('order insert response --- ', result.data);
+        dispatch(emptyCart());
+        setShowBottomSheet(false);
+        navigation.navigate(OrderAccepted.name);
       })
       .catch(sendCartError =>
-        console.log('order insert error --- ', sendCartError.response),
-      );
-    navigation.navigate(OrderAccepted.name);
+        console.log('order insert error --- ', sendCartError.response?.data),
+      )
+      .finally(() => setLoading(false));
   }
 
   function pay() {
@@ -143,8 +144,6 @@ const CartTab = ({navigation}: any) => {
           };
           RazorpayCheckout.open(options)
             .then(data => {
-              // handle success
-              // Alert.alert(`Success: ${data.razorpay_payment_id}`);
               console.log(
                 '🚀 ~ file: Cart.tsx:87 ~ pay ~ data: ----------------------- ',
                 data,
@@ -170,6 +169,8 @@ const CartTab = ({navigation}: any) => {
                       })
                       .then(result => {
                         console.log('order insert response --- ', result.data);
+                        dispatch(emptyCart());
+                        setShowBottomSheet(false);
                       })
                       .catch(sendCartError =>
                         console.log(
@@ -303,11 +304,7 @@ const CartTab = ({navigation}: any) => {
                 txtColour="white"
                 loading={loading}
                 onPress={
-                  online
-                    ? pay
-                    : () => {
-                        navigation.navigate(OrderAccepted.name);
-                      }
+                  cartItems?.length > 0 ? (online ? pay : placeOrder) : () => {}
                 }
               />
             </View>

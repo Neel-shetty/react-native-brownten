@@ -1,14 +1,22 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {layout} from '../constants/Layout';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Fields from '../components/AccountComponents/Fields';
+import Ionicons from 'react-native-vector-icons/EvilIcons';
 
-const AccountDetailsScreen = () => {
+const AccountDetailsScreen = ({navigation}: any) => {
   return (
     <View style={styles.root}>
       <View style={styles.headerContainer}>
+        <TouchableOpacity
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          <Ionicons name="chevron-left" size={30} color={'black'} />
+        </TouchableOpacity>
         <Text style={eStyles.text}>My Account</Text>
+        <View style={styles.space} />
       </View>
       <View style={styles.listContainer}>
         <Fields />
@@ -30,12 +38,14 @@ const styles = StyleSheet.create({
   headerContainer: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     // backgroundColor: 'pink',
     width: layout.width,
     maxHeight: 60,
     borderBottomWidth: 1,
     borderColor: '#E2E2E2',
+    flexDirection: 'row',
+    paddingHorizontal: layout.width * 0.03,
   },
   listContainer: {
     flex: 9,
@@ -51,5 +61,8 @@ const eStyles = EStyleSheet.create({
     color: 'black',
     fontFamily: 'Poppins-SemiBold',
     fontSize: '1.125rem',
+  },
+  space: {
+    width: 30,
   },
 });

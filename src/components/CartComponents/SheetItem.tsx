@@ -49,32 +49,6 @@ const SheetItem = ({
     );
   }
 
-  useEffect(() => {}, []);
-  async function getAddress() {
-    setLoading(true);
-    const user_id = await EncryptedStorage.getItem('id');
-    console.log('🚀 ~ file: SheetItem.tsx:56 ~ getAddress ~ user_id:', user_id);
-    if (!user_id) {
-      setLoading(false);
-      return;
-    }
-    const result = await fetchAddress(parseInt(user_id, 10));
-    if (result) {
-      let tempArr: AddressType[] = [];
-      result.map((item, index) => {
-        tempArr.push({...item, selected: index === 0 ? true : false});
-      });
-      setAddress(tempArr);
-      if (address) {
-        setSelectedAddress(address[0]);
-        //@ts-ignore
-        if (setMainAddress) {
-          setMainAddress(address[0]);
-        }
-      }
-    }
-    setLoading(false);
-  }
   const onPressRadio = (id: number) => {
     // console.log(id);
     let tempArr: AddressType[] = [];
@@ -87,7 +61,7 @@ const SheetItem = ({
         setSelectedAddress(item);
         //@ts-ignore
         if (setMainAddress) {
-          setMainAddress(address[0]);
+          setMainAddress(item);
         }
         // setMainAddress(item);
       } else {
@@ -97,18 +71,15 @@ const SheetItem = ({
     setAddress(tempArr);
     setIdk(false);
   };
+
   useEffect(() => {
     async function getAddress() {
       setLoading(true);
-      // const user_id = await EncryptedStorage.getItem('id');
-      // if (!user_id) {
-      //   return;
-      // }
-      const result = await fetchAddress(2);
-      // console.log(
-      //   '🚀 ~ file: AddressScreen.tsx:27 ~ getAddress ~ result:',
-      //   result,
-      // );
+      const user_id = await EncryptedStorage.getItem('id');
+      if (!user_id) {
+        return;
+      }
+      const result = await fetchAddress(Number(user_id));
       if (result) {
         let tempArr: AddressType[] = [];
         result.map((item, index) => {
@@ -122,15 +93,17 @@ const SheetItem = ({
   }, []);
 
   useEffect(() => {
-    if (address) {
-      setSelectedAddress(address[0]);
-      //@ts-ignore
-      if (setMainAddress) {
-        setMainAddress(address[0]);
+    if (!selectedAddress) {
+      if (address) {
+        setSelectedAddress(address[0]);
+        //@ts-ignore
+        if (setMainAddress) {
+          setMainAddress(address[0]);
+        }
+        // setMainAddress(address[0]);
       }
-      // setMainAddress(address[0]);
     }
-  }, [address, setMainAddress]);
+  }, [address, setMainAddress, selectedAddress]);
 
   if (loading) {
     return <ActivityIndicator />;
@@ -195,9 +168,6 @@ const SheetItem = ({
         <View style={{height: layout.height * 0.3}}>
           <BottomSheetFlatList
             data={address}
-            onRefresh={() => {
-              getAddress();
-            }}
             refreshing={loading}
             showsVerticalScrollIndicator={false}
             renderItem={({item, index}) => {

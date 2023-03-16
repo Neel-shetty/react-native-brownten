@@ -1,4 +1,4 @@
-import {FlatList, StyleSheet, View} from 'react-native';
+import {FlatList, StyleSheet, View, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {layout} from '../../constants/Layout';
 import CartItem from './CartItem';
@@ -10,7 +10,7 @@ const CartList = () => {
   const items: cartItemType[] = useSelector(
     (state: RootState) => state.cart.cartItems,
   );
-  // console.info('🚀 ~ file: CartList.tsx:9 ~ CartList ~ items:', items);
+  console.info('🚀 ~ file: CartList.tsx:9 ~ CartList ~ items:', items[0]);
   return (
     <View style={styles.root}>
       <FlatList

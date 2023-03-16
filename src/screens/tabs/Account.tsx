@@ -20,6 +20,8 @@ import RazorPayScreen from '../RazorPayScreen';
 import {setLoggedIn} from '../../store/user';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {useDispatch} from 'react-redux';
+import {useQuery} from 'react-query';
+import {api} from '../../api';
 
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 const AccountTab = () => {
@@ -51,6 +53,16 @@ const AccountTab = () => {
     },
   ];
 
+  const {data, error, isLoading} = useQuery('profile', async () => {
+    const id = await EncryptedStorage.getItem('id');
+    return api.post('/user/profile', {user_id: id});
+  });
+  console.log(
+    '🚀 ~ file: Account.tsx:57 ~ AccountTab ~ data:',
+    data?.data,
+    error?.response,
+  );
+
   return (
     <>
       <ScrollView style={styles.scrollContainer}>
@@ -58,12 +70,16 @@ const AccountTab = () => {
           <Image style={styles.headerImage} source={ProfileImage} />
           <View style={styles.textBox}>
             <View style={styles.headerTitleBox}>
-              <Text style={styles.headerTitle}>Fernando Moraes</Text>
+              <Text style={styles.headerTitle}>
+                {isLoading ? 'loading..' : data?.data?.data?.name}
+              </Text>
               <TouchableOpacity>
                 <AccountIcons.PencilIcon style={styles.headerIcon} />
               </TouchableOpacity>
             </View>
-            <Text style={styles.headerSubtitle}>fe_lopes@live.com</Text>
+            <Text style={styles.headerSubtitle}>
+              {isLoading ? null : data?.data?.data.email}
+            </Text>
           </View>
         </View>
         <View style={styles.list}>

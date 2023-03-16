@@ -8,7 +8,7 @@ import CategorySection from '../../components/HomeScreenComponents/CategorySecti
 import {useQuery} from 'react-query';
 import {api} from '../../api';
 import BrandSection from '../../components/HomeScreenComponents/BrandSection';
-// import Header from '../../components/HomeScreenComponents/Header';
+import Header from '../../components/HomeScreenComponents/Header';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
 
@@ -69,8 +69,7 @@ const Home = () => {
         showHideTransition={'fade'}
         hidden={false}
       />
-
-      {/* <Header /> */}
+      <Header />
       <SearchBarHeader />
       <Banner />
       <CategorySection title={'Categories'} />
@@ -105,7 +104,7 @@ const styles = EStyleSheet.create({
   container: {
     width: widthScreen,
     minHeight: heightScreen,
-    paddingTop: 35.0,
+    // paddingTop: 35.0,
     backgroundColor: '$whiteColour',
   },
   searchBox: {

@@ -29,6 +29,10 @@ const AddressScreen = ({navigation}: any) => {
   async function getAddress() {
     setLoading(true);
     const user_id = await EncryptedStorage.getItem('id');
+    console.log(
+      '🚀 ~ file: AddressScreen.tsx:32 ~ getAddress ~ user_id:',
+      user_id,
+    );
     if (!user_id) {
       return;
     }
@@ -92,43 +96,64 @@ const AddressScreen = ({navigation}: any) => {
       </View>
       <View style={styles.listContainer}>
         <View>
-          <FlatList
-            data={address}
-            onRefresh={() => {
-              getAddress();
-            }}
-            refreshing={loading}
-            showsVerticalScrollIndicator={false}
-            renderItem={({item, index}) => {
-              return (
-                <>
-                  <Address
-                    key={index}
-                    address={item}
-                    onPressRadio={onPressRadio}
-                  />
-                  {index === address.length - 1 && (
-                    <TouchableOpacity
-                      key={item as unknown as string}
-                      onPress={() => {
-                        navigation.navigate(AddAddressScreen.name);
-                      }}>
-                      <View
-                        key={index + Math.random()}
-                        style={styles.addContainer}>
-                        <Add key={index + Math.random()} />
-                        <Text
+          {address.length > 0 ? (
+            <FlatList
+              data={address}
+              onRefresh={() => {
+                getAddress();
+              }}
+              refreshing={loading}
+              showsVerticalScrollIndicator={false}
+              renderItem={({item, index}) => {
+                return (
+                  <>
+                    <Address
+                      key={index}
+                      address={item}
+                      onPressRadio={onPressRadio}
+                    />
+                    {index === address.length - 1 && (
+                      <TouchableOpacity
+                        key={item as unknown as string}
+                        onPress={() => {
+                          navigation.navigate(AddAddressScreen.name);
+                        }}>
+                        <View
                           key={index + Math.random()}
-                          style={styles.addText}>
-                          Add New
-                        </Text>
-                      </View>
-                    </TouchableOpacity>
-                  )}
-                </>
-              );
-            }}
-          />
+                          style={styles.addContainer}>
+                          <Add key={index + Math.random()} />
+                          <Text
+                            key={index + Math.random()}
+                            style={styles.addText}>
+                            Add New
+                          </Text>
+                        </View>
+                      </TouchableOpacity>
+                    )}
+                  </>
+                );
+              }}
+            />
+          ) : (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(AddAddressScreen.name);
+              }}>
+              <View
+                style={[
+                  styles.addContainer,
+                  {
+                    flex: 1,
+                    // backgroundColor: 'pink',
+                    alignItems: 'flex-start',
+                    paddingTop: 10,
+                  },
+                ]}>
+                <Add />
+                <Text style={styles.addText}>Add New</Text>
+              </View>
+            </TouchableOpacity>
+          )}
           {/* {address.map((item, index) => {})} */}
         </View>
       </View>
