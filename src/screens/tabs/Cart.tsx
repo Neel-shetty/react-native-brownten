@@ -99,12 +99,14 @@ const CartTab = ({navigation}: any) => {
         items: cartItems,
         total_amount: totalCost,
         payment_method: online ? 'online' : 'Cash On Delivery',
-        // transaction_id: data.razorpay_payment_id,
+        transaction_id: null,
       })
       .then(result => {
         console.log('order insert response --- ', result.data);
         dispatch(emptyCart());
         setShowBottomSheet(false);
+        navigation.setOptions({tabBarStyle: {display: 'flex'}});
+        setOnline(true);
         navigation.navigate(OrderAccepted.name);
       })
       .catch(sendCartError =>
@@ -169,8 +171,10 @@ const CartTab = ({navigation}: any) => {
                       })
                       .then(result => {
                         console.log('order insert response --- ', result.data);
+                        navigation.navigate(OrderAccepted.name);
                         dispatch(emptyCart());
                         setShowBottomSheet(false);
+                        navigation.setOptions({tabBarStyle: {display: 'flex'}});
                       })
                       .catch(sendCartError =>
                         console.log(
@@ -178,7 +182,7 @@ const CartTab = ({navigation}: any) => {
                           sendCartError.response,
                         ),
                       );
-                    navigation.navigate(OrderAccepted.name);
+                    // navigation.navigate(OrderAccepted.name);
                   }
                 })
                 .catch(err => {

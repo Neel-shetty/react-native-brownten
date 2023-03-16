@@ -4,6 +4,7 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 
 const {width: screenWidth} = Dimensions.get('screen');
 const backgroundTop = require('../../assets/images/sign/background-top.png');
+const logo = require('../../assets/images/home_screen/brownten-logo.png')
 
 interface SignScaffoldProps {
   children: React.ReactNode;

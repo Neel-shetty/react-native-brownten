@@ -19,9 +19,11 @@ import ImageInput from '../components/SignUpComponents/ImageInput';
 import {Alert} from 'react-native';
 import {SignUpApi} from '../api/SignUpApi';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import {layout} from '../constants/Layout';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
-const logo = require('../../assets/images/logo-colour.png');
+// const logo = require('../../assets/images/logo-colour.png');
+const logo = require('../../assets/images/home_screen/brownten-logo.png');
 
 interface SignUpProps {
   navigation: any;
@@ -64,7 +66,12 @@ const SignUp = ({navigation}: SignUpProps) => {
 
   return (
     <SignScaffold>
-      <Image style={styles.logo} source={logo} />
+      {/* <Image style={styles.logo} source={logo} /> */}
+      <Image
+        style={{height: 75, width: layout.width, marginVertical: 20}}
+        source={logo}
+        resizeMode="contain"
+      />
       <View style={styles.form}>
         <View>
           <Text style={styles.headerTitle}>Sign up</Text>

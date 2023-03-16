@@ -3,9 +3,10 @@ import {View, Text, Image, Dimensions} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import Button from '../components/Button';
 import SignIn from './SignIn';
+import {layout} from '../constants/Layout';
 
 const backgroundImage = require('../../assets/images/onboarding-background.png');
-const logoImage = require('../../assets/images/logo.png');
+const logo = require('../../assets/images/home_screen/brownten-logo.png');
 
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 interface OnboardingProps {
@@ -22,11 +23,16 @@ const Onboarding = ({navigation}: OnboardingProps) => {
     <>
       <Image style={styles.backgroundImage} source={backgroundImage} />
       <View style={styles.footer}>
-        <Image style={styles.logoImage} source={logoImage} />
+        {/* <Image style={styles.logoImage} source={logoImage} /> */}
+        <Image
+          style={{height: 75, width: layout.width, marginVertical: 20}}
+          source={logo}
+          resizeMode="contain"
+        />
         <Text style={styles.title}>Welcome</Text>
-        <Text style={styles.title}>to our store</Text>
+        <Text style={styles.title}>to Brownten</Text>
         <Text style={styles.subtitle}>
-          Get your groceries in as fast as one hour
+          {/* Get your groceries in as fast as one hour */}
         </Text>
         <Button
           onPress={() => nextScreen()}

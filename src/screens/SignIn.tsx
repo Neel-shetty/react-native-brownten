@@ -21,9 +21,11 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {useDispatch} from 'react-redux';
 import {setLoggedIn} from '../store/user';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
+import {layout} from '../constants/Layout';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
-const logo = require('../../assets/images/logo-colour.png');
+// const logo = require('../../assets/images/logo-colour.png');
+const logo = require('../../assets/images/home_screen/brownten-logo.png');
 
 interface SignInProps {
   navigation: any;
@@ -52,7 +54,11 @@ const Signin = ({navigation}: SignInProps) => {
 
   return (
     <SignScaffold>
-      <Image style={styles.logo} source={logo} />
+      <Image
+        style={{height: 75, width: layout.width, marginVertical: 20}}
+        source={logo}
+        resizeMode="contain"
+      />
       <View style={styles.form}>
         <View>
           <Text style={styles.headerTitle}>Sign in</Text>

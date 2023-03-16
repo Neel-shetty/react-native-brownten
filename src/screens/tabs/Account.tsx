@@ -16,7 +16,6 @@ import Button from '../../components/Button';
 import AddressScreen from '../AddressScreen';
 import AccountDetailsScreen from '../AccountDetailsScreen';
 import OrdersScreen from '../OrdersScreen';
-import RazorPayScreen from '../RazorPayScreen';
 import {setLoggedIn} from '../../store/user';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {useDispatch} from 'react-redux';
@@ -73,9 +72,6 @@ const AccountTab = () => {
               <Text style={styles.headerTitle}>
                 {isLoading ? 'loading..' : data?.data?.data?.name}
               </Text>
-              <TouchableOpacity>
-                <AccountIcons.PencilIcon style={styles.headerIcon} />
-              </TouchableOpacity>
             </View>
             <Text style={styles.headerSubtitle}>
               {isLoading ? null : data?.data?.data.email}
