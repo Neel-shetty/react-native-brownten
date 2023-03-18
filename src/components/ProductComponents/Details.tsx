@@ -305,6 +305,7 @@ const styles = StyleSheet.create({
   info: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 16,
+    color: 'black',
   },
   secondContainer: {
     width: layout.widthp,

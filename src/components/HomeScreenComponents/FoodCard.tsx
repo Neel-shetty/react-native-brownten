@@ -280,6 +280,7 @@ const styles = EStyleSheet.create({
   quantity: {
     fontFamily: 'Poppins-SemiBold',
     fontSize: 18,
+    color: 'black',
   },
   greenButtonContainer: {
     height: 50,

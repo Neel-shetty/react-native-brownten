@@ -62,6 +62,7 @@ const styles = EStyleSheet.create({
     borderBottomWidth: 1.0,
     borderBottomColor: '$lightGreyColour',
     marginBottom: heightScreen * 0.022,
+    color: 'black',
   },
 });
 

@@ -8,6 +8,13 @@ import {Provider} from 'react-redux';
 import {persistor, store} from './src/store';
 import {PersistGate} from 'redux-persist/integration/react';
 
+import * as Sentry from '@sentry/react-native';
+
+Sentry.init({
+  dsn: 'https://ea7d59c08c774e958c3db5040a736a87@o4504861291839488.ingest.sentry.io/4504861294985216',
+  tracesSampleRate: 1.0,
+});
+
 const queryClient = new QueryClient();
 
 const App = () => {
@@ -24,7 +31,7 @@ const App = () => {
   );
 };
 
-export default App;
+export default Sentry.wrap(App);
 
 const styles = StyleSheet.create({
   root: {
