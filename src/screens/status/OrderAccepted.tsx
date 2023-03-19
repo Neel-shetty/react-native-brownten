@@ -26,17 +26,17 @@ const OrderAccepted = () => {
         </Text>
         <View style={style.buttonBox}>
           <Button
-            onPress={() => null}
+            onPress={() => navigation.navigate(Home.name)}
             txtColour="#F2F3F2"
             bgColour="#53B175"
-            text="View Order Details"
+            text="Back to home"
           />
-          <Button
+          {/* <Button
             onPress={() => navigation.navigate(Home.name)}
             txtColour="#181725"
             bgColour="transparent"
             text="Back to home"
-          />
+          /> */}
         </View>
       </View>
     </>

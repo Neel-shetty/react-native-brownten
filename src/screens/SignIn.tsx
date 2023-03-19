@@ -22,6 +22,7 @@ import {useDispatch} from 'react-redux';
 import {setLoggedIn} from '../store/user';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
 import {layout} from '../constants/Layout';
+import Home from './tabs/Home';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
 // const logo = require('../../assets/images/logo-colour.png');
@@ -72,13 +73,13 @@ const Signin = ({navigation}: SignInProps) => {
             setLoading(true);
             const result = await SignIn(values.phone, values.password);
             if (result?.status === 1) {
-              Alert.alert('Success', result.message);
               await EncryptedStorage.setItem('isLoggedIn', 'true');
               await EncryptedStorage.setItem(
                 'id',
                 JSON.stringify(result.data.id),
               );
               dispatch(setLoggedIn(true));
+              navigation.navigate(Home.name);
             }
             if (result?.response?.data?.status === 0) {
               Alert.alert('Failed', result.response.data.message);

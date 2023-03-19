@@ -18,18 +18,24 @@ import AccountDetailsScreen from '../AccountDetailsScreen';
 import OrdersScreen from '../OrdersScreen';
 import {setLoggedIn} from '../../store/user';
 import EncryptedStorage from 'react-native-encrypted-storage';
-import {useDispatch} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {useQuery} from 'react-query';
 import {api} from '../../api';
+import {RootState} from '../../store';
+import SignIn from '../SignIn';
+import {layout} from '../../constants/Layout';
 
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
-const AccountTab = () => {
+const AccountTab = ({navigation}: any) => {
   const dispatch = useDispatch();
   function logout() {
     console.log('logout running');
     dispatch(setLoggedIn(false));
     EncryptedStorage.removeItem('isLoggedIn');
     EncryptedStorage.removeItem('id');
+  }
+  function login() {
+    navigation.navigate(SignIn.name);
   }
 
   const itemList = [
@@ -62,42 +68,66 @@ const AccountTab = () => {
     error?.response,
   );
 
+  const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
+  console.log('🚀 ~ file: Account.tsx:67 ~ AccountTab ~ loggedIn:', loggedIn);
+
   return (
     <>
       <ScrollView style={styles.scrollContainer}>
-        <View style={styles.headerContainer}>
-          <Image style={styles.headerImage} source={ProfileImage} />
-          <View style={styles.textBox}>
-            <View style={styles.headerTitleBox}>
-              <Text style={styles.headerTitle}>
-                {isLoading ? 'loading..' : data?.data?.data?.name}
-              </Text>
-            </View>
-            <Text style={styles.headerSubtitle}>
-              {isLoading ? null : data?.data?.data.email}
-            </Text>
-          </View>
-        </View>
-        <View style={styles.list}>
-          {itemList.map((item, index) => {
-            return (
-              <AccountListItem
-                key={index}
-                label={item.label}
-                children={item.icon}
-                navigateTo={item.navigateTo}
+        {!loggedIn ? (
+          <View
+            style={{
+              height: layout.height,
+              // backgroundColor: 'pink',
+              justifyContent: 'center',
+              width: layout.width,
+            }}>
+            <View style={[styles.buttonBox]}>
+              <Button
+                onPress={login}
+                text="Sign In"
+                bgColour="#53B175"
+                txtColour="white"
               />
-            );
-          })}
-        </View>
-        <View style={styles.buttonBox}>
-          <Button
-            onPress={logout}
-            text="Log Out"
-            bgColour="#F2F3F2"
-            txtColour="#53B175"
-          />
-        </View>
+            </View>
+          </View>
+        ) : (
+          <>
+            <View style={styles.headerContainer}>
+              <Image style={styles.headerImage} source={ProfileImage} />
+              <View style={styles.textBox}>
+                <View style={styles.headerTitleBox}>
+                  <Text style={styles.headerTitle}>
+                    {isLoading ? 'loading..' : data?.data?.data?.name}
+                  </Text>
+                </View>
+                <Text style={styles.headerSubtitle}>
+                  {isLoading ? null : data?.data?.data.email}
+                </Text>
+              </View>
+            </View>
+            <View style={styles.list}>
+              {itemList.map((item, index) => {
+                return (
+                  <AccountListItem
+                    key={index}
+                    label={item.label}
+                    children={item.icon}
+                    navigateTo={item.navigateTo}
+                  />
+                );
+              })}
+            </View>
+            <View style={styles.buttonBox}>
+              <Button
+                onPress={logout}
+                text="Log Out"
+                bgColour="#F2F3F2"
+                txtColour="#53B175"
+              />
+            </View>
+          </>
+        )}
       </ScrollView>
     </>
   );

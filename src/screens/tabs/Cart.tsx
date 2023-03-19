@@ -19,6 +19,7 @@ import {useQuery} from 'react-query';
 import {AddressType} from '../../api/fetchAddress';
 // import {useSelector} from 'react-redux';
 import {cartItemType, emptyCart} from '../../store/cart';
+import SignIn from '../SignIn';
 // import {RootState} from '../../store';
 
 const CartTab = ({navigation}: any) => {
@@ -29,6 +30,8 @@ const CartTab = ({navigation}: any) => {
   console.log('🚀 ~ file: Cart.tsx:26 ~ CartTab ~ address:', address);
 
   const dispatch = useDispatch();
+
+  const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
 
   const itemCost = useSelector((state: RootState) =>
     state.cart.cartItems.map(
@@ -83,6 +86,10 @@ const CartTab = ({navigation}: any) => {
     },
     [navigation],
   );
+
+  function login() {
+    navigation.navigate(SignIn.name);
+  }
 
   async function placeOrder() {
     setLoading(true);
@@ -218,13 +225,13 @@ const CartTab = ({navigation}: any) => {
       });
   }
 
-  if (deliveryChargeLoading || error || !deliveryCharge) {
-    return (
-      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-        <ActivityIndicator />
-      </View>
-    );
-  }
+  // if (deliveryChargeLoading || !deliveryCharge) {
+  //   return (
+  //     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+  //       <ActivityIndicator />
+  //     </View>
+  //   );
+  // }
 
   return (
     <View style={styles.root}>
@@ -235,15 +242,24 @@ const CartTab = ({navigation}: any) => {
         <CartList />
       </View>
       <View style={styles.buttonContainer}>
-        <Button2
-          text="Go To Checkout"
-          bgColour={colors.green}
-          onPress={() => {
-            setShowBottomSheet(true);
-          }}
-          txtColour="white"
-          value={totalCartCost}
-        />
+        {loggedIn ? (
+          <Button2
+            text="Go To Checkout"
+            bgColour={colors.green}
+            onPress={() => {
+              setShowBottomSheet(true);
+            }}
+            txtColour="white"
+            value={totalCartCost}
+          />
+        ) : (
+          <Button3
+            onPress={login}
+            text="Sign In"
+            bgColour={colors.green}
+            txtColour="white"
+          />
+        )}
       </View>
       {showBottomSheet ? (
         <BottomSheet
@@ -283,7 +299,7 @@ const CartTab = ({navigation}: any) => {
                 console.log('pressed');
               }}
               title="Delivery Charge"
-              value={deliveryCharge.data.data}
+              value={deliveryChargeLoading ? 0 : deliveryCharge.data.data}
               field="cost"
             />
             <SheetItem

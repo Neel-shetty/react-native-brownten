@@ -69,7 +69,7 @@ const Home = () => {
         showHideTransition={'fade'}
         hidden={false}
       />
-      <Header />
+      {/* <Header /> */}
       <SearchBarHeader />
       <Banner />
       <CategorySection title={'Categories'} />
