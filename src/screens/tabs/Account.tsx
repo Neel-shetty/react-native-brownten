@@ -96,7 +96,14 @@ const AccountTab = ({navigation}: any) => {
         ) : (
           <>
             <View style={styles.headerContainer}>
-              <Image style={styles.headerImage} source={ProfileImage} />
+              <Image
+                style={styles.headerImage}
+                source={
+                  data?.data?.data?.image
+                    ? {uri: data.data.data.image}
+                    : ProfileImage
+                }
+              />
               <View style={styles.textBox}>
                 <View style={styles.headerTitleBox}>
                   <Text style={styles.headerTitle}>

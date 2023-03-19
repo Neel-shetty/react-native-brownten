@@ -112,7 +112,9 @@ const Fields = () => {
       <View style={styles.imageContainer}>
         <Image
           source={{
-            uri: 'https://www.pngfind.com/pngs/m/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.png',
+            uri: details.image
+              ? details.image
+              : 'https://www.pngfind.com/pngs/m/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.png',
           }}
           style={styles.image}
           resizeMode="cover"

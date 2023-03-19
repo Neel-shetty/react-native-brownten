@@ -38,6 +38,7 @@ const styles = EStyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    color: 'black',
   },
   searchBarText: {
     marginLeft: 7.0,

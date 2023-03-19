@@ -38,6 +38,7 @@ const SearchInput = ({
         onBlur={onBlur}
         value={value}
         placeholder={placeholder}
+        placeholderTextColor={'rgba(1,1,1,0.5)'}
         style={styles.input}
         autoFocus={autoFocus}
       />
@@ -65,6 +66,7 @@ const styles = StyleSheet.create({
   input: {
     width: layout.width * 0.8 - 20,
     fontFamily: 'Poppins-SemiBold',
+    color: 'black',
     // backgroundColor: 'pink',
   },
 });
