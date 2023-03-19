@@ -66,10 +66,12 @@ const Fields = () => {
       .then(res => {
         console.log(res.data);
         setDetails(res.data.data);
-        setLoading(false);
       })
       .catch(error => {
         console.log(error?.response?.data);
+      })
+      .finally(() => {
+        console.log('profile fetch end');
         setLoading(false);
       });
   }

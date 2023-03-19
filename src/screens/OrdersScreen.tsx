@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, ActivityIndicator} from 'react-native';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {TouchableOpacity} from 'react-native';
@@ -44,10 +44,19 @@ export interface OrderType {
 
 const OrdersScreen = () => {
   const navigation: any = useNavigation();
-  const {data} = useQuery<OrdersResponseType, Error>('orders', async () => {
-    const user_id = await EncryptedStorage.getItem('id');
-    return api.post('/user/order-history', {user_id: user_id});
-  });
+
+  const {data, isLoading} = useQuery<OrdersResponseType, Error>(
+    'orders',
+    async () => {
+      const user_id = await EncryptedStorage.getItem('id');
+      return api.post('/user/order-history', {user_id: user_id});
+    },
+  );
+
+  if (isLoading) {
+    return <ActivityIndicator size={'large'} />;
+  }
+
   return (
     <View style={styles.root}>
       <View style={styles.headerContainer}>

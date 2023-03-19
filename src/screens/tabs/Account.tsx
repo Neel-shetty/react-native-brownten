@@ -38,6 +38,8 @@ const AccountTab = ({navigation}: any) => {
     navigation.navigate(SignIn.name);
   }
 
+  // const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
+
   const itemList = [
     {
       label: 'Orders',
@@ -58,7 +60,10 @@ const AccountTab = ({navigation}: any) => {
     },
   ];
 
-  const {data, error, isLoading} = useQuery('profile', async () => {
+  const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
+  console.log('🚀 ~ file: Account.tsx:67 ~ AccountTab ~ loggedIn:', loggedIn);
+
+  const {data, error, isLoading} = useQuery(['profile', loggedIn], async () => {
     const id = await EncryptedStorage.getItem('id');
     return api.post('/user/profile', {user_id: id});
   });
@@ -67,9 +72,6 @@ const AccountTab = ({navigation}: any) => {
     data?.data,
     error?.response,
   );
-
-  const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
-  console.log('🚀 ~ file: Account.tsx:67 ~ AccountTab ~ loggedIn:', loggedIn);
 
   return (
     <>
