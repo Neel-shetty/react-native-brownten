@@ -97,6 +97,7 @@ const SignUp = ({navigation}: SignUpProps) => {
               phone: values.phone,
               image: image,
             });
+            console.log('🚀 ~ file: SignUp.tsx:100 ~ SignUp ~ result:', result);
             if (result?.status === 1) {
               Alert.alert('Success', result.message);
               await EncryptedStorage.setItem(

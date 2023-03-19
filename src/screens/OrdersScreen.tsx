@@ -72,6 +72,7 @@ const OrdersScreen = () => {
       <View style={styles.listContainer}>
         <FlatList
           data={data?.data.data ? data.data.data : []}
+          showsVerticalScrollIndicator={false}
           renderItem={item => {
             return (
               <TouchableOpacity

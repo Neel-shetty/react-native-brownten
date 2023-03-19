@@ -17,13 +17,14 @@ import {addAddress} from '../../api/AddAddress';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {editAddress} from '../../api/EditAddress';
 import {AddressType} from '../../api/fetchAddress';
+import Account from '../../screens/tabs/Account';
 
 const Fields = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [address, setAddress] = useState<AddressType>();
   console.log('🚀 ~ file: Fields.tsx:24 ~ Fields ~ address:', address);
   const route: any = useRoute();
-  const navigation = useNavigation();
+  const navigation: any = useNavigation();
   const behavior = Platform.OS === 'ios' ? 'padding' : undefined;
   const formScheme = yup.object({
     phone: yup
@@ -99,7 +100,7 @@ const Fields = () => {
                 '🚀 ~ file: Fields.tsx:95 ~ Fields ~ result:',
                 result,
               );
-              navigation.goBack();
+              navigation.navigate(Account.name);
             }
             async function edit() {
               if (!address) {

@@ -13,6 +13,8 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {AddressType, fetchAddress} from '../../api/fetchAddress';
 import Address from '../AddressComponents/Address';
 import {BottomSheetFlatList} from '@gorhom/bottom-sheet';
+import {useNavigation} from '@react-navigation/native';
+import AddressScreen from '../../screens/AddressScreen';
 
 const SheetItem = ({
   title,
@@ -48,6 +50,8 @@ const SheetItem = ({
       selectedAddress,
     );
   }
+
+  const navigation: any = useNavigation();
 
   const onPressRadio = (id: number) => {
     // console.log(id);
@@ -111,8 +115,30 @@ const SheetItem = ({
 
   if (field === 'address' && !selectedAddress) {
     return (
-      <View>
-        <Text>Error fetching address, close this window and try again</Text>
+      <View style={{width: layout.widthp}}>
+        <View style={styles.container}>
+          <Text
+            numberOfLines={1}
+            style={[styles.key, {width: layout.widthp / 2}]}>
+            No address found
+          </Text>
+          <View style={styles.valueContainer}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(AddressScreen.name);
+              }}>
+              <Text
+                numberOfLines={1}
+                style={[
+                  styles.value,
+                  {color: colors.green, width: layout.widthp / 2},
+                ]}>
+                Add New Address
+              </Text>
+            </TouchableOpacity>
+            <View style={styles.placeHolder} />
+          </View>
+        </View>
       </View>
     );
   }

@@ -16,7 +16,7 @@ const AccountDetailsScreen = ({navigation}: any) => {
           <Ionicons name="chevron-left" size={30} color={'black'} />
         </TouchableOpacity>
         <Text style={eStyles.text}>My Account</Text>
-        <View style={styles.space} />
+        <View />
       </View>
       <View style={styles.listContainer}>
         <Fields />

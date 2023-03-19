@@ -39,6 +39,9 @@ const ImageBg = () => {
 
   useEffect(() => {
     let interval = null;
+    if (images.length === 0) {
+      return;
+    }
     if (autoScroll) {
       interval = setInterval(() => {
         let nextIndex = currentIndex + 1;
@@ -88,9 +91,6 @@ const ImageBg = () => {
                 </TouchableOpacity>
               </Animated.View>
             );
-          }}
-          keyExtractor={item => {
-            item.image;
           }}
           horizontal
           showsHorizontalScrollIndicator={false}

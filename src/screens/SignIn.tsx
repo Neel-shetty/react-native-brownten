@@ -39,10 +39,7 @@ const Signin = ({navigation}: SignInProps) => {
   const dispatch = useDispatch();
 
   const formScheme = yup.object({
-    phone: yup
-      .string()
-      .length(10, 'Invalid Phone Number')
-      .required('Phone Number is Required!'),
+    phone: yup.string().required('This field is Required!'),
     password: yup
       .string()
       .required('Password is required!')
@@ -98,11 +95,11 @@ const Signin = ({navigation}: SignInProps) => {
             <>
               <KeyboardAvoidingView behavior={behavior}>
                 <Input
-                  label="Phone Number"
+                  label="Phone Number or Email"
                   onChangeText={handleChange('phone')}
                   onBlur={handleBlur('phone')}
                   value={values.phone}
-                  numeric
+                  // numeric
                 />
                 {errors.phone && touched.phone && (
                   <>

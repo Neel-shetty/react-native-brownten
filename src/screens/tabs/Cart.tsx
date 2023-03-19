@@ -138,17 +138,17 @@ const CartTab = ({navigation}: any) => {
         if (res.data.status === 1) {
           var options: CheckoutOptions = {
             description: 'Pay Brownten',
-            image: 'https://i.imgur.com/3g7nmJC.jpg',
+            image: 'https://brownten.com/public/uploads/logo/5649782859.png',
             currency: 'INR',
             key: 'rzp_test_RFqjBfnOlEqSwr',
             amount: totalCost,
             name: 'Brownten',
             order_id: res.data.data, //res.data.data.order_id, //Replace this with an order_id created using Orders API.
-            prefill: {
-              email: 'gaurav.kumar@example.com',
-              contact: '9191919191',
-              name: 'Gaurav Kumar',
-            },
+            // prefill: {
+            //   email: 'gaurav.kumar@example.com',
+            //   contact: '9191919191',
+            //   name: 'Gaurav Kumar',
+            // },
             theme: {color: colors.green},
           };
           RazorpayCheckout.open(options)

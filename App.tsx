@@ -11,7 +11,7 @@ import {PersistGate} from 'redux-persist/integration/react';
 import * as Sentry from '@sentry/react-native';
 
 Sentry.init({
-  dsn: 'https://ea7d59c08c774e958c3db5040a736a87@o4504861291839488.ingest.sentry.io/4504861294985216',
+  dsn: 'https://20408d88ea4e4dfcaa8beb0ff63d9dc3@o4504861291839488.ingest.sentry.io/4504866274410496',
   tracesSampleRate: 1.0,
 });
 

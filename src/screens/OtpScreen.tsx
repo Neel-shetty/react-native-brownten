@@ -17,11 +17,14 @@ import {Formik} from 'formik';
 import * as yup from 'yup';
 import {OtpApi, verifyOtp} from '../api/OtpApi';
 import {useRoute} from '@react-navigation/native';
+import SignIn from './SignIn';
+import {layout} from '../constants/Layout';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
-const logo = require('../../assets/images/logo-colour.png');
+// const logo = require('../../assets/images/logo-colour.png');
+const logo = require('../../assets/images/home_screen/brownten-logo.png');
 
-const OtpScreen = () => {
+const OtpScreen = ({navigation}: any) => {
   const [loading, setLoading] = useState(false);
   const behavior = Platform.OS === 'ios' ? 'padding' : undefined;
 
@@ -52,7 +55,12 @@ const OtpScreen = () => {
 
   return (
     <SignScaffold>
-      <Image style={styles.logo} source={logo} />
+      {/* <Image style={styles.logo} source={logo} /> */}
+      <Image
+        style={{height: 75, width: layout.width, marginVertical: 20}}
+        source={logo}
+        resizeMode="contain"
+      />
       <View style={styles.form}>
         <View>
           <Text style={styles.headerTitle}>Verify OTP</Text>
@@ -65,7 +73,7 @@ const OtpScreen = () => {
           onSubmit={async values => {
             console.log(values);
             setLoading(true);
-            const result = await verifyOtp({
+            let result = await verifyOtp({
               otp: values.otp,
               phone: route?.params?.phone,
               email: route?.params?.email,
@@ -74,8 +82,10 @@ const OtpScreen = () => {
               image: route?.params?.image,
             });
             console.log('🚀 ~ file: OtpScreen.tsx:76 ~ result:', result);
+            // result.status = 1;
             if (result?.status === 1) {
               Alert.alert('Success', result?.message);
+              navigation.navigate(SignIn.name);
             }
             console.log(
               '🚀 ~ file: SignIn.tsx:66 ~ Signin ~ result',

@@ -27,7 +27,7 @@ const Onboarding = ({navigation}: OnboardingProps) => {
         <Image
           style={{height: 75, width: layout.width, marginVertical: 20}}
           source={logo}
-          resizeMode="contain"
+          resizeMode="cover"
         />
         <Text style={styles.title}>Welcome</Text>
         <Text style={styles.title}>to Brownten</Text>
