@@ -9,6 +9,7 @@ import {persistor, store} from './src/store';
 import {PersistGate} from 'redux-persist/integration/react';
 
 import * as Sentry from '@sentry/react-native';
+import Tabs from './src/screens/Tabs';
 
 Sentry.init({
   dsn: 'https://20408d88ea4e4dfcaa8beb0ff63d9dc3@o4504861291839488.ingest.sentry.io/4504866274410496',
@@ -23,7 +24,7 @@ const App = () => {
       <PersistGate loading={null} persistor={persistor}>
         <QueryClientProvider client={queryClient}>
           <GestureHandlerRootView style={styles.root}>
-            <Navigator />
+            <Tabs />
           </GestureHandlerRootView>
         </QueryClientProvider>
       </PersistGate>

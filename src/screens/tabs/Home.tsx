@@ -118,4 +118,4 @@ const styles = EStyleSheet.create({
   },
 });
 
-export default {component: Home, name: 'Home'};
+export default {component: Home, name: 'HomeScreen'};

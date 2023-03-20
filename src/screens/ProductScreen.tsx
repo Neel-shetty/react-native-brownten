@@ -49,26 +49,6 @@ const ProductScreen = () => {
       setProductDetail(ProductDetailResponse);
       setLoading(false);
     }
-    // async function asyncFetchUsingId() {
-    //   setLoading(true);
-    //   const ProductDetailResponse: ProductProps = await fetchProductDetails({
-    //     product_id: product_id,
-    //     slug: slug,
-    //   });
-    //   console.log(
-    //     '🚀 ~ file: ProductScreen.tsx:53 ~ asyncFetchUsingId ~ ProductDetailResponse:',
-    //     ProductDetailResponse,
-    //   );
-    //   setProductDetail(ProductDetailResponse);
-    //   setLoading(false);
-    // }
-    console.log(slug);
-    // if (slug) {
-    //   asyncFetch();
-    // } else {
-    //   asyncFetchUsingId();
-    //   console.log(product_id);
-    // }
     asyncFetch();
   }, [route?.params?.slug, route?.params?.product_id]);
 
@@ -107,6 +87,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     flex: 1,
     // backgroundColor: 'pink',
+    maxHeight: 370,
   },
   detailContainer: {
     alignItems: 'center',
