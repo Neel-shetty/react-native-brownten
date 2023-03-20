@@ -86,12 +86,6 @@ const Home = () => {
         goToPage={'SearchScreen'}
       />
       <BrandSection title="Top Brands" />
-      {/* <Section
-        title={'All Products'}
-        items={allProducts ? allProducts : []}
-        loading={allProductsisLoading}
-        goToPage={'SearchScreen'}
-      /> */}
       <View style={styles.scrollFooter} />
     </ScrollView>
   );

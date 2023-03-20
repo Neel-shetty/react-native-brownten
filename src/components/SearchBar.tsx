@@ -7,7 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 
 interface SearchBarType {
   placeholder: string;
-  navigateTo: string;
+  navigateTo: object;
 }
 
 const SearchBar = ({placeholder, navigateTo}: SearchBarType) => {

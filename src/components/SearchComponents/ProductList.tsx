@@ -1,4 +1,4 @@
-import {StyleSheet, View, ActivityIndicator, Alert} from 'react-native';
+import {StyleSheet, View, ActivityIndicator, Alert, Text} from 'react-native';
 import React, {useState, useEffect} from 'react';
 import FoodCard from '../HomeScreenComponents/FoodCard';
 import SearchInput from './SearchInput';
@@ -8,6 +8,7 @@ import {useRoute} from '@react-navigation/native';
 import {ProductProps} from '../../screens/ProductScreen';
 import {SearchProducts} from '../../api/SearchProducts';
 import {api} from '../../api';
+import {layout} from '../../constants/Layout';
 
 const ProductList = ({}) => {
   const [items, setItems] = useState<ProductProps[]>([]);
@@ -89,14 +90,24 @@ const ProductList = ({}) => {
             setLoading(false);
           }}>
           {({handleChange, handleBlur, handleSubmit, values}) => (
-            <SearchInput
-              handleSubmit={handleSubmit}
-              onChangeText={handleChange('query')}
-              placeholder="Search Store"
-              onBlur={handleBlur('query')}
-              value={values.query}
-              autoFocus={autoFocus === false ? autoFocus : true}
-            />
+            <>
+              <View
+                style={{
+                  width: layout.widthp,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                <Text>x</Text>
+              </View>
+              <SearchInput
+                handleSubmit={handleSubmit}
+                onChangeText={handleChange('query')}
+                placeholder="Search Store"
+                onBlur={handleBlur('query')}
+                value={values.query}
+                autoFocus={autoFocus === false ? autoFocus : true}
+              />
+            </>
           )}
         </Formik>
       </View>

@@ -23,6 +23,8 @@ import {setLoggedIn} from '../store/user';
 import ForgotPasswordScreen from './ForgotPasswordScreen';
 import {layout} from '../constants/Layout';
 import Home from './tabs/Home';
+import AccountTabs from '../Navigator/AccountTabs';
+import Account from './tabs/Account';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
 // const logo = require('../../assets/images/logo-colour.png');
@@ -76,7 +78,7 @@ const Signin = ({navigation}: SignInProps) => {
                 JSON.stringify(result.data.id),
               );
               dispatch(setLoggedIn(true));
-              navigation.navigate(Home.name);
+              navigation.navigate(AccountTabs.name, {screen: Account.name});
             }
             if (result?.response?.data?.status === 0) {
               Alert.alert('Failed', result.response.data.message);

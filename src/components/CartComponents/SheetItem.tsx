@@ -23,6 +23,7 @@ const SheetItem = ({
   field,
   setOnline,
   setMainAddress,
+  addAddress,
 }: {
   title: string;
   value?: string;
@@ -30,6 +31,7 @@ const SheetItem = ({
   field: string;
   setOnline?: React.Dispatch<React.SetStateAction<boolean>>;
   setMainAddress?: React.Dispatch<React.SetStateAction<AddressType>>;
+  addAddress?: () => void;
 }) => {
   // console.log('🚀 ~ file: SheetItem.tsx:20 ~ field:', field);
   const [idk, setIdk] = useState<boolean>(false);
@@ -125,6 +127,7 @@ const SheetItem = ({
           <View style={styles.valueContainer}>
             <TouchableOpacity
               onPress={() => {
+                addAddress();
                 navigation.navigate(AddressScreen.name);
               }}>
               <Text

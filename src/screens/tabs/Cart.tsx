@@ -20,6 +20,7 @@ import {AddressType} from '../../api/fetchAddress';
 // import {useSelector} from 'react-redux';
 import {cartItemType, emptyCart} from '../../store/cart';
 import SignIn from '../SignIn';
+import AccountTabs from '../../Navigator/AccountTabs';
 // import {RootState} from '../../store';
 
 const CartTab = ({navigation}: any) => {
@@ -88,7 +89,7 @@ const CartTab = ({navigation}: any) => {
   );
 
   function login() {
-    navigation.navigate(SignIn.name);
+    navigation.navigate(AccountTabs.name, {screen: SignIn.name});
   }
 
   async function placeOrder() {
@@ -293,6 +294,10 @@ const CartTab = ({navigation}: any) => {
               field="address"
               value="address"
               setMainAddress={setAddress}
+              addAddress={() => {
+                setShowBottomSheet(false);
+                navigation.setOptions({tabBarStyle: {display: 'flex'}});
+              }}
             />
             <SheetItem
               onPress={() => {
