@@ -10,6 +10,8 @@ import {
   incrementQuantity,
   removeItem,
 } from '../../store/cart';
+import {useNavigation} from '@react-navigation/native';
+import ProductScreen from '../../screens/ProductScreen';
 
 interface props {
   name: string;
@@ -23,6 +25,7 @@ interface props {
 
 const CartItem = ({name, quantity, info, cost, image, id, vId}: props) => {
   const dispatch = useDispatch();
+  const navigation: any = useNavigation();
   function increase() {
     dispatch(incrementQuantity({pId: id, vId: vId}));
   }
@@ -32,10 +35,13 @@ const CartItem = ({name, quantity, info, cost, image, id, vId}: props) => {
   function remove() {
     dispatch(removeItem({vId: vId}));
   }
+  function productDetialScreen() {
+    navigation.navigate(ProductScreen.name, {product_id: id});
+  }
   return (
     <View style={styles.root}>
       <View style={styles.imageContainer}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={productDetialScreen}>
           <Image
             source={{uri: image}}
             style={styles.image}
@@ -45,7 +51,7 @@ const CartItem = ({name, quantity, info, cost, image, id, vId}: props) => {
       </View>
       <View style={styles.middleContainer}>
         <View style={styles.idkContainer}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={productDetialScreen}>
             <Text style={styles.name} numberOfLines={1}>
               {name}
             </Text>

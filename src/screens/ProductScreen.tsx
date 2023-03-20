@@ -32,20 +32,45 @@ export interface ProductProps {
 const ProductScreen = () => {
   const [productDetail, setProductDetail] = useState<ProductProps>();
   const [loading, setLoading] = useState(false);
-  const route = useRoute();
-  //@ts-expect-error
-  const slug = route?.params?.slug;
+  const route: any = useRoute();
   useEffect(() => {
+    const slug = route?.params?.slug;
+    const product_id = route?.params?.product_id;
+    console.log(
+      '🚀 ~ file: ProductScreen.tsx:38 ~ ProductScreen ~ product_id:',
+      product_id,
+    );
     async function asyncFetch() {
       setLoading(true);
-      const ProductDetailResponse: ProductProps = await fetchProductDetails(
-        slug,
-      );
+      const ProductDetailResponse: ProductProps = await fetchProductDetails({
+        slug: slug,
+        product_id: product_id,
+      });
       setProductDetail(ProductDetailResponse);
       setLoading(false);
     }
+    // async function asyncFetchUsingId() {
+    //   setLoading(true);
+    //   const ProductDetailResponse: ProductProps = await fetchProductDetails({
+    //     product_id: product_id,
+    //     slug: slug,
+    //   });
+    //   console.log(
+    //     '🚀 ~ file: ProductScreen.tsx:53 ~ asyncFetchUsingId ~ ProductDetailResponse:',
+    //     ProductDetailResponse,
+    //   );
+    //   setProductDetail(ProductDetailResponse);
+    //   setLoading(false);
+    // }
+    console.log(slug);
+    // if (slug) {
+    //   asyncFetch();
+    // } else {
+    //   asyncFetchUsingId();
+    //   console.log(product_id);
+    // }
     asyncFetch();
-  }, [slug]);
+  }, [route?.params?.slug, route?.params?.product_id]);
 
   if (loading)
     return (
