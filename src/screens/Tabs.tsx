@@ -17,6 +17,8 @@ import EncryptedStorage from 'react-native-encrypted-storage';
 import {setLoggedIn} from '../store/user';
 import {NavigationContainer} from '@react-navigation/native';
 import StackNavigator from '../Navigator/Navigator';
+import AccountTabs from '../Navigator/AccountTabs';
+import ExploreTabs from '../Navigator/ExploreTabs';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -77,11 +79,13 @@ const Tabs = () => {
         name={OrdersScreen.name}
         component={OrdersScreen.component}
       /> */}
-        <Screen name={'Home'} component={StackNavigator} />
-        <Screen name={Explore.name} component={Explore.component} />
+        <Screen
+          name={StackNavigator.name}
+          component={StackNavigator.component}
+        />
+        <Screen name={ExploreTabs.name} component={ExploreTabs.component} />
         <Screen name={Cart.name} component={Cart.component} />
-        {/* <Screen name={Favourite.name} component={Favourite.component} /> */}
-        <Screen name={Account.name} component={Account.component} />
+        <Screen name={AccountTabs.name} component={AccountTabs.component} />
       </Navigator>
     </NavigationContainer>
   );

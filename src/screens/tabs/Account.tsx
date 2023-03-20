@@ -1,12 +1,5 @@
 import React from 'react';
-import {
-  ScrollView,
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
+import {ScrollView, View, Text, Image, Dimensions} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 //@ts-ignore
 import ProfileImage from '../../../assets/images/profile.png';
@@ -26,7 +19,7 @@ import SignIn from '../SignIn';
 import {layout} from '../../constants/Layout';
 
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
-const AccountTab = ({navigation}: any) => {
+const Account = ({navigation}: any) => {
   const dispatch = useDispatch();
   function logout() {
     console.log('logout running');
@@ -194,4 +187,4 @@ const styles = EStyleSheet.create({
   },
 });
 
-export default {component: AccountTab, name: 'Account'};
+export default {component: Account, name: 'AccountScreen'};

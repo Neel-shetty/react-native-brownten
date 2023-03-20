@@ -78,4 +78,4 @@ const styles = EStyleSheet.create({
   },
 });
 
-export default {component: ExploreTab, name: 'Explore'};
+export default {component: ExploreTab, name: 'ExploreScreen'};

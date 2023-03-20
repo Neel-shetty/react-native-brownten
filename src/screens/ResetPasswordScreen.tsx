@@ -12,11 +12,10 @@ import Button from '../components/Button';
 import Input from '../components/Input';
 import SignScaffold from '../components/SignScaffold';
 import {Formik} from 'formik';
-import {forgotPassword} from '../api/forgotPassword';
 import {setNewPassword} from '../api/setNewPassword';
 import * as yup from 'yup';
-import {SignIn} from '../api/SignIn';
-import { layout } from '../constants/Layout';
+import {layout} from '../constants/Layout';
+import SignIn from './SignIn';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
 // const logo = require('../../assets/images/logo-colour.png');

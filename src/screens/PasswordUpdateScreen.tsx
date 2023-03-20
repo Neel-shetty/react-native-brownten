@@ -13,6 +13,7 @@ import Input from '../components/Input';
 import {KeyboardAvoidingView} from 'react-native';
 import Button from '../components/Button';
 import {EditPassword} from '../api/EditPassword';
+import Account from './tabs/Account';
 
 const PasswordUpdateScreen = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -47,6 +48,7 @@ const PasswordUpdateScreen = () => {
               console.log('onsubmit');
               console.log(values);
               await EditPassword({password: values.password});
+              navigation.navigate(Account.name);
               setLoading(false);
             }}
             validationSchema={formScheme}>
