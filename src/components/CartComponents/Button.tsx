@@ -35,7 +35,7 @@ const Button = ({
       ) : (
         <View style={styles.textContainer}>
           <Text style={[styles.buttonText, {color: txtColour}]}>{text}</Text>
-          <Text style={[styles.buttonText, {color: txtColour}]}>{value}</Text>
+          <Text style={[styles.buttonText, {color: txtColour}]}>₹{value}</Text>
         </View>
       )}
     </TouchableOpacity>

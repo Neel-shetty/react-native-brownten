@@ -323,9 +323,20 @@ const CartTab = ({navigation}: any) => {
                 text="Place Order"
                 txtColour="white"
                 loading={loading}
-                onPress={
-                  cartItems?.length > 0 ? (online ? pay : placeOrder) : () => {}
-                }
+                onPress={() => {
+                  if (!address) {
+                    Alert.alert(
+                      'Failed',
+                      'Add an address before placing order',
+                    );
+                    return;
+                  }
+                  cartItems?.length > 0
+                    ? online
+                      ? pay()
+                      : placeOrder()
+                    : () => {};
+                }}
               />
             </View>
           </View>

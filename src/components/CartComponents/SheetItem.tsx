@@ -131,9 +131,14 @@ const SheetItem = ({
                 numberOfLines={1}
                 style={[
                   styles.value,
-                  {color: colors.green, width: layout.widthp / 2},
+                  {
+                    color: colors.green,
+                    width: layout.widthp / 2,
+                    textAlign: 'right',
+                    // backgroundColor: 'pink',
+                  },
                 ]}>
-                Add New Address
+                Add Address
               </Text>
             </TouchableOpacity>
             <View style={styles.placeHolder} />
