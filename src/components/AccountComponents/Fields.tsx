@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
   ActivityIndicator,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 import {layout} from '../../constants/Layout';
@@ -21,6 +22,12 @@ import {useNavigation} from '@react-navigation/native';
 import PasswordUpdateScreen from '../../screens/PasswordUpdateScreen';
 import {api} from '../../api';
 import EncryptedStorage from 'react-native-encrypted-storage';
+import Pen from '../../../assets/icons/commons/Pen30.svg';
+import {colors} from '../../constants/colors';
+import {
+  ImagePickerResponse,
+  launchImageLibrary,
+} from 'react-native-image-picker';
 
 export interface ProfileType {
   created_at: '2022-08-09T05:33:25.000000Z';
@@ -41,6 +48,7 @@ const Fields = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [editMode, setEditMode] = useState({counter: 0, editable: false});
   const [details, setDetails] = useState<ProfileType>();
+  const [image, setImage] = useState(null);
 
   const naviagtion: any = useNavigation();
 
@@ -93,6 +101,44 @@ const Fields = () => {
     }
   };
 
+  async function updateProfile() {
+    var result: ImagePickerResponse | null = null;
+    try {
+      result = await launchImageLibrary({mediaType: 'photo'});
+    } catch (e) {
+      console.log(e);
+    }
+    console.log('🚀 ~ file: ImageInput.tsx:18 ~ selectImage ~ result', result);
+    if (!result) {
+      return;
+    }
+    const formData = new FormData();
+    formData.append('image', {
+      uri: result?.assets[0].uri,
+      name: result?.assets[0].fileName,
+      type: result?.assets[0].type,
+    });
+    api
+      .post('/user/profile/update', formData, {
+        headers: {
+          // accept: "application/json",
+          accept: 'application/json',
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      .then(res => {
+        Alert.alert('Success', res.data?.message);
+        setImage(result?.assets[0]);
+      })
+      .catch(error => {
+        console.log(
+          '🚀 ~ file: Fields.tsx:126 ~ updateProfile ~ error:',
+          error.response.data,
+        );
+        Alert.alert('Failed', 'profile did not update');
+      });
+  }
+
   useEffect(() => {
     fetchProfile();
   }, []);
@@ -112,13 +158,38 @@ const Fields = () => {
       <View style={styles.imageContainer}>
         <Image
           source={{
-            uri: details.image
+            uri: image
+              ? image.uri
+              : false
               ? details.image
               : 'https://www.pngfind.com/pngs/m/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.png',
           }}
           style={styles.image}
           resizeMode="cover"
         />
+        <TouchableOpacity
+          onPress={updateProfile}
+          style={{position: 'absolute'}}>
+          <View
+            style={[
+              styles.image,
+              {
+                backgroundColor: 'rgba(1,1,1,0.3)',
+                position: 'absolute',
+                alignItems: 'center',
+                justifyContent: 'center',
+              },
+            ]}>
+            <Text
+              style={{
+                color: colors.green,
+                fontSize: 20,
+                fontFamily: 'Poppins-SemiBold',
+              }}>
+              Update
+            </Text>
+          </View>
+        </TouchableOpacity>
       </View>
       <View style={styles.fieldContainer}>
         <Formik
