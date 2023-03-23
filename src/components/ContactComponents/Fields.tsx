@@ -17,6 +17,7 @@ import * as yup from 'yup';
 import {useNavigation} from '@react-navigation/native';
 import {api} from '../../api';
 import AccountTabs from '../../Navigator/AccountTabs';
+import Account from '../../screens/tabs/Account';
 
 const Fields = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -33,6 +34,7 @@ const Fields = () => {
     email: string;
     enquiry: string;
   }) {
+    setLoading(true);
     api
       .post('/submit/enquiry', {
         name: values.name,
@@ -42,12 +44,13 @@ const Fields = () => {
       .then(res => {
         console.log('🚀 ~ file: Fields.tsx:68 ~ sendEnquiry ~ res', res.data);
         Alert.alert('Success', res.data?.message);
-        navigation.navigate(AccountTabs.name);
+        navigation.navigate(AccountTabs.name, {screen: Account.name});
       })
       .catch(error => {
         console.log('🚀 ~ file: Fields.tsx:71 ~ sendEnquiry ~ error', error);
         Alert.alert('Failed to send enquiry.', error?.response?.data?.message);
-      });
+      })
+      .finally(() => setLoading(false));
   }
   return (
     <ScrollView
@@ -61,11 +64,7 @@ const Fields = () => {
             enquiry: '',
           }}
           onSubmit={async values => {
-            setLoading(true);
-            console.log('onsubmit');
             await sendEnquiry(values);
-            console.log(values);
-            setLoading(false);
           }}
           validationSchema={formScheme}>
           {({
@@ -116,9 +115,9 @@ const Fields = () => {
                   onBlur={handleBlur('enquiry')}
                   value={values.enquiry}
                 />
-                {errors.name && touched.name && (
+                {errors.enquiry && touched.enquiry && (
                   <>
-                    <Text style={estyles.errorText}>{errors.name}</Text>
+                    <Text style={estyles.errorText}>{errors.enquiry}</Text>
                     <View style={{marginTop: layout.height * 0.011}} />
                   </>
                 )}

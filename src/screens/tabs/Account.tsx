@@ -1,5 +1,12 @@
 import React from 'react';
-import {ScrollView, View, Text, Image, Dimensions} from 'react-native';
+import {
+  TouchableOpacity,
+  ScrollView,
+  View,
+  Text,
+  Image,
+  Dimensions,
+} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 //@ts-ignore
 import ProfileImage from '../../../assets/images/profile.png';
@@ -18,6 +25,7 @@ import {RootState} from '../../store';
 import SignIn from '../SignIn';
 import {layout} from '../../constants/Layout';
 import ContactScreen from '../ContactScreen';
+import {colors} from '../../constants/colors';
 
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 const Account = ({navigation}: any) => {
@@ -90,6 +98,26 @@ const Account = ({navigation}: any) => {
                 bgColour="#53B175"
                 txtColour="white"
               />
+            </View>
+            <View
+              style={{
+                width: layout.width,
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'absolute',
+                bottom: 100,
+              }}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate(ContactScreen.name)}>
+                <Text
+                  style={{
+                    color: colors.green,
+                    fontFamily: 'Poppins-Medium',
+                    fontSize: 18,
+                  }}>
+                  Contact Us
+                </Text>
+              </TouchableOpacity>
             </View>
           </View>
         ) : (
