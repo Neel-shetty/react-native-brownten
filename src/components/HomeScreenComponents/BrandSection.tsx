@@ -7,6 +7,7 @@ import {useNavigation} from '@react-navigation/native';
 import SearchScreen from '../../screens/SearchScreen';
 import {useQuery} from 'react-query';
 import {api} from '../../api';
+import ExploreTabs from '../../Navigator/ExploreTabs';
 
 interface BrandType {
   id: number;
@@ -47,11 +48,14 @@ const BrandSection = ({title}: {title: string}) => {
                 title={item.name}
                 image={item.image}
                 onPress={() => {
-                  navigation.navigate(SearchScreen.name, {
-                    link: '/brand/products',
-                    fieldName: 'id',
-                    fieldValue: item.id,
-                    autoFocus: false,
+                  navigation.navigate(ExploreTabs.name, {
+                    screen: SearchScreen.name,
+                    params: {
+                      link: '/brand/products',
+                      fieldName: 'id',
+                      fieldValue: item.id,
+                      autoFocus: false,
+                    },
                   });
                 }}
               />

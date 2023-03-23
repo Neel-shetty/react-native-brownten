@@ -7,6 +7,7 @@ import {FlashList} from '@shopify/flash-list';
 import {useNavigation} from '@react-navigation/native';
 import SearchScreen from '../../screens/SearchScreen';
 import {useQuery} from 'react-query';
+import ExploreTabs from '../../Navigator/ExploreTabs';
 
 interface CategoryType {
   id: number;
@@ -45,11 +46,14 @@ const CategorySection = ({title}: {title: string}) => {
                 title={item.name}
                 image={item.image}
                 onPress={() => {
-                  navigation.navigate(SearchScreen.name, {
-                    link: '/category/wise/products',
-                    fieldName: 'slug',
-                    fieldValue: item.slug,
-                    autoFocus: false,
+                  navigation.navigate(ExploreTabs.name, {
+                    screen: SearchScreen.name,
+                    params: {
+                      link: '/category/wise/products',
+                      fieldName: 'slug',
+                      fieldValue: item.slug,
+                      autoFocus: false,
+                    },
                   });
                 }}
               />

@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 10,
+    marginBottom: 10,
   },
   quantityContainer: {
     marginHorizontal: 15,
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     alignItems: 'center',
     justifyContent: 'center',
-    marginVertical: 10,
+    marginBottom: 10,
   },
   buttonText: {
     fontFamily: 'Poppins-SemiBold',

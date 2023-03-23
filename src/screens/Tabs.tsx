@@ -19,6 +19,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import StackNavigator from '../Navigator/Navigator';
 import AccountTabs from '../Navigator/AccountTabs';
 import ExploreTabs from '../Navigator/ExploreTabs';
+import {RootState} from '../store';
 
 const {Navigator, Screen} = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -27,7 +28,10 @@ const Tabs = () => {
   const dispatch = useDispatch();
   const loggedIn = useSelector(state => state.user.loggedIn);
   console.log('🚀 ~ file: Navigator.js:23 ~ Navigator ~ loggedIn', loggedIn);
-
+  const items = useSelector((state: RootState) => {
+    return state.cart.cartItems;
+  });
+  console.log('🚀 ~ file: Tabs.tsx:32 ~ items ~ items:', items);
   useLayoutEffect(() => {
     async function checkLogin() {
       const result = await EncryptedStorage.getItem('isLoggedIn');
@@ -48,14 +52,38 @@ const Tabs = () => {
             switch (route.name) {
               case Home.name:
                 return <tabIcons.ShopIcon color={color} />;
-              case Account.name:
+              case AccountTabs.name:
                 return <tabIcons.PersonIcon color={color} />;
               case Cart.name:
-                return <tabIcons.CartIcon color={color} />;
-              case Explore.name:
+                return (
+                  <View>
+                    <tabIcons.CartIcon color={color} />
+                    {items.length > 0 ? (
+                      <View
+                        style={{
+                          position: 'absolute',
+                          height: 15,
+                          width: 15,
+                          backgroundColor: 'red',
+                          top: -6,
+                          right: -6,
+                          borderRadius: 10,
+                        }}>
+                        <Text
+                          style={{
+                            color: 'white',
+                            textAlign: 'center',
+                            fontSize: 10,
+                            fontFamily: 'Poppins-Regular',
+                          }}>
+                          {items.length}
+                        </Text>
+                      </View>
+                    ) : null}
+                  </View>
+                );
+              case ExploreTabs.name:
                 return <tabIcons.ExploreSearchIcon color={color} />;
-              case Favourite.name:
-                return <tabIcons.HeartIcon color={color} />;
               default:
                 return <tabIcons.ShopIcon color={color} />;
             }

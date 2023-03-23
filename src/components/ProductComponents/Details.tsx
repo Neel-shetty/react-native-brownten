@@ -118,7 +118,8 @@ const Details = ({product}: Details) => {
       <View style={styles.topContainer}>
         <View style={styles.titleContainer}>
           <View style={styles.titleSubContainer}>
-            <View style={styles.flex}>
+            <View
+              style={[styles.flex, {justifyContent: 'center', paddingTop: 10}]}>
               <Text style={styles.title}>{product.name}</Text>
             </View>
           </View>
@@ -156,23 +157,6 @@ const Details = ({product}: Details) => {
                   item: item.variant,
                   quantity: item.quantity,
                 });
-                // let tempArr: selectVariant[] = [];
-                // for (let i = 0; i < product.variants.length; i++) {
-                //   if (
-                //     product.variants[i].variant_id === item.variant.variant_id
-                //   ) {
-                //     tempArr.push({
-                //       selected: true,
-                //       variant: variants[i].variant,
-                //     });
-                //   } else {
-                //     tempArr.push({
-                //       selected: false,
-                //       variant: variants[i].variant,
-                //     });
-                //   }
-                // }
-                // setvariants(tempArr);
               }}>
               <VariantInfo
                 key={item.variant.variant_id}
@@ -299,7 +283,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'Poppins-Bold',
-    fontSize: 24,
+    fontSize: 20,
     color: 'black',
   },
   info: {
@@ -311,6 +295,7 @@ const styles = StyleSheet.create({
     width: layout.widthp,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    // backgroundColor: 'violet',
   },
   priceContainer: {
     alignItems: 'center',

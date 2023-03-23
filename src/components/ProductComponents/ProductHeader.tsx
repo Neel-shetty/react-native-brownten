@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   root: {
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 370,
+    minHeight: 350,
     backgroundColor: '#F2F3F2',
     width: layout.width,
     borderBottomRightRadius: 25,

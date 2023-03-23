@@ -5,6 +5,7 @@ import Details from '../components/ProductComponents/Details';
 import {useRoute} from '@react-navigation/native';
 import {fetchProductDetails} from '../api/fetchProductDetails';
 import {variantType} from './tabs/Home';
+import { layout } from '../constants/Layout';
 
 export interface ProductProps {
   id: number;
@@ -87,12 +88,13 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     flex: 1,
     // backgroundColor: 'pink',
-    maxHeight: 370,
+    // maxHeight: 370,
   },
   detailContainer: {
     alignItems: 'center',
     justifyContent: 'center',
     flex: 1,
     backgroundColor: 'white',
+    // maxHeight: layout.height - 370
   },
 });

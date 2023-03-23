@@ -17,6 +17,7 @@ import {api} from '../../api';
 import {RootState} from '../../store';
 import SignIn from '../SignIn';
 import {layout} from '../../constants/Layout';
+import ContactScreen from '../ContactScreen';
 
 const {width: screenWidth, height: screenHeight} = Dimensions.get('screen');
 const Account = ({navigation}: any) => {
@@ -50,6 +51,11 @@ const Account = ({navigation}: any) => {
       label: 'Delivery Address',
       icon: <AccountIcons.PinIcon style={styles.icon} color={'#181725'} />,
       navigateTo: AddressScreen.name,
+    },
+    {
+      label: 'Contact Us',
+      icon: <AccountIcons.TicketIcon style={styles.icon} color={'#181725'} />,
+      navigateTo: ContactScreen.name,
     },
   ];
 

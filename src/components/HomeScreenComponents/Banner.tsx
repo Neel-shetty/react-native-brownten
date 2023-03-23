@@ -13,6 +13,7 @@ import {api} from '../../api';
 import {useNavigation} from '@react-navigation/native';
 import SearchScreen from '../../screens/SearchScreen';
 import {colors} from '../../constants/colors';
+import ExploreTabs from '../../Navigator/ExploreTabs';
 
 const ImageBg = () => {
   const [images, setImages] = useState([]);
@@ -72,11 +73,14 @@ const ImageBg = () => {
                 style={{flex: 1, width: layout.widthp, overflow: 'hidden'}}>
                 <TouchableOpacity
                   onPress={() =>
-                    navigation.navigate(SearchScreen.name, {
-                      link: '/banner/products',
-                      fieldName: 'product_id',
-                      fieldValue: item.id,
-                      autoFocus: false,
+                    navigation.navigate(ExploreTabs.name, {
+                      screen: SearchScreen.name,
+                      params: {
+                        link: '/banner/products',
+                        fieldName: 'product_id',
+                        fieldValue: item.id,
+                        autoFocus: false,
+                      },
                     })
                   }>
                   {/* <View style={styles.bannerTextContainer}> */}

@@ -91,14 +91,12 @@ const ProductList = ({}) => {
           }}>
           {({handleChange, handleBlur, handleSubmit, values}) => (
             <>
-              <View
+              {/* <View
                 style={{
                   width: layout.widthp,
                   alignItems: 'center',
                   justifyContent: 'center',
-                }}>
-                <Text>x</Text>
-              </View>
+                }}></View> */}
               <SearchInput
                 handleSubmit={handleSubmit}
                 onChangeText={handleChange('query')}

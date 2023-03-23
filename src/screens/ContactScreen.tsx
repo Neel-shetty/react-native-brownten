@@ -1,12 +1,12 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {TouchableOpacity, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import {layout} from '../constants/Layout';
 import EStyleSheet from 'react-native-extended-stylesheet';
-import Fields from '../components/AddAddressComponents/Fields';
-import Ionicons from 'react-native-vector-icons/EvilIcons';
+import Fields from '../components/ContactComponents/Fields';
 import {useNavigation} from '@react-navigation/native';
+import Ionicons from 'react-native-vector-icons/EvilIcons';
 
-const AddAddressScreen = () => {
+const ContactScreen = () => {
   const navigation = useNavigation();
   return (
     <View style={styles.root}>
@@ -17,7 +17,7 @@ const AddAddressScreen = () => {
           }}>
           <Ionicons name="chevron-left" size={30} color={'black'} />
         </TouchableOpacity>
-        <Text style={eStyles.text}>Add New Address</Text>
+        <Text style={eStyles.text}>Contact Us</Text>
         <View style={styles.space} />
       </View>
       <View style={styles.listContainer}>
@@ -27,7 +27,7 @@ const AddAddressScreen = () => {
   );
 };
 
-export default {component: AddAddressScreen, name: 'AddAddressScreen'};
+export default {component: ContactScreen, name: 'ContactScreen'};
 
 const styles = StyleSheet.create({
   root: {

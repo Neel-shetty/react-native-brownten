@@ -118,8 +118,13 @@ const Fields = () => {
       name: result?.assets[0].fileName,
       type: result?.assets[0].type,
     });
+    formData.append('name', details?.name);
+    formData.append('email', details?.email);
+    formData.append('phone', details?.phone);
+    const id = await EncryptedStorage.getItem('id');
+    formData.append('user_id', id);
     api
-      .post('/user/profile/update', formData, {
+      .post('/user/account-update', formData, {
         headers: {
           // accept: "application/json",
           accept: 'application/json',
@@ -158,11 +163,7 @@ const Fields = () => {
       <View style={styles.imageContainer}>
         <Image
           source={{
-            uri: image
-              ? image.uri
-              : false
-              ? details.image
-              : 'https://www.pngfind.com/pngs/m/610-6104451_image-placeholder-png-user-profile-placeholder-image-png.png',
+            uri: image ? image.uri : false ? details.image : details.image,
           }}
           style={styles.image}
           resizeMode="cover"
@@ -174,7 +175,7 @@ const Fields = () => {
             style={[
               styles.image,
               {
-                backgroundColor: 'rgba(1,1,1,0.3)',
+                backgroundColor: 'rgba(0,0,0,0.6)',
                 position: 'absolute',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -182,9 +183,10 @@ const Fields = () => {
             ]}>
             <Text
               style={{
-                color: colors.green,
+                color: 'white',
                 fontSize: 20,
                 fontFamily: 'Poppins-SemiBold',
+                textDecorationColor: 'red',
               }}>
               Update
             </Text>

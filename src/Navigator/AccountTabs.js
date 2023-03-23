@@ -12,6 +12,7 @@ import OtpScreen from '../screens/OtpScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import ResetPasswordScreen from '../screens/ResetPasswordScreen';
 import SignIn from '../screens/SignIn';
+import ContactScreen from '../screens/ContactScreen';
 
 const Stack = createStackNavigator();
 
@@ -53,6 +54,10 @@ const AccountTabs = () => {
       <Stack.Screen
         name={ResetPasswordScreen.name}
         component={ResetPasswordScreen.component}
+      />
+      <Stack.Screen
+        name={ContactScreen.name}
+        component={ContactScreen.component}
       />
     </Stack.Navigator>
   );

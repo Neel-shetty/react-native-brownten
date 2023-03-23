@@ -2,6 +2,8 @@ import React from 'react';
 import {View, Text, TouchableOpacity} from 'react-native';
 import EStyleSheet from 'react-native-extended-stylesheet';
 import {useNavigation} from '@react-navigation/native';
+import ExploreTabs from '../../Navigator/ExploreTabs';
+import SearchScreen from '../../screens/SearchScreen';
 
 const SectionTitle = ({
   title,
@@ -19,7 +21,13 @@ const SectionTitle = ({
       <Text style={styles.title}>{title}</Text>
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate(linkPage, {itemData: itemData, autoFocus: false})
+          navigation.navigate(ExploreTabs.name, {
+            screen: SearchScreen.name,
+            params: {
+              itemData: itemData,
+              autoFocus: false,
+            },
+          })
         }>
         <Text style={styles.link}>See all</Text>
       </TouchableOpacity>
