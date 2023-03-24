@@ -9,6 +9,7 @@ import {fetchSubCategories} from '../api/fetchSubCategories';
 import SearchScreen from './SearchScreen';
 import {useRoute} from '@react-navigation/native';
 import SubCategoryCard from '../components/SubCategoryScreenComponents/SubCategoryCard';
+import {layout} from '../constants/Layout';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('screen');
 
@@ -19,6 +20,10 @@ const SubCategoryScreen = ({navigation}: any) => {
     async () => {
       return await fetchSubCategories(route?.params?.category_id);
     },
+  );
+  console.log(
+    '🚀 ~ file: SubCategoryScreen.tsx:19 ~ SubCategoryScreen ~ categoriesFetched:',
+    categoriesFetched?.data?.data,
   );
 
   useEffect(() => {
@@ -39,12 +44,13 @@ const SubCategoryScreen = ({navigation}: any) => {
           <FlatList
             //@ts-ignore
             data={categoriesFetched?.data?.data}
-            keyExtractor={item => item.id}
+            // keyExtractor={item => item.id}
             scrollEnabled={false}
-            numColumns={2}
-            renderItem={({item}) => {
+            renderItem={({item, index}) => {
               return (
                 <SubCategoryCard
+                  index={index}
+                  length={categoriesFetched?.data?.data.length}
                   key={item.id}
                   title={item.name}
                   image={item.image}
@@ -79,6 +85,7 @@ const styles = EStyleSheet.create({
   },
   body: {
     paddingHorizontal: 17.5,
+    width: layout.width,
   },
   scrollFooter: {
     marginBottom: heightScreen * 0.15,

@@ -4,6 +4,8 @@ import EStyleSheet from 'react-native-extended-stylesheet';
 //@ts-ignore
 import SearchIcon from '../../assets/icons/commons/search.svg';
 import {useNavigation} from '@react-navigation/native';
+import SearchScreen from '../screens/SearchScreen';
+import ExploreTabs from '../Navigator/ExploreTabs';
 
 interface SearchBarType {
   placeholder: string;
@@ -13,8 +15,12 @@ interface SearchBarType {
 const SearchBar = ({placeholder, navigateTo}: SearchBarType) => {
   const navigation = useNavigation();
   const goToSearchPage = () => {
+    // if (navigateTo === null) {
+    //   return;
+    // }
     //@ts-ignore
-    navigation.navigate(navigateTo);
+    navigation.navigate(ExploreTabs.name, {screen: SearchScreen.name});
+    // navigation.navigate(navigateTo);
   };
 
   return (

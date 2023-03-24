@@ -12,6 +12,7 @@ import {
 } from '../../store/cart';
 import {useNavigation} from '@react-navigation/native';
 import ProductScreen from '../../screens/ProductScreen';
+import TextTicker from 'react-native-text-ticker';
 
 interface props {
   name: string;
@@ -52,22 +53,31 @@ const CartItem = ({name, quantity, info, cost, image, id, vId}: props) => {
       <View style={styles.middleContainer}>
         <View style={styles.idkContainer}>
           <TouchableOpacity onPress={productDetialScreen}>
-            <Text style={styles.name} numberOfLines={1}>
+            {/* <Text style={styles.name} numberOfLines={1}>
               {name}
-            </Text>
+            </Text> */}
+            <TextTicker
+              style={styles.name}
+              duration={10000}
+              loop
+              bounce
+              repeatSpacer={50}
+              marqueeDelay={1000}>
+              {name}
+            </TextTicker>
           </TouchableOpacity>
           <Text style={styles.info}>{info}</Text>
           <View style={styles.buttonContainer}>
             <TouchableOpacity onPress={decrease} style={styles.button}>
               {/* <PlusIcon /> */}
-              <Icon name="minus" size={24} color={'#B3B3B3'} />
+              <Icon name="minus" size={20} color={'#B3B3B3'} />
             </TouchableOpacity>
             <View style={styles.quantityContainer}>
               <Text style={styles.name}>{quantity}</Text>
             </View>
             <TouchableOpacity onPress={increase} style={styles.button}>
               {/* <PlusIcon /> */}
-              <Icon name="plus" size={24} color={colors.green} />
+              <Icon name="plus" size={20} color={colors.green} />
             </TouchableOpacity>
           </View>
         </View>

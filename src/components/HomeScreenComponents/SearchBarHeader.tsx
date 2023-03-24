@@ -10,12 +10,13 @@ const SearchBarHeader = () => {
   const navigation: any = useNavigation();
   return (
     <View style={styles.root}>
-      <TouchableOpacity
+      {/* <TouchableOpacity
         onPress={() => {
+          console.log('running');
           navigation.navigate(ExploreTabs.name, {screen: SearchScreen.name});
-        }}>
+        }}> */}
         <SearchBar placeholder="Search Store" navigateTo={null} />
-      </TouchableOpacity>
+      {/* </TouchableOpacity> */}
     </View>
   );
 };
