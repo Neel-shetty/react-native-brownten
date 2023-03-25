@@ -4,7 +4,7 @@ import FoodCard from '../HomeScreenComponents/FoodCard';
 import SearchInput from './SearchInput';
 import {Formik} from 'formik';
 import {FlashList} from '@shopify/flash-list';
-import {useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 import {ProductProps} from '../../screens/ProductScreen';
 import {SearchProducts} from '../../api/SearchProducts';
 import {api} from '../../api';
@@ -15,6 +15,7 @@ const ProductList = ({}) => {
   const [loading, setLoading] = useState(false);
   const [autoFocus, setAutoFocus] = useState<boolean>();
   const route: any = useRoute();
+  const navigation: any = useNavigation();
   async function fetchData({
     link,
     fieldName,
@@ -35,7 +36,14 @@ const ProductList = ({}) => {
       .catch(error => {
         if (error?.response) {
           console.log(error.response.data);
-          Alert.alert('Failed', error.response.data.message);
+          Alert.alert('Failed', error.response.data.message, [
+            {
+              text: 'ok',
+              onPress: () => {
+                navigation.goBack();
+              },
+            },
+          ]);
         }
         setLoading(false);
       });

@@ -99,6 +99,7 @@ const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
   return (
     <TouchableOpacity
       onPress={() => {
+        if (currentVariant?.qty === 0) return;
         navigation.navigate('ProductScreen', {slug: item.slug});
       }}
       style={styles.card}>
@@ -137,7 +138,9 @@ const FoodCard = ({item}: {item: ProductPreviewType | ProductProps}) => {
         renderRightIcon={item?.variants?.length > 1 ? undefined : () => null}
       />
       <View style={styles.footer}>
-        {!globalQuantity ? (
+        {currentVariant?.qty === 0 ? (
+          <Text style={styles.outOfStock}>Out of Stock</Text>
+        ) : !globalQuantity ? (
           <View
             style={{
               flexDirection: 'row',
@@ -299,6 +302,11 @@ const styles = EStyleSheet.create({
   containerStyle: {
     marginTop: 5,
     borderRadius: 10,
+  },
+  outOfStock: {
+    color: 'red',
+    fontFamily: '$gilroyNormal600',
+    fontSize: '1.125rem',
   },
 });
 

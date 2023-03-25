@@ -8,7 +8,6 @@ import CategorySection from '../../components/HomeScreenComponents/CategorySecti
 import {useQuery} from 'react-query';
 import {api} from '../../api';
 import BrandSection from '../../components/HomeScreenComponents/BrandSection';
-import Header from '../../components/HomeScreenComponents/Header';
 
 const {width: widthScreen, height: heightScreen} = Dimensions.get('window');
 
@@ -60,6 +59,7 @@ const Home = () => {
       allProductsError?.message || trendingProductsError?.message,
     );
   }
+
   return (
     <ScrollView style={styles.container}>
       <StatusBar
