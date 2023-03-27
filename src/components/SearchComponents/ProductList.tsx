@@ -8,7 +8,6 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {ProductProps} from '../../screens/ProductScreen';
 import {SearchProducts} from '../../api/SearchProducts';
 import {api} from '../../api';
-import {layout} from '../../constants/Layout';
 
 const ProductList = ({}) => {
   const [items, setItems] = useState<ProductProps[]>([]);

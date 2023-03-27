@@ -209,10 +209,10 @@ const CartTab = ({navigation}: any) => {
                 '🚀 ~ file: Cart.tsx:113 ~ pay ~ error:',
                 error.description,
               );
-              Alert.alert(
-                'Failed',
-                `Error: ${error?.code} | ${error?.description}`,
-              );
+              // Alert.alert(
+              //   'Failed',
+              //   `Error: ${error?.code} | ${error?.description}`,
+              // );
             });
           setLoading(false);
         }
