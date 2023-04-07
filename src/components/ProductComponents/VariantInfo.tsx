@@ -20,7 +20,19 @@ const VariantInfo = ({
       </View>
       <View style={styles.priceContainer}>
         {variant.selling_price === variant.price ? null : (
-          <Text style={styles.discountPrice}>{variant.price}</Text>
+          <>
+            <View style={styles.discountContainer}>
+              <Text style={styles.discount}>
+                {100 -
+                  Math.floor(
+                    (Number(variant.selling_price) / Number(variant.price)) *
+                      100,
+                  )}
+                % off
+              </Text>
+            </View>
+            <Text style={styles.discountPrice}>{variant.price}</Text>
+          </>
         )}
         <View style={styles.padding} />
         <Text style={styles.price}>{variant.selling_price}</Text>
@@ -42,6 +54,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     alignItems: 'center',
     justifyContent: 'space-between',
+    overflow: 'hidden',
   },
   greenBorder: {
     borderColor: '#53B175',
@@ -74,5 +87,15 @@ const styles = StyleSheet.create({
   },
   padding: {
     marginHorizontal: 2.5,
+  },
+  discountContainer: {
+    backgroundColor: 'red',
+    borderRadius: 30,
+    paddingHorizontal: 10,
+    marginRight: 5,
+  },
+  discount: {
+    color: 'white',
+    fontFamily: 'Poppins-Medium',
   },
 });

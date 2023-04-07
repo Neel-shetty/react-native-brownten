@@ -102,6 +102,7 @@ const Tabs = () => {
             null,
           ],
           headerShown: false,
+          tabBarShowLabel: false,
         })}>
         {/* <Stack.Screen
         name={OrdersScreen.name}

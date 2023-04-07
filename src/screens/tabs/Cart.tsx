@@ -1,5 +1,5 @@
 import React, {useCallback, useMemo, useRef, useState} from 'react';
-import {View, StyleSheet, Text, Alert, ActivityIndicator} from 'react-native';
+import {View, StyleSheet, Text, Alert} from 'react-native';
 import CartList from '../../components/CartComponents/CartList';
 import {colors} from '../../constants/colors';
 import {layout} from '../../constants/Layout';
@@ -17,15 +17,13 @@ import {api} from '../../api';
 import EncryptedStorage from 'react-native-encrypted-storage';
 import {useQuery} from 'react-query';
 import {AddressType} from '../../api/fetchAddress';
-// import {useSelector} from 'react-redux';
 import {cartItemType, emptyCart} from '../../store/cart';
 import SignIn from '../SignIn';
 import AccountTabs from '../../Navigator/AccountTabs';
-// import {RootState} from '../../store';
 
 const CartTab = ({navigation}: any) => {
   const [showBottomSheet, setShowBottomSheet] = useState(false);
-  const [online, setOnline] = useState(true);
+  const [online, setOnline] = useState(false);
   const [loading, setLoading] = useState(false);
   const [address, setAddress] = useState<AddressType>();
   console.log('🚀 ~ file: Cart.tsx:26 ~ CartTab ~ address:', address);
@@ -47,6 +45,7 @@ const CartTab = ({navigation}: any) => {
   );
 
   // itemCost = itemCost ? itemCost : [0, 0, 0];
+  // navigation.setOptions({unmountOnBlur: true});
 
   // ref
   const bottomSheetRef = useRef<BottomSheet>(null);
@@ -55,20 +54,22 @@ const CartTab = ({navigation}: any) => {
     data: deliveryCharge,
     error,
     isLoading: deliveryChargeLoading,
-  } = useQuery(['deliveryCharge', online], async () =>
+    refetch,
+  } = useQuery(['deliveryCharge', online, cartItems], async () =>
     api.post('/get/shipping-charge', {
       method: online ? 'Online' : 'Cash on Delivery',
     }),
   );
-  // console.log(
-  //   '🚀 ~ file: Cart.tsx:38 ~ CartTab ~ data:',
-  //   deliveryCharge?.data.data,
-  //   error,
-  // );
+  console.log(
+    '🚀 ~ file: Cart.tsx:38 ~ CartTab ~ data:',
+    deliveryCharge?.data.data,
+    error,
+    deliveryChargeLoading,
+  );
   // console.log(itemCost);
   const totalCartCost =
     itemCost.reduce((a: number, b: number) => a + b, 0) +
-    parseInt(deliveryCharge?.data.data, 10);
+    parseInt(cartItems.length === 0 ? '0' : deliveryCharge?.data.data, 10);
 
   // variables
   const snapPoints = useMemo(() => ['25%', '75%'], []);
@@ -97,6 +98,7 @@ const CartTab = ({navigation}: any) => {
     if (!deliveryCharge) {
       return;
     }
+    setOnline(false);
     const totalCost = totalCartCost;
     const id = await EncryptedStorage.getItem('id');
     api
@@ -249,6 +251,7 @@ const CartTab = ({navigation}: any) => {
             bgColour={colors.green}
             onPress={() => {
               setShowBottomSheet(true);
+              refetch({});
             }}
             txtColour="white"
             value={totalCartCost}
@@ -304,8 +307,9 @@ const CartTab = ({navigation}: any) => {
                 console.log('pressed');
               }}
               title="Delivery Charge"
-              value={deliveryChargeLoading ? 0 : deliveryCharge.data.data}
+              value={deliveryChargeLoading ? 0 : deliveryCharge?.data.data}
               field="cost"
+              // refetch={refetch}
             />
             <SheetItem
               onPress={() => {

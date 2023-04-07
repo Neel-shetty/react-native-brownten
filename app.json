@@ -1,4 +1,9 @@
 {
   "name": "brownten",
-  "displayName": "brownten"
+  "displayName": "brownten",
+  "extra": {
+    "eas": {
+      "projectId": "400aac3d-4e50-4513-a1a3-718806cd5eb8"
+    }
+  }
 }

@@ -24,6 +24,7 @@ const SheetItem = ({
   setOnline,
   setMainAddress,
   addAddress,
+  refetch,
 }: {
   title: string;
   value?: string;
@@ -32,13 +33,14 @@ const SheetItem = ({
   setOnline?: React.Dispatch<React.SetStateAction<boolean>>;
   setMainAddress?: React.Dispatch<React.SetStateAction<AddressType>>;
   addAddress?: () => void;
+  refetch?: () => void;
 }) => {
   // console.log('🚀 ~ file: SheetItem.tsx:20 ~ field:', field);
   const [idk, setIdk] = useState<boolean>(false);
-  const [selected, setSelected] = useState('Online');
+  const [selected, setSelected] = useState('Cash on Delivery');
   const initalOptions = [
-    {title: 'Online', selected: true},
-    {title: 'Cash on Delivery', selected: false},
+    {title: 'Online', selected: false},
+    {title: 'Cash on Delivery', selected: true},
   ];
   const [options, setOptions] = useState(initalOptions);
   const [address, setAddress] = useState<AddressType[]>();
@@ -54,6 +56,16 @@ const SheetItem = ({
   }
 
   const navigation: any = useNavigation();
+
+  useEffect(() => {
+    if (field === 'payment') {
+      if (options[1]?.selected) {
+        console.log('cod is selected ------------------------')
+        //@ts-ignore
+        setOnline(false);
+      }
+    }
+  }, [options, setOnline, field]);
 
   const onPressRadio = (id: number) => {
     // console.log(id);
@@ -266,6 +278,7 @@ const SheetItem = ({
       );
     }
     if (field === 'cost') {
+      // refetch();
       return (
         <View style={styles.root}>
           <View style={styles.container}>

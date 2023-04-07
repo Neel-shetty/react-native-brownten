@@ -41,7 +41,9 @@ const Details = ({order}: {order: OrderType}) => {
           </View>
           <View style={styles.paymentContainer}>
             <Text style={styles.title}>Payment Details</Text>
-            <TextPair title="Transaction ID" value={order?.transation_id} />
+            {order?.transation_id && (
+              <TextPair title="Transaction ID" value={order?.transation_id} />
+            )}
             <TextPair title="Payment Method" value={order?.payment_method} />
             <TextPair title="Payment Status" value={order?.payment_status} />
             <TextPair
