@@ -143,7 +143,7 @@ const CartTab = ({navigation}: any) => {
             description: 'Pay Brownten',
             image: 'https://brownten.com/public/uploads/logo/5649782859.png',
             currency: 'INR',
-            key: 'rzp_test_RFqjBfnOlEqSwr',
+            key: 'rzp_live_DuYBNnUQGI2bMj',
             amount: totalCost,
             name: 'Brownten',
             order_id: res.data.data, //res.data.data.order_id, //Replace this with an order_id created using Orders API.
